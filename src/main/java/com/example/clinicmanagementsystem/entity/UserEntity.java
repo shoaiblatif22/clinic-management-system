@@ -1,5 +1,4 @@
 package com.example.clinicmanagementsystem.entity;
-
 import jakarta.persistence.*;
 import lombok.Data;
 

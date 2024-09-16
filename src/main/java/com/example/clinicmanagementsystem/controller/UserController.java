@@ -1,14 +1,10 @@
 package com.example.clinicmanagementsystem.controller;
-
 import com.example.clinicmanagementsystem.entity.UserEntity;
 import com.example.clinicmanagementsystem.service.UserService;
-import lombok.*;
-import org.apache.catalina.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.Collections;
 import java.util.List;
 import java.util.NoSuchElementException;
