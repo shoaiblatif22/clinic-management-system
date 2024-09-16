@@ -3,6 +3,7 @@ package com.example.clinicmanagementsystem.service;
 import com.example.clinicmanagementsystem.entity.UserEntity;
 import com.example.clinicmanagementsystem.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
