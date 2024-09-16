@@ -3,30 +3,38 @@ package com.example.clinicmanagementsystem.service;
 import com.example.clinicmanagementsystem.entity.UserEntity;
 import com.example.clinicmanagementsystem.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class UserService {
-    @Autowired
-    private UserRepository userRepository;
 
-    //finds a list of Users
-    public List<UserEntity> getAllUsers(){
+    private final UserRepository userRepository;
+
+    @Autowired
+    public UserService(UserRepository userRepository) {
+        this.userRepository = userRepository;
+    }
+
+    public List<UserEntity> getAllUsers() {
         return userRepository.findAll();
     }
-    //finds user by Id
-    public UserEntity getUserById(int id){
-        return userRepository.findById(id).get();
+
+    public Optional<UserEntity> getUserById(Long id) {
+        return userRepository.findById(id);
     }
-    //saves a user
-    public UserEntity saveUser(UserEntity user){
+
+    public UserEntity saveUser(UserEntity user) {
         return userRepository.save(user);
     }
-    //deletes a user
-    public void deleteUserById(int id){
-        userRepository.deleteById(id);
+
+    public UserEntity findByFirstName(String firstName) {
+        return userRepository.findByFirstName(firstName);
     }
+//
+//    public void deleteUserById(Long id) {
+//        userRepository.deleteById(id);
+//    }
 }
