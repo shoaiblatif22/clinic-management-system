@@ -56,4 +56,19 @@ public class UserServiceTests {
 
     }
 
+    @org.junit.Test
+    public void getAllUsers() {
+    }
+
+    @org.junit.Test
+    public void getUserById() {
+    }
+
+    @org.junit.Test
+    public void saveUser() {
+    }
+
+    @org.junit.Test
+    public void deleteUserById() {
+    }
 }
