@@ -18,11 +18,7 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
-    public List<UserEntity> getAllUsers() {
-        return userRepository.findAll();
-    }
-
-    public Optional<UserEntity> getUserById(Long id) {
+    public Optional<UserEntity> getUserById(int id) {
         return userRepository.findById(id);
     }
 
@@ -32,6 +28,10 @@ public class UserService {
 
     public UserEntity findByFirstName(String firstName) {
         return userRepository.findByFirstName(firstName);
+    }
+
+    public List<UserEntity> findAll() {
+        return userRepository.findAll();
     }
 //
 //    public void deleteUserById(Long id) {

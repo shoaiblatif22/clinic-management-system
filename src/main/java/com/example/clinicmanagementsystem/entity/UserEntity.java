@@ -13,19 +13,19 @@ public class UserEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    @Column
+    @Column(name = "first_name")
     private String firstName;
 
-    @Column
+    @Column(name = "last_name")
     private String lastName;
 
-    @Column
+    @Column(name = "email")
     private String email;
 
-    @Column
+    @Column(name = "password")
     private String password;
 
-    @Column
+    @Column(name = "role")
     private String role;
 
     //define no-args constructor

@@ -14,7 +14,8 @@ import java.util.List;
 import java.util.NoSuchElementException;
 
 
-@RestController("/api")
+@RestController
+@RequestMapping("/api")
 public class UserController {
 
     private final UserService userService;
@@ -25,15 +26,14 @@ public class UserController {
     }
 
     @GetMapping("/users")
-    public ResponseEntity<List<UserEntity>> getAllUsers() {
-        List<UserEntity> users = userService.getAllUsers();
-        return new ResponseEntity<>(users, HttpStatusCode.valueOf(200));
+    public List<UserEntity> findAll() {
+        return userService.findAll();
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("users/{id}")
     public ResponseEntity<UserEntity> getUserById(@PathVariable Integer id) {
         try {
-            UserEntity user = userService.getUserById(Long.valueOf(id))
+            UserEntity user = userService.getUserById(id)
                     .orElseThrow(() -> new NoSuchElementException("User not found with id: " + id));
             return new ResponseEntity<>(user, HttpStatusCode.valueOf(200));
         } catch (NoSuchElementException e) {
@@ -46,7 +46,7 @@ public class UserController {
         return new ResponseEntity<>(users, HttpStatusCode.valueOf(200));
     }
 
-    @PutMapping("/users")
+    @PostMapping("/users")
     public ResponseEntity<UserEntity> saveUser(@RequestBody UserEntity user) {
         UserEntity savedUser = userService.saveUser(user);
         return new ResponseEntity<>(savedUser, HttpStatusCode.valueOf(201));
