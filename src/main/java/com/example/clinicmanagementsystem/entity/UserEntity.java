@@ -28,15 +28,23 @@ public class UserEntity {
     @Column(name = "role")
     private String role;
 
+    @Column(name = "pending_validation")
+    private boolean pendingValidation;
+
+    @Column(name = "validated")
+    private boolean validated;
+
     //define no-args constructor
     public UserEntity() {}
 
     //define constructor
-    public UserEntity(String firstName, String lastName, String email, String password) {
+    public UserEntity(String firstName, String lastName, String email, String password, String role, boolean pendingValidation, boolean validated) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
         this.password = password;
+        this.pendingValidation = false;
+        this.validated = false;
     }
 
     @Override
@@ -48,6 +56,8 @@ public class UserEntity {
                 ", email='" + email + '\'' +
                 ", password='" + password + '\'' +
                 ", role='" + role + '\'' +
+                ", pendingValidation=" + pendingValidation +
+                ", validated=" + validated +
                 '}';
     }
 }

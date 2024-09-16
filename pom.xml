@@ -110,6 +110,10 @@
             <scope>runtime</scope>
             <version>42.7.3</version>
         </dependency>
+        <dependency>
+            <groupId>org.flywaydb</groupId>
+            <artifactId>flyway-database-postgresql</artifactId>
+        </dependency>
 
     </dependencies>
 
