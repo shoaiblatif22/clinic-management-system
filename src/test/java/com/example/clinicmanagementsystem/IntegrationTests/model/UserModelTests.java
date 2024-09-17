@@ -1,10 +1,8 @@
-package com.example.clinicmanagementsystem.model;
+package com.example.clinicmanagementsystem.IntegrationTests.model;
 
-import org.junit.jupiter.api.Disabled;
+import com.example.clinicmanagementsystem.model.UserModel;
 import org.junit.jupiter.api.Test;
-
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertThrows;
 
 public class UserModelTests {
     @Test
@@ -22,13 +20,5 @@ public class UserModelTests {
         assertEquals("TestPW", userModel.getPassword());
         assertEquals("USER", userModel.getRole());
 
-    }
-    @Test
-    @Disabled
-    void testInvalidEmail() {
-        UserModel userModel = new UserModel();
-        assertThrows(IllegalArgumentException.class, () -> {
-            userModel.setEmail("invalidemail");
-        });
     }
 }

@@ -1,6 +1,7 @@
-package com.example.clinicmanagementsystem.repository;
+package com.example.clinicmanagementsystem.IntegrationTests.repository;
 
 import com.example.clinicmanagementsystem.entity.UserEntity;
+import com.example.clinicmanagementsystem.repository.UserRepository;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -37,7 +38,7 @@ public class UserRepositoryTests {
 
 
     @Test
-    @DisplayName("_1: When searching for a user by their first name, the user json body is returned")
+    @DisplayName("_1_: When searching for a user by their first name, the user json body is returned")
     public void whenFindByFirstName_thenReturnUser() {
 
         Optional<UserEntity> foundUser = Optional.ofNullable(userRepository.findByFirstName("Test"));
@@ -49,7 +50,7 @@ public class UserRepositoryTests {
     }
 
     @Test
-    @DisplayName("_2: When finding a valid id, the user json body is returned")
+    @DisplayName("_2_: When finding a valid id, the user json body is returned")
     public void whenFindById_thenReturnUser() {
         Optional<UserEntity> foundUser = userRepository.findById((int) user.getId());
         assertTrue(foundUser.isPresent());
@@ -57,7 +58,7 @@ public class UserRepositoryTests {
     }
 
     @Test
-    @DisplayName("_3: When a user is saved, the user json body is returned")
+    @DisplayName("_3_: When a user is saved, the user json body is returned")
     public void whenUserIsSaved_thenReturnUser() {
         UserEntity user = new UserEntity();
         user.setEmail("test@test.com");
