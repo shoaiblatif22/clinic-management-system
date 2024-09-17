@@ -36,4 +36,26 @@ public class UserService {
     public void deleteUserById(int id) {
         userRepository.deleteById(id);
     }
+
+    public UserEntity update(int id, UserEntity user) {
+        return userRepository.findById(id)
+                .map(existingUser -> {
+                    if (user.getFirstName() != null) {
+                        existingUser.setFirstName(user.getFirstName());
+                    }
+                    if (user.getLastName() != null) {
+                        existingUser.setLastName(user.getLastName());
+                    }
+                    if (user.getEmail() != null) {
+                        existingUser.setEmail(user.getEmail());
+                    }
+                    if (user.getPassword() != null) {
+                        existingUser.setPassword(user.getPassword());
+                    } else {
+                        return null;
+                    }
+                    return userRepository.save(existingUser);
+                })
+                .orElse(null); // Or throw an exception if appropriate
+    }
 }

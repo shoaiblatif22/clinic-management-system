@@ -1,7 +1,6 @@
 package com.example.clinicmanagementsystem.controller;
 import com.example.clinicmanagementsystem.entity.UserEntity;
 import com.example.clinicmanagementsystem.service.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -22,7 +21,7 @@ public class UserController {
 
     //GET REQUEST TO FIND ALL USERS
     @GetMapping("/users")
-    public List<UserEntity> findAll() {
+    public List<UserEntity> findAllUsers() {
         return userService.findAll();
     }
 
@@ -39,7 +38,7 @@ public class UserController {
     }
     //GET REQUEST TO FIND USER BY FIRST NAME
     @GetMapping("/users/first-name")
-    public ResponseEntity<List<UserEntity>> findByFirstName(@RequestParam String firstName) {
+    public ResponseEntity<List<UserEntity>> findUserFirstName(@RequestParam String firstName) {
         List<UserEntity> users = Collections.singletonList(userService.findByFirstName(firstName));
         return new ResponseEntity<>(users, HttpStatusCode.valueOf(200));
     }
@@ -48,6 +47,12 @@ public class UserController {
     @PostMapping("/users")
     public UserEntity save(@RequestBody UserEntity user){
         return userService.saveUser(user);
+    }
+
+    //PUT MAPPING TO UPDATE USER DETAILS
+    @PutMapping("/users/{id}")
+    public UserEntity update(@PathVariable Integer id, @RequestBody UserEntity user) {
+        return userService.update(id, user);
     }
 
     //DELETE REQUEST TO DELETE USER
