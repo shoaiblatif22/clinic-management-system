@@ -20,11 +20,13 @@ public class UserController {
         this.userService = userService;
     }
 
+    //GET REQUEST TO FIND ALL USERS
     @GetMapping("/users")
     public List<UserEntity> findAll() {
         return userService.findAll();
     }
 
+    //GET REQUEST TO FIND USER WITH UNIQUE ID
     @GetMapping("users/{id}")
     public ResponseEntity<UserEntity> getUserById(@PathVariable Integer id) {
         try {
@@ -35,24 +37,22 @@ public class UserController {
             throw e;
         }
     }
+    //GET REQUEST TO FIND USER BY FIRST NAME
     @GetMapping("/users/first-name")
     public ResponseEntity<List<UserEntity>> findByFirstName(@RequestParam String firstName) {
         List<UserEntity> users = Collections.singletonList(userService.findByFirstName(firstName));
         return new ResponseEntity<>(users, HttpStatusCode.valueOf(200));
     }
 
+    //POST REQUEST TO SAVE USER TO DB
     @PostMapping("/users")
     public UserEntity save(@RequestBody UserEntity user){
         return userService.saveUser(user);
     }
-//    public ResponseEntity<UserEntity> saveUser(@RequestBody UserEntity user) {
-//        UserEntity savedUser = userService.saveUser(user);
-//        return new ResponseEntity<>(savedUser, HttpStatusCode.valueOf(201));
-//    }
 
-
-    @DeleteMapping("/users")
-    public ResponseEntity<UserEntity> deleteUser(@RequestParam Integer id) {
+    //DELETE REQUEST TO DELETE USER
+    @DeleteMapping("/users/{id}")
+    public ResponseEntity<UserEntity> deleteUser(@PathVariable Integer id) {
         if (userService.getUserById(id).isEmpty()) {
             throw new RuntimeException("User id not found - " + id);
         } else {
@@ -60,6 +60,4 @@ public class UserController {
         }
         return null;
     }
-
-
 }

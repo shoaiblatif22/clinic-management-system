@@ -8,6 +8,6 @@ public interface UserRepository extends JpaRepository<UserEntity, Integer> {
     UserEntity save(UserEntity user);
     UserEntity findByFirstName(String firstName);
 //    UserEntity update(UserEntity user);
-//    void deleteById(int id);
+    void deleteById(int id);
 
 }
