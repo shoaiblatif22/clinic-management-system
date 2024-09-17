@@ -1,16 +1,26 @@
 package com.example.clinicmanagementsystem.service;
 
 
+import com.example.clinicmanagementsystem.entity.UserEntity;
 import com.example.clinicmanagementsystem.model.UserModel;
 import com.example.clinicmanagementsystem.repository.UserRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.mockito.junit.MockitoJUnitRunner;
+
+import java.util.Arrays;
+import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+
 @Disabled
 @RunWith(MockitoJUnitRunner.class)
 public class UserServiceTests {
@@ -23,52 +33,10 @@ public class UserServiceTests {
     //Assert
     //Did we see that we're inserting our function?
 
-    @Mock
-    public UserRepository userRepository;
-
-    @InjectMocks
-    public UserService userService;
-
-//    @Mock
-//    public User user;
-
-
-
-    @BeforeEach
-    public void setUp() {
-        MockitoAnnotations.openMocks(this); //you always need to do this for initialization of//
-        //mocks when using the @Mock annotation//
-    }
-    @Disabled
     @Test
-    public void givenUser_whenSaveUser_thenUserIsSaved() {
-        // Arrange
-        String testName = "Test User";
-        String testEmail = "test@example.com";
-
-        // Set up mock behavior for the User model
-
-
-        // Act
-
-
-        // Assert
-
-    }
-
-    @org.junit.Test
-    public void getAllUsers() {
-    }
-
-    @org.junit.Test
-    public void getUserById() {
-    }
-
-    @org.junit.Test
-    public void saveUser() {
-    }
-
-    @org.junit.Test
-    public void deleteUserById() {
+    @DisplayName("_4: When searching for a first name, " +
+            "if there are more than one users with the same first name, " +
+            "return a list of users")
+    public void whenFindByFirstName_thenReturnUsers() {
     }
 }

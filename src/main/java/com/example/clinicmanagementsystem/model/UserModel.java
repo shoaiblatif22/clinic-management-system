@@ -8,6 +8,11 @@ public class UserModel {
     private String password;
     private String role;
 
+    //Need to refactor later on
+//    public enum Role {
+//        USER, ADMIN
+//    }
+
     //no-args constructor
     public UserModel() {}
 

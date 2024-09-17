@@ -16,7 +16,6 @@ public class UserController {
 
     private final UserService userService;
 
-    @Autowired
     public UserController(UserService userService) {
         this.userService = userService;
     }
@@ -43,9 +42,23 @@ public class UserController {
     }
 
     @PostMapping("/users")
-    public ResponseEntity<UserEntity> saveUser(@RequestBody UserEntity user) {
-        UserEntity savedUser = userService.saveUser(user);
-        return new ResponseEntity<>(savedUser, HttpStatusCode.valueOf(201));
+    public UserEntity save(@RequestBody UserEntity user){
+        return userService.saveUser(user);
+    }
+//    public ResponseEntity<UserEntity> saveUser(@RequestBody UserEntity user) {
+//        UserEntity savedUser = userService.saveUser(user);
+//        return new ResponseEntity<>(savedUser, HttpStatusCode.valueOf(201));
+//    }
+
+
+    @DeleteMapping("/users")
+    public ResponseEntity<UserEntity> deleteUser(@RequestParam Integer id) {
+        if (userService.getUserById(id).isEmpty()) {
+            throw new RuntimeException("User id not found - " + id);
+        } else {
+            userService.deleteUserById(id);
+        }
+        return null;
     }
 
 

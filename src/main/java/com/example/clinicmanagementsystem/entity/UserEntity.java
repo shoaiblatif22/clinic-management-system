@@ -42,7 +42,7 @@ public class UserEntity {
         this.lastName = lastName;
         this.email = email;
         this.password = password;
-        this.pendingValidation = false;
+        this.pendingValidation = true;
         this.validated = false;
     }
 

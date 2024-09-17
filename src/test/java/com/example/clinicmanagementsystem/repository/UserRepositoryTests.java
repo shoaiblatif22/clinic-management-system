@@ -37,7 +37,7 @@ public class UserRepositoryTests {
 
 
     @Test
-    @DisplayName("When searching for a user by their first name, the user json body is returned")
+    @DisplayName("_1: When searching for a user by their first name, the user json body is returned")
     public void whenFindByFirstName_thenReturnUser() {
 
         Optional<UserEntity> foundUser = Optional.ofNullable(userRepository.findByFirstName("Test"));
@@ -49,7 +49,7 @@ public class UserRepositoryTests {
     }
 
     @Test
-    @DisplayName("When finding a valid id, the user json body is returned")
+    @DisplayName("_2: When finding a valid id, the user json body is returned")
     public void whenFindById_thenReturnUser() {
         Optional<UserEntity> foundUser = userRepository.findById((int) user.getId());
         assertTrue(foundUser.isPresent());
@@ -57,7 +57,7 @@ public class UserRepositoryTests {
     }
 
     @Test
-    @DisplayName("When a user is saved, the user json body is returned")
+    @DisplayName("_3: When a user is saved, the user json body is returned")
     public void whenUserIsSaved_thenReturnUser() {
         UserEntity user = new UserEntity();
         user.setEmail("test@test.com");
@@ -74,9 +74,5 @@ public class UserRepositoryTests {
         assertEquals("user", user.getRole());
     }
 
-//    @AfterEach
-//    public void tearDown() {
-//        userRepository.deleteAll();
-//    }
 
 }

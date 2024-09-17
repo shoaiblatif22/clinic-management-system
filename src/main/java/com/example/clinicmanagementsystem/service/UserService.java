@@ -32,8 +32,8 @@ public class UserService {
     public List<UserEntity> findAll() {
         return userRepository.findAll();
     }
-//
-//    public void deleteUserById(Long id) {
-//        userRepository.deleteById(id);
-//    }
+
+    public void deleteUserById(int id) {
+        userRepository.deleteById(id);
+    }
 }
