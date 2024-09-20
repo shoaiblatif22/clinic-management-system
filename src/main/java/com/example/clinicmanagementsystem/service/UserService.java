@@ -33,8 +33,6 @@ public class UserService {
         return modelMapper.map(userModel, UserEntity.class);
     }
 
-
-
     //CRUD operations within service
     public Optional<UserEntity> getUserById(int id) {
         return userRepository.findById(id);
@@ -45,10 +43,6 @@ public class UserService {
         userRepository.save(userEntity);
         return null;
     }
-
-//    public UserEntity saveUser(UserEntity user) {
-//        return userRepository.save(user);
-//    }
 
     public UserEntity findByFirstName(String firstName) {
         return userRepository.findByFirstName(firstName);
