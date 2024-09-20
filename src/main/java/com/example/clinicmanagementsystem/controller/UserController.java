@@ -1,5 +1,6 @@
 package com.example.clinicmanagementsystem.controller;
 import com.example.clinicmanagementsystem.entity.UserEntity;
+import com.example.clinicmanagementsystem.model.UserModel;
 import com.example.clinicmanagementsystem.service.UserService;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
@@ -45,7 +46,7 @@ public class UserController {
 
     //POST REQUEST TO SAVE USER TO DB
     @PostMapping("/users")
-    public UserEntity save(@RequestBody UserEntity user){
+    public UserModel save(@RequestBody UserEntity user){
         return userService.saveUser(user);
     }
 

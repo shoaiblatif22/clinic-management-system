@@ -1,7 +1,9 @@
 package com.example.clinicmanagementsystem.service;
 
 import com.example.clinicmanagementsystem.entity.UserEntity;
+import com.example.clinicmanagementsystem.model.UserModel;
 import com.example.clinicmanagementsystem.repository.UserRepository;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.util.List;
@@ -12,18 +14,41 @@ public class UserService {
 
     private final UserRepository userRepository;
 
+    //Connects to UserRepo
     @Autowired
     public UserService(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
 
+    //ModelMapping between userModel(userDTO) and userEntity
+    @Autowired
+    private ModelMapper modelMapper;
+
+    //Mappings
+    public UserModel entityToModel(UserEntity userEntity) {
+        return modelMapper.map(userEntity, UserModel.class);
+    }
+
+    public UserEntity modelToEntity(UserEntity userModel) {
+        return modelMapper.map(userModel, UserEntity.class);
+    }
+
+
+
+    //CRUD operations within service
     public Optional<UserEntity> getUserById(int id) {
         return userRepository.findById(id);
     }
 
-    public UserEntity saveUser(UserEntity user) {
-        return userRepository.save(user);
+    public UserModel saveUser(UserEntity userModel) {
+        UserEntity userEntity = modelToEntity(userModel);
+        userRepository.save(userEntity);
+        return null;
     }
+
+//    public UserEntity saveUser(UserEntity user) {
+//        return userRepository.save(user);
+//    }
 
     public UserEntity findByFirstName(String firstName) {
         return userRepository.findByFirstName(firstName);

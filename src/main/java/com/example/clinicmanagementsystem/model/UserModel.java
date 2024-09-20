@@ -1,5 +1,10 @@
 package com.example.clinicmanagementsystem.model;
 
+import com.example.clinicmanagementsystem.entity.UserEntity;
+import jakarta.persistence.Column;
+import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
+
 public class UserModel {
     private Long id;
     private String firstName;
@@ -7,14 +12,38 @@ public class UserModel {
     private String email;
     private String password;
     private String role;
-
-    //Need to refactor later on
-//    public enum Role {
-//        USER, ADMIN
-//    }
+    private boolean pendingValidation;
+    private boolean validated;
 
     //no-args constructor
     public UserModel() {}
+
+    public UserModel(Long id, String firstName, String lastName, String email, String password, String role, boolean pendingValidation, boolean validated) {
+        this.id = id;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+        this.password = password;
+        this.role = role;
+        this.pendingValidation = pendingValidation;
+        this.validated = validated;
+    }
+
+    public boolean isPendingValidation() {
+        return pendingValidation;
+    }
+
+    public void setPendingValidation(boolean pendingValidation) {
+        this.pendingValidation = pendingValidation;
+    }
+
+    public boolean isValidated() {
+        return validated;
+    }
+
+    public void setValidated(boolean validated) {
+        this.validated = validated;
+    }
 
     public Long getId() {
         return id;
