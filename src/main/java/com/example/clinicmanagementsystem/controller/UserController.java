@@ -22,15 +22,15 @@ public class UserController {
 
     //GET REQUEST TO FIND ALL USERS
     @GetMapping("/users")
-    public List<UserEntity> findAllUsers() {
+    public List<UserModel> findAllUsers() {
         return userService.findAll();
     }
 
     //GET REQUEST TO FIND USER WITH UNIQUE ID
     @GetMapping("users/{id}")
-    public ResponseEntity<UserEntity> getUserById(@PathVariable Integer id) {
+    public ResponseEntity<UserModel> getUserById(@PathVariable Integer id) {
         try {
-            UserEntity user = userService.getUserById(id)
+            UserModel user = userService.getUserById(id)
                     .orElseThrow(() -> new NoSuchElementException("User not found with id: " + id));
             return new ResponseEntity<>(user, HttpStatusCode.valueOf(200));
         } catch (NoSuchElementException e) {
@@ -38,9 +38,10 @@ public class UserController {
         }
     }
     //GET REQUEST TO FIND USER BY FIRST NAME
-    @GetMapping("/users/first-name")
-    public ResponseEntity<List<UserEntity>> findUserFirstName(@RequestParam String firstName) {
-        List<UserEntity> users = Collections.singletonList(userService.findByFirstName(firstName));
+    //Needs fixing
+    @GetMapping("/users/firstName/{first_name}")
+    public ResponseEntity<List<UserModel>> findUserFirstName(@RequestParam String firstName) {
+        List<UserModel> users = Collections.singletonList(userService.findByFirstName(firstName));
         return new ResponseEntity<>(users, HttpStatusCode.valueOf(200));
     }
 
@@ -52,7 +53,7 @@ public class UserController {
 
     //PUT MAPPING TO UPDATE USER DETAILS
     @PutMapping("/users/{id}")
-    public UserEntity update(@PathVariable Integer id, @RequestBody UserEntity user) {
+    public UserModel update(@PathVariable Integer id, @RequestBody UserModel user) {
         return userService.update(id, user);
     }
 

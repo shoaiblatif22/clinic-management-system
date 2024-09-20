@@ -34,47 +34,54 @@ public class UserService {
     }
 
     //CRUD operations within service
-    public Optional<UserEntity> getUserById(int id) {
-        return userRepository.findById(id);
+    //GET USER BY ID
+    public Optional<UserModel> getUserById(int id) {
+        return userRepository.findById(id)
+                .map
+                        (this::entityToModel);
     }
 
+    //SAVE USER
     public UserModel saveUser(UserEntity userModel) {
         UserEntity userEntity = modelToEntity(userModel);
         userRepository.save(userEntity);
         return null;
     }
 
-    public UserEntity findByFirstName(String firstName) {
-        return userRepository.findByFirstName(firstName);
+    //FIND USER BY FIRST NAME
+    public UserModel findByFirstName(String firstName) {
+        UserEntity userEntity = userRepository.findByFirstName(firstName);
+        return entityToModel(userEntity);
     }
 
-    public List<UserEntity> findAll() {
-        return userRepository.findAll();
+    //FIND ALL USERS
+    public List<UserModel> findAll() {
+        return userRepository.findAll().stream().map(
+                this::entityToModel
+        ).toList();
     }
 
+    //DELTE USER BY ID NUMBER
     public void deleteUserById(int id) {
-        userRepository.deleteById(id);
+        try {
+            userRepository.deleteById(id);
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
     }
 
-    public UserEntity update(int id, UserEntity user) {
+    //UPDATE USER BY ID NUMBER
+    public UserModel update(int id, UserModel userModel) {
         return userRepository.findById(id)
-                .map(existingUser -> {
-                    if (user.getFirstName() != null) {
-                        existingUser.setFirstName(user.getFirstName());
-                    }
-                    if (user.getLastName() != null) {
-                        existingUser.setLastName(user.getLastName());
-                    }
-                    if (user.getEmail() != null) {
-                        existingUser.setEmail(user.getEmail());
-                    }
-                    if (user.getPassword() != null) {
-                        existingUser.setPassword(user.getPassword());
-                    } else {
-                        return null;
-                    }
-                    return userRepository.save(existingUser);
+                .map(existingUser ->
+                {
+                    //map usermodel to existing user
+                    modelMapper.map(userModel, existingUser);
+                    //explicity set user id
+                    existingUser.setId(id);
+                    //return entityToModel mapping
+                    return entityToModel(userRepository.save(existingUser));
                 })
-                .orElse(null); // Or throw an exception if appropriate
+        .orElse(null);
     }
 }
