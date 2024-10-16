@@ -1,0 +1,16 @@
+
+#specify a trigger
+#on keyword triggers when we push a commit to repo
+on: push
+jobs:
+  first-job:
+    runs-on: macos-latest
+    steps:
+      - name: Check Java Version
+      - run: |
+          echo "Java Version: $JAVA_HOME"
+          java -version
+          if ! java -version 2>*1 | grep q "17.*"; then 
+            echo "Error: Java 17 is required!"
+            exit 1
+          fi
