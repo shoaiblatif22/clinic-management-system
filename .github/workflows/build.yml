@@ -23,6 +23,14 @@ jobs:
           distribution: 'temurin'
           working-directory: ./clinic-management-system
 
+      - name: Cache Maven dependencies
+        uses: actions/cache@v3
+        with:
+          path: ~/.m2/repository
+          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+          restore-keys: |
+            ${{ runner.os }}-maven-
+
       - name: Check Java Version (for verification)
         run: |
           echo "JAVA_HOME after setup: $JAVA_HOME" 
@@ -46,6 +54,17 @@ jobs:
         run: |
           mvn post-clean
 
+      - name: Install packages
+        run: |
+          mvn install
+
+      - name: Build project
+        run: |
+          mvn clean package
+
+      - name: Run tests
+        run: |
+          mvn tests
 
 
 
