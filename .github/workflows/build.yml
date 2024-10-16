@@ -7,7 +7,7 @@ jobs:
     runs-on: macos-latest
     steps:
       - name: Check Java Version
-      - run: |
+        run: |
           echo "Java Version: $JAVA_HOME"
           java -version
           if ! java -version 2>*1 | grep q "17.*"; then 
