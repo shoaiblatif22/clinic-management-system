@@ -1,4 +1,4 @@
-package com.example.clinicmanagementsystem.IntegrationTests.model;
+package com.example.clinicmanagementsystem;
 
 import com.example.clinicmanagementsystem.model.UserModel;
 import org.junit.jupiter.api.Test;

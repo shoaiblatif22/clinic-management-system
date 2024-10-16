@@ -6,7 +6,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 
 public class UserModel {
-    private Long id;
+    private int id;
     private String firstName;
     private String lastName;
     private String email;
@@ -18,7 +18,7 @@ public class UserModel {
     //no-args constructor
     public UserModel() {}
 
-    public UserModel(Long id, String firstName, String lastName, String email, String password, String role, boolean pendingValidation, boolean validated) {
+    public UserModel(int id, String firstName, String lastName, String email, String password, String role, boolean pendingValidation, boolean validated) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -45,11 +45,11 @@ public class UserModel {
         this.validated = validated;
     }
 
-    public Long getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(int id) {
         this.id = id;
     }
 

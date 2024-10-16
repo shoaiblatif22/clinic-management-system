@@ -61,7 +61,7 @@ public class UserService {
         ).toList();
     }
 
-    //DELTE USER BY ID NUMBER
+    //DELETE USER BY ID NUMBER
     public void deleteUserById(int id) {
         try {
             userRepository.deleteById(id);

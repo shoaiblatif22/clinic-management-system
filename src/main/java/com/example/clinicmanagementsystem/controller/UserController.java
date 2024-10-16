@@ -2,6 +2,7 @@ package com.example.clinicmanagementsystem.controller;
 import com.example.clinicmanagementsystem.entity.UserEntity;
 import com.example.clinicmanagementsystem.model.UserModel;
 import com.example.clinicmanagementsystem.service.UserService;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -37,13 +38,16 @@ public class UserController {
             throw e;
         }
     }
-    //GET REQUEST TO FIND USER BY FIRST NAME
-    //Needs fixing
-    @GetMapping("/users/firstName/{first_name}")
-    public ResponseEntity<List<UserModel>> findUserFirstName(@RequestParam String firstName) {
-        List<UserModel> users = Collections.singletonList(userService.findByFirstName(firstName));
-        return new ResponseEntity<>(users, HttpStatusCode.valueOf(200));
-    }
+
+    /*This needs fixing for later. Other mappings work*/
+//    @GetMapping("/users/firstName/{firstName}")
+//    public ResponseEntity<List<UserModel>> findUserFirstName(@RequestParam String firstName) {
+//        List<UserModel> users = (List<UserModel>) userService.findByFirstName(firstName); // Assuming findByFirstName now handles null returns
+//        if (users == null) {
+//            users = Collections.emptyList(); // Or return ResponseEntity.noContent().build();
+//        }
+//        return new ResponseEntity<>(users, HttpStatus.OK); // Use HttpStatus.OK instead of valueOf(200)
+//    }
 
     //POST REQUEST TO SAVE USER TO DB
     @PostMapping("/users")

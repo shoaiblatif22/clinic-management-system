@@ -1,4 +1,4 @@
-package com.example.clinicmanagementsystem.IntegrationTests.repository;
+package com.example.clinicmanagementsystem;
 
 import com.example.clinicmanagementsystem.entity.UserEntity;
 import com.example.clinicmanagementsystem.repository.UserRepository;
@@ -74,6 +74,8 @@ public class UserRepositoryTests {
         assertEquals("test", user.getPassword());
         assertEquals("user", user.getRole());
     }
+
+
 
 
 }

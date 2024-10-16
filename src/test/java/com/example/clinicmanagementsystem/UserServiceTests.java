@@ -1,4 +1,4 @@
-package com.example.clinicmanagementsystem.IntegrationTests.service;
+package com.example.clinicmanagementsystem;
 
 import com.example.clinicmanagementsystem.entity.UserEntity;
 import com.example.clinicmanagementsystem.repository.UserRepository;
