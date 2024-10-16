@@ -10,7 +10,7 @@ on:
 
 jobs:
   build:
-    runs-on: macos-latest
+    runs-on: ubuntu-latest
     steps:
       - name: Checkout Code
         uses: actions/checkout@v2
@@ -21,7 +21,7 @@ jobs:
         with:
           java-version: '17'
           distribution: 'temurin'
-        working-directory: ./clinic-management-system
+          working-directory: ./clinic-management-system
 
       - name: Check Java Version (for verification)
         run: |
@@ -46,9 +46,6 @@ jobs:
         run: |
           mvn post-clean
 
-
-
-      # ... your other build steps here ...
 
 
 
