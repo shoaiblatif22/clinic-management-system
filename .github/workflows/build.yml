@@ -32,7 +32,7 @@ jobs:
 
       - name: Pre-clean files
         run: |
-          mvn pre-clean validate
+          mvn pre-clean
 
       - name: Clean files
         run: |
