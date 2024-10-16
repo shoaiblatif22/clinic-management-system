@@ -8,14 +8,19 @@ import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
+
 
 @SpringBootTest
 class UserControllerTest {
@@ -34,6 +39,20 @@ class UserControllerTest {
     @Test
     void findAllUsers() throws Exception {
         assertNotNull(userController.findAllUsers());
+    }
+
+    @Test
+    void updateUser() throws Exception {
+        int id = 1;
+        UserModel existingUser = new UserModel(id,"John", "Doe", "john.doe@example.com", "password", "USER", false, true );
+        UserModel updatedUser = new UserModel(id, "Jane", "Doe", "jane.doe@example.com", "newPassword", "USER", false, true);
+
+        when(userService.update(id, updatedUser)).thenReturn(updatedUser);
+
+        UserModel result = userController.update(id, updatedUser);
+
+        verify(userService, times(1)).update(id, updatedUser);
+        assertNotNull(result);
     }
 
     @Test
