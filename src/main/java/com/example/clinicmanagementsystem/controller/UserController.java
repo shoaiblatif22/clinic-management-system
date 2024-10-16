@@ -2,13 +2,9 @@ package com.example.clinicmanagementsystem.controller;
 import com.example.clinicmanagementsystem.entity.UserEntity;
 import com.example.clinicmanagementsystem.model.UserModel;
 import com.example.clinicmanagementsystem.service.UserService;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.config.annotation.EnableWebMvc;
-
-import java.util.Collections;
 import java.util.List;
 import java.util.NoSuchElementException;
 

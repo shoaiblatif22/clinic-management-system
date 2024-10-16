@@ -1,10 +1,5 @@
 package com.example.clinicmanagementsystem.model;
 
-import com.example.clinicmanagementsystem.entity.UserEntity;
-import jakarta.persistence.Column;
-import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
-
 public class UserModel {
     private int id;
     private String firstName;

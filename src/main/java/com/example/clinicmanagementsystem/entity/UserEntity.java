@@ -29,10 +29,10 @@ public class UserEntity {
     private String role;
 
     @Column(name = "pending_validation")
-    private boolean pendingValidation = true;
+    private boolean pendingValidation;
 
     @Column(name = "validated")
-    private boolean validated = false;
+    private boolean validated;
 
     //define no-args constructor
     public UserEntity() {}
