@@ -30,4 +30,21 @@ jobs:
             exit 1
           fi
 
+      - name: Pre-clean files
+        run: |
+          mvn pre-clean validate
+
+      - name: Clean files
+        run: |
+          mvn clean
+
+      - name: Post-clean viles
+        run: |
+          mvn post-clean
+
+
+
       # ... your other build steps here ...
+
+
+
