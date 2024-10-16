@@ -3,8 +3,8 @@
 #on keyword triggers when we push a commit to repo
 on:
   push:
-  branches:
-    - main
+    branches:
+      - main
 
 jobs:
   build:
