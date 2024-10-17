@@ -42,29 +42,12 @@ jobs:
             exit 1
           fi
 
-      - name: Pre-clean files
+      - name: Run postgres db
         run: |
-          mvn pre-clean
+          docker-compose -f docker-compose-db.yml up --build
 
-      - name: Clean files
+      - name: Run spring-boot back-end
         run: |
-          mvn clean
-
-      - name: Post-clean files
-        run: |
-          mvn post-clean
-
-      - name: Install packages
-        run: |
-          mvn install
-
-      - name: Build project
-        run: |
-          mvn clean package
-
-      - name: Run tests
-        run: |
-          mvn tests
-
+          docker-compose -f docker-compose-app.yml up --build
 
 
