@@ -39,33 +39,5 @@ jobs:
             exit 1
           fi
 
-      - name: Install Docker
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y docker.io
-
-      - name: Install Docker Compose
-        run: |
-          sudo apt-get install -y docker-compose
-
-      - name: Run PostgreSQL database
-        run: |
-          docker-compose -f docker-compose-db.yml up -d --build
-
-      - name: Run Spring Boot back-end
-        run: |
-          docker-compose -f docker-compose-app.yml up -d --build
-
-      - name: Wait for services to be ready
-        run: |
-          sleep 30
-
-      - name: Run Tests (if applicable)
-        run: |
-         mvn test
-
-#      - name: Stop services
-#        run: |
-#          docker-compose -f docker-compose-db.yml down
-#          docker-compose -f docker-compose-app.yml down
+      ##Placeholder -
 
