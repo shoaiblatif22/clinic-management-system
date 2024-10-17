@@ -1,6 +1,3 @@
-
-#specify a trigger
-#on keyword triggers when we push a commit to repo
 name: Build
 
 on:
@@ -16,6 +13,7 @@ jobs:
         uses: actions/checkout@v2
         with:
           submodules: recursive # Fetches submodules if any
+
       - name: Set up Java 17
         uses: actions/setup-java@v3
         with:
@@ -33,21 +31,32 @@ jobs:
 
       - name: Check Java Version (for verification)
         run: |
-          echo "JAVA_HOME after setup: $JAVA_HOME" 
-          echo "Java Version: $JAVA_HOME"
+          echo "Java Version:"
           java -version
-          # The check below should now pass
+          # Check for Java 17
           if ! java -version 2>&1 | grep -q "17.*"; then
             echo "Error: Java 17 is required!"
             exit 1
           fi
 
-      - name: Run postgres db
+      - name: Run PostgreSQL database
         run: |
-          docker-compose -f docker-compose-db.yml up --build
+          docker-compose -f docker-compose-db.yml up -d --build
 
-      - name: Run spring-boot back-end
+      - name: Run Spring Boot back-end
         run: |
-          docker-compose -f docker-compose-app.yml up --build
+          docker-compose -f docker-compose-app.yml up -d --build
 
+      - name: Wait for services to be ready
+        run: |
+          sleep 30
+
+      - name: Run Tests (if applicable)
+        run: |
+         mvn test
+
+#      - name: Stop services
+#        run: |
+#          docker-compose -f docker-compose-db.yml down
+#          docker-compose -f docker-compose-app.yml down
 
