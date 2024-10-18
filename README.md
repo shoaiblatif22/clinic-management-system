@@ -3,8 +3,7 @@
 
 Introduction:
  - This project has been inspired during the time I used to work in the NHS as a Radiographer, some of the software used was slow, inefficient, terrible UI and difficult to use. 
- - This is a multifaceted project. At the moment, this will be a GP system that will allow users to search data, patient records, drug charts, x-ray bookings. This is subject to
- - change as I'm still deciding on some of the architechture and the direction the project will head in.
+ - This is a multifaceted project. At the moment, this will be a GP system that will allow users to search data, patient records, drug charts, x-ray bookings. This is subject to change as I'm still deciding on some of the architechture and the direction the project will head in.
 
 Tech stack:
 - Backend => Java, Spring Boot, Keycloak with Spring Security auth
