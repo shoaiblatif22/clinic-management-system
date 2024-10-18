@@ -8,7 +8,7 @@ Introduction:
 Tech stack:
 - Backend => Java, Spring Boot, Keycloak with Spring Security auth
 - CI/CD => GitHub actions for continuous integration of code/tests. Quodana for code quality
-- DB => Postgresql
+- DB => Adminer for db management (subject to change - possibly liquidbase in order to use changeset), Postgresql
 - Frontend => Undecided => possibly typescript with react.
 - Cloud/DevOps => Docker for containerisation, kubernetes for container management and AWS EC2 instances for cloud deployment.
 
