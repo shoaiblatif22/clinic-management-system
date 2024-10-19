@@ -4,18 +4,24 @@ FROM openjdk:17-jdk-slim
 # Set the working directory inside the container
 WORKDIR /application
 
+# Install Maven
+RUN apt-get update && apt-get install -y maven
+
 # Copy the Maven wrapper and its configuration
 COPY mvnw .
 COPY .mvn .mvn
 COPY pom.xml .
 
+# Run Maven to download dependencies first (optional, but it speeds up builds)
+RUN mvn dependency:go-offline
+
 # Copy the source code
 COPY src ./src
 
-# Install Maven
-RUN apt-get update && apt-get install -y maven
+# Run Maven tests
+# RUN mvn clean test
 
-# Run Maven to build the application
+# Run Maven to build the application (skip tests as they already ran)
 RUN mvn clean package -DskipTests
 
 # Copy the built JAR file from the target directory

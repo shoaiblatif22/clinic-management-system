@@ -12,11 +12,23 @@ services:
       - postgres_data:/var/lib/postgresql/data
     networks:
       - mynetwork
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U myuser" ]
+      interval: 10s
+      retries: 5
 
   adminer:
     image: adminer
     ports:
       - "8081:8080"
+    networks:
+      - mynetwork
+
+  clinic-management-system-app:
+    build:
+      context: /Users/shoaiblatif/Documents/Personal-Projects/healthTechProject/clinic-management-system/  # Path to your app Dockerfile
+    ports:
+      - "8080:8080"
     networks:
       - mynetwork
 
@@ -26,4 +38,3 @@ networks:
 
 volumes:
   postgres_data:
-
