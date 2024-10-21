@@ -3,7 +3,7 @@ services:
   db:
     image: postgres:15.0
     environment:
-      POSTGRES_DB: clinical_management_db
+      POSTGRES_DB: clinical_management_db  # Correct variable for the database name
       POSTGRES_USER: myuser
       POSTGRES_PASSWORD: mypassword
     ports:
@@ -16,6 +16,18 @@ services:
       test: [ "CMD-SHELL", "pg_isready -U myuser" ]
       interval: 10s
       retries: 5
+
+  init-db:
+    image: postgres:15.0
+    depends_on:
+      - db
+    volumes:
+      - ./init-db.sh:/docker-entrypoint-initdb.d/init-db.sh
+    environment:
+      POSTGRES_USER: myuser  # Include the same user in the init-db service
+      POSTGRES_PASSWORD: mypassword  # Include the password as well
+    networks:
+      - mynetwork
 
   adminer:
     image: adminer

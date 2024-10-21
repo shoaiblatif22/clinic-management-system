@@ -15,5 +15,4 @@ Tech stack:
 ------------------------------
 # Get started
 To run the backend and database, use the following two commands. Ensure you have docker desktop installed:
-- Run **docker-compose -f Docker-Compose-db.yml up ** this will start the db.
-- Run **docker-compose -f Docker-Compose-app.yml up ** this will start spring-boot application.
+- Run **docker-compose -f Docker-Compose-db.yml up ** this will start the DB and BE application.
