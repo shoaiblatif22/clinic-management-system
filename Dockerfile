@@ -5,10 +5,8 @@ COPY mvnw pom.xml ./
 RUN chmod +x ./mvnw && ./mvnw dependency:go-offline
 COPY src ./src
 
-
 FROM build AS test
 RUN ./mvnw test
-
 
 FROM eclipse-temurin:17-jdk-focal
 WORKDIR /app

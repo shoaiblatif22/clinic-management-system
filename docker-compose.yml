@@ -32,11 +32,11 @@ services:
     ports:
       - "8081:8081"  # Add port mapping for your Spring Boot app
     depends_on:
-        - postgres
+      - postgres
     environment:
-        SPRING_DATASOURCE_URL: jdbc:postgresql://container-pg:5432/clinical_management_db
-        SPRING_DATASOURCE_USERNAME: admin
-        SPRING_DATASOURCE_PASSWORD: root
+      SPRING_DATASOURCE_URL: jdbc:postgresql://container-pg:5432/clinical_management_db
+      SPRING_DATASOURCE_USERNAME: admin
+      SPRING_DATASOURCE_PASSWORD: root
 
 volumes:
   postgres-data:
