@@ -1,8 +1,8 @@
-package com.example.clinicmanagementsystem.service;
+package com.example.clinicmanagementsystem.user.service;
 
-import com.example.clinicmanagementsystem.entity.UserEntity;
-import com.example.clinicmanagementsystem.model.UserModel;
-import com.example.clinicmanagementsystem.repository.UserRepository;
+import com.example.clinicmanagementsystem.user.entity.UserEntity;
+import com.example.clinicmanagementsystem.user.model.UserModel;
+import com.example.clinicmanagementsystem.user.repository.UserRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

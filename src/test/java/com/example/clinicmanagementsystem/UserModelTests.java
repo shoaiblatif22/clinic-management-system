@@ -1,6 +1,6 @@
 package com.example.clinicmanagementsystem;
 
-import com.example.clinicmanagementsystem.model.UserModel;
+import com.example.clinicmanagementsystem.user.model.UserModel;
 import org.junit.jupiter.api.Test;
 import static org.junit.Assert.assertEquals;
 

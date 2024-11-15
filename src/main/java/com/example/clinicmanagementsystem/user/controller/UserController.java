@@ -1,7 +1,7 @@
-package com.example.clinicmanagementsystem.controller;
-import com.example.clinicmanagementsystem.entity.UserEntity;
-import com.example.clinicmanagementsystem.model.UserModel;
-import com.example.clinicmanagementsystem.service.UserService;
+package com.example.clinicmanagementsystem.user.controller;
+import com.example.clinicmanagementsystem.user.entity.UserEntity;
+import com.example.clinicmanagementsystem.user.model.UserModel;
+import com.example.clinicmanagementsystem.user.service.UserService;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

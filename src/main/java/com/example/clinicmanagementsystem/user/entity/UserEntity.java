@@ -1,4 +1,4 @@
-package com.example.clinicmanagementsystem.entity;
+package com.example.clinicmanagementsystem.user.entity;
 import jakarta.persistence.*;
 import lombok.Data;
 

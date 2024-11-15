@@ -1,4 +1,4 @@
-package com.example.clinicmanagementsystem.MappingConfig;
+package com.example.clinicmanagementsystem.user.MappingConfig;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.context.annotation.Bean;

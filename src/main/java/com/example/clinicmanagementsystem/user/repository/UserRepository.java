@@ -1,5 +1,5 @@
-package com.example.clinicmanagementsystem.repository;
-import com.example.clinicmanagementsystem.entity.UserEntity;
+package com.example.clinicmanagementsystem.user.repository;
+import com.example.clinicmanagementsystem.user.entity.UserEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List;
 

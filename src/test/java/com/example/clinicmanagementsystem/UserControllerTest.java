@@ -1,9 +1,9 @@
 package com.example.clinicmanagementsystem;
 
-import com.example.clinicmanagementsystem.controller.UserController;
-import com.example.clinicmanagementsystem.entity.UserEntity;
-import com.example.clinicmanagementsystem.model.UserModel;
-import com.example.clinicmanagementsystem.service.UserService;
+import com.example.clinicmanagementsystem.user.controller.UserController;
+import com.example.clinicmanagementsystem.user.entity.UserEntity;
+import com.example.clinicmanagementsystem.user.model.UserModel;
+import com.example.clinicmanagementsystem.user.service.UserService;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;

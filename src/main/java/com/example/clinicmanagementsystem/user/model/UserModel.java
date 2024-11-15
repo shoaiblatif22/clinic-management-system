@@ -1,4 +1,4 @@
-package com.example.clinicmanagementsystem.model;
+package com.example.clinicmanagementsystem.user.model;
 
 public class UserModel {
     private int id;

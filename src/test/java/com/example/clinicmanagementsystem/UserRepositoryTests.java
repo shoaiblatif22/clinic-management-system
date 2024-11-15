@@ -1,7 +1,7 @@
 package com.example.clinicmanagementsystem;
 
-import com.example.clinicmanagementsystem.entity.UserEntity;
-import com.example.clinicmanagementsystem.repository.UserRepository;
+import com.example.clinicmanagementsystem.user.entity.UserEntity;
+import com.example.clinicmanagementsystem.user.repository.UserRepository;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;

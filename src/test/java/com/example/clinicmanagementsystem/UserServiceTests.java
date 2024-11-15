@@ -1,8 +1,8 @@
 package com.example.clinicmanagementsystem;
 
-import com.example.clinicmanagementsystem.entity.UserEntity;
-import com.example.clinicmanagementsystem.repository.UserRepository;
-import com.example.clinicmanagementsystem.service.UserService;
+import com.example.clinicmanagementsystem.user.entity.UserEntity;
+import com.example.clinicmanagementsystem.user.repository.UserRepository;
+import com.example.clinicmanagementsystem.user.service.UserService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
