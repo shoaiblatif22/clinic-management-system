@@ -89,6 +89,8 @@ public class UserController {
      * @param roleId        role id
      * @return              ResponseEntity with user details or error
      */
+
+    //THIS STILL NEEDS FIXING
     @GetMapping("/users/{id}/roles/{roleId}")
     public ResponseEntity<UserModel> getUserRole(@PathVariable Integer id, @PathVariable Integer roleId) {
         UserModel userModel = userService.getUserById(id)
