@@ -2,8 +2,12 @@ package com.example.clinicmanagementsystem.user.entity;
 
 
 import com.example.clinicmanagementsystem.role.Role;
+import com.example.clinicmanagementsystem.role.entity.RoleEntity;
 import jakarta.persistence.*;
 import lombok.Data;
+
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "users")
@@ -44,6 +48,15 @@ public class UserEntity {
     //VALIDATED
     @Column(name = "validated", nullable = false)
     private boolean validated = false;
+
+    //MAPS USER_ROLES TABLE
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @JoinTable(
+            name = "user_roles",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "role_id")
+    )
+    private Set<RoleEntity> roles = new HashSet<>();
 
     //DEFAULT CONSTRUCTOR
     public UserEntity() {}
