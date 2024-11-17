@@ -14,6 +14,7 @@ import org.springframework.http.ResponseEntity;
 
 import java.util.Optional;
 
+import static com.example.clinicmanagementsystem.role.Role.USER;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
@@ -81,7 +82,7 @@ class UserControllerTest {
         userEntity.setLastName("Doe");
         userEntity.setEmail("john.doe@example.com");
         userEntity.setPassword("password");
-        userEntity.setRole("USER");
+        userEntity.setRole(USER);
 
         // 3. Call the controller method
         UserModel response = userController.save(userEntity);

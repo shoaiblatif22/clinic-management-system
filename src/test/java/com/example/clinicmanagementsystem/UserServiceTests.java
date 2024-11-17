@@ -1,5 +1,6 @@
 package com.example.clinicmanagementsystem;
 
+import com.example.clinicmanagementsystem.role.Role;
 import com.example.clinicmanagementsystem.user.entity.UserEntity;
 import com.example.clinicmanagementsystem.user.repository.UserRepository;
 import com.example.clinicmanagementsystem.user.service.UserService;
@@ -29,7 +30,7 @@ public class UserServiceTests {
         userPOJO.setLastName("Doe");
         userPOJO.setEmail("john.doe@gmail.com");
         userPOJO.setPassword("password");
-        userPOJO.setRole("USER");
+        userPOJO.setRole(Role.USER);
 
         //2. Mock repository
         when(userRepository.save(userPOJO)).thenReturn(userPOJO);

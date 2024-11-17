@@ -1,5 +1,6 @@
 package com.example.clinicmanagementsystem;
 
+import com.example.clinicmanagementsystem.role.Role;
 import com.example.clinicmanagementsystem.user.entity.UserEntity;
 import com.example.clinicmanagementsystem.user.repository.UserRepository;
 import org.junit.jupiter.api.AfterEach;
@@ -9,6 +10,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import java.util.Optional;
+
+import static com.example.clinicmanagementsystem.role.Role.USER;
 import static org.junit.Assert.*;
 
 @SpringBootTest
@@ -26,7 +29,7 @@ public class UserRepositoryTests {
         user.setFirstName("Test");
         user.setLastName("Object");
         user.setPassword("test");
-        user.setRole("user");
+        user.setRole(USER);
         user = userRepository.save(user);
 
     }
@@ -65,14 +68,14 @@ public class UserRepositoryTests {
         user.setFirstName("NewTest");
         user.setLastName("Object");
         user.setPassword("test");
-        user.setRole("user");
+        user.setRole(USER);
         userRepository.save(user);
 
         assertNotNull(user.getId());
         assertEquals("NewTest", user.getFirstName());
         assertEquals("Object", user.getLastName());
         assertEquals("test", user.getPassword());
-        assertEquals("user", user.getRole());
+        assertEquals(USER, user.getRole());
     }
 
 
