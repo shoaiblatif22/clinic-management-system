@@ -2,6 +2,7 @@ package com.example.clinicmanagementsystem.user.controller;
 import com.example.clinicmanagementsystem.user.entity.UserEntity;
 import com.example.clinicmanagementsystem.user.model.UserModel;
 import com.example.clinicmanagementsystem.user.service.UserService;
+import com.example.clinicmanagementsystem.role.entity.RoleEntity;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
