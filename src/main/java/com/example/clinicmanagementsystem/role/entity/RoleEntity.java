@@ -1,7 +1,11 @@
 package com.example.clinicmanagementsystem.role.entity;
 
 import com.example.clinicmanagementsystem.role.Role;
+import com.example.clinicmanagementsystem.user.entity.UserEntity;
 import jakarta.persistence.*;
+
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "roles")
@@ -13,6 +17,11 @@ public class RoleEntity {
     @Enumerated(EnumType.STRING)
     @Column(name = "role_name", nullable = false)
     private Role roleName;
+
+    //MANY-TO-MANY RELATIONSHIP WITH USERS
+    @ManyToMany(mappedBy = "roles")
+    private Set<UserEntity> userEntitySet = new HashSet<>();
+
 
     public RoleEntity(){}
 
