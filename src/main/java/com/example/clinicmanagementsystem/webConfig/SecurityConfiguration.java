@@ -1,4 +1,4 @@
-package com.example.clinicmanagementsystem.WebConfig;
+package com.example.clinicmanagementsystem.webConfig;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
