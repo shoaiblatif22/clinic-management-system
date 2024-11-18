@@ -1,10 +1,11 @@
 package com.example.clinicmanagementsystem.user.controller;
-import com.example.clinicmanagementsystem.role.Role;
 import com.example.clinicmanagementsystem.role.service.RoleService;
 import com.example.clinicmanagementsystem.user.entity.UserEntity;
 import com.example.clinicmanagementsystem.user.model.UserModel;
 import com.example.clinicmanagementsystem.user.service.UserService;
 import com.example.clinicmanagementsystem.role.entity.RoleEntity;
+import com.example.clinicmanagementsystem.userRoles.entity.UserRolesEntity;
+import com.example.clinicmanagementsystem.userRoles.service.UserRoleService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
@@ -20,10 +21,12 @@ public class UserController {
 
     private final UserService userService;
     private final RoleService roleService;
+    private final UserRoleService userRoleService;
 
-    public UserController(UserService userService, RoleService roleService) {
+    public UserController(UserService userService, RoleService roleService, UserRoleService userRoleService) {
         this.userService = userService;
         this.roleService = roleService;
+        this.userRoleService = userRoleService;
     }
 
     /**
@@ -174,11 +177,41 @@ public class UserController {
                     .body("User does not have the specified role with ID " + roleId + " (" + roleName + ")");
         }
     }
+
+    /**
+     * GET REQUEST TO FETCH USER-ROLE ASSOCIATION BY ROLE ID
+     *
+     * This endpoint retrieves the user-role association for a specific role ID from the database.
+     * It checks whether the given role ID corresponds to any user-role relationship and returns
+     * the result.
+     *
+     * @param roleId        The unique identifier of the role (Role ID).
+     * @return              A ResponseEntity containing the user-role association:
+     *                      - HTTP 200 OK with the user-role association if found.
+     *                      - HTTP 404 NOT FOUND if no user-role association is found for the specified role ID.
+     */
+    @GetMapping("/users/roleId/{roleId}")
+    public Optional<UserRolesEntity> getRoleId(@PathVariable Integer roleId) {
+        return userRoleService.getUserId(roleId);
+    }
+
+    /**
+     * GET REQUEST TO FETCH USER-ROLE ASSOCIATION BY USER ID
+     *
+     * This endpoint retrieves the user-role association for a specific user ID from the database.
+     * It checks whether the given user ID corresponds to any user-role relationship and returns
+     * the result.
+     *
+     * @param userId        The unique identifier of the user (User ID).
+     * @return              A ResponseEntity containing the user-role association:
+     *                      - HTTP 200 OK with the user-role association if found.
+     *                      - HTTP 404 NOT FOUND if no user-role association is found for the specified user ID.
+     */
+    @GetMapping("/users/userId/{userId}")
+    public Optional<UserRolesEntity> getUserId(@PathVariable Integer userId) {
+        return userRoleService.getUserId(userId);
+    }
 }
-
-
-
-
 
 
     /*This needs fixing for later. Other mappings work*/
