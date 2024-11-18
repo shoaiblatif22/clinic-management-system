@@ -4,6 +4,7 @@ import com.example.clinicmanagementsystem.user.controller.UserController;
 import com.example.clinicmanagementsystem.user.entity.UserEntity;
 import com.example.clinicmanagementsystem.user.model.UserModel;
 import com.example.clinicmanagementsystem.user.service.UserService;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -39,6 +40,7 @@ class UserControllerTest {
     }
 
     @Test
+    @DisplayName("_1_:Test to update user")
     void updateUser() throws Exception {
         int id = 1;
         UserModel existingUser = new UserModel(id,"John", "Doe", "john.doe@example.com", "password", "USER", false, true );
@@ -53,6 +55,7 @@ class UserControllerTest {
     }
 
     @Test
+    @DisplayName("_2_:Test to get user by id")
     void testGetUserById() {
         // 1. Mock service response
         int id = 1;
@@ -70,6 +73,7 @@ class UserControllerTest {
     }
 
     @Test
+    @DisplayName("_3_:Test to save user")
     void save() throws Exception {
         // 1. Mock service response
         int id = 1;
