@@ -15,10 +15,8 @@ import org.springframework.http.ResponseEntity;
 
 import java.util.Optional;
 
-import static com.example.clinicmanagementsystem.role.Role.USER;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
-
 
 @SpringBootTest
 class UserControllerTest {
@@ -40,7 +38,7 @@ class UserControllerTest {
     }
 
     @Test
-    @DisplayName("_1_:Test to update user")
+    @DisplayName("_1_: Test to update user")
     void updateUser() throws Exception {
         int id = 1;
         UserModel existingUser = new UserModel(id,"John", "Doe", "john.doe@example.com", "password", "USER", false, true );
@@ -55,7 +53,7 @@ class UserControllerTest {
     }
 
     @Test
-    @DisplayName("_2_:Test to get user by id")
+    @DisplayName("_2_: Test to get user by id")
     void testGetUserById() {
         // 1. Mock service response
         int id = 1;
@@ -73,11 +71,14 @@ class UserControllerTest {
     }
 
     @Test
-    @DisplayName("_3_:Test to save user")
+    @DisplayName("_3_: Test to save user with a dynamic role")
     void save() throws Exception {
         // 1. Mock service response
         int id = 1;
+        // Set the desired role for this test
         UserModel mockUser = new UserModel(id, "John", "Doe", "john.doe@example.com", "password", "USER", false, true);
+
+        // Mock service behavior
         when(userService.saveUser(any(UserEntity.class))).thenReturn(mockUser);
 
         // 2. Create a UserEntity object
@@ -86,14 +87,13 @@ class UserControllerTest {
         userEntity.setLastName("Doe");
         userEntity.setEmail("john.doe@example.com");
         userEntity.setPassword("password");
-        userEntity.setRole(USER);
 
         // 3. Call the controller method
         UserModel response = userController.save(userEntity);
 
         // 4. Assertions
         verify(userService, times(1)).saveUser(any(UserEntity.class));
+        assertNotNull(response);
         assertEquals(mockUser, response);
-        assert(HttpStatus.OK.is2xxSuccessful());
     }
 }

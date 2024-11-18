@@ -10,6 +10,7 @@ import java.util.Set;
 @Entity
 @Table(name = "roles")
 public class RoleEntity {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -18,13 +19,13 @@ public class RoleEntity {
     @Column(name = "role_name", nullable = false)
     private Role roleName;
 
-    //MANY-TO-MANY RELATIONSHIP WITH USERS
+    // Many-to-many relationship with Users
     @ManyToMany(mappedBy = "roles")
     private Set<UserEntity> userEntitySet = new HashSet<>();
 
+    public RoleEntity() {}
 
-    public RoleEntity(){}
-
+    // Getter and Setter for id
     public Long getId() {
         return id;
     }
@@ -33,11 +34,31 @@ public class RoleEntity {
         this.id = id;
     }
 
+    // Getter and Setter for roleName
     public Role getRoleName() {
         return roleName;
     }
 
     public void setRoleName(Role roleName) {
         this.roleName = roleName;
+    }
+
+    // Getter and Setter for userEntitySet
+    public Set<UserEntity> getUserEntitySet() {
+        return userEntitySet;
+    }
+
+    public void setUserEntitySet(Set<UserEntity> userEntitySet) {
+        this.userEntitySet = userEntitySet;
+    }
+
+    // Optional: Override toString for debugging purposes
+    @Override
+    public String toString() {
+        return "RoleEntity{" +
+                "id=" + id +
+                ", roleName=" + roleName +
+                ", userEntitySet=" + userEntitySet +
+                '}';
     }
 }

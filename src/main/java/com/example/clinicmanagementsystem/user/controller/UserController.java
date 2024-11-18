@@ -1,4 +1,5 @@
 package com.example.clinicmanagementsystem.user.controller;
+import com.example.clinicmanagementsystem.role.Role;
 import com.example.clinicmanagementsystem.role.service.RoleService;
 import com.example.clinicmanagementsystem.user.entity.UserEntity;
 import com.example.clinicmanagementsystem.user.model.UserModel;
@@ -83,7 +84,8 @@ public class UserController {
      */
     @PostMapping("/users")
     public UserModel save(@RequestBody UserEntity user){
-        return userService.saveUser(user);
+        UserModel savedUser = userService.saveUser(user);
+        return new ResponseEntity<>(savedUser, HttpStatus.CREATED).getBody();
     }
 
     /**
