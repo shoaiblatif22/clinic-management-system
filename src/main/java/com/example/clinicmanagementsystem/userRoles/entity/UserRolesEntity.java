@@ -1,18 +1,19 @@
 package com.example.clinicmanagementsystem.userRoles.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 
 @Entity
+@Table(name = "user_roles")
 public class UserRolesEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)  // Automatically generate the ID
     private Integer id;
 
+    @Column(name = "user_id")
     private Integer userId;
+
+    @Column(name = "role_id")
     private Integer roleId;
 
     // Constructors
