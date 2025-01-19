@@ -1,7 +1,7 @@
-package com.example.clinicmanagementsystem.userRoles.service;
+package com.example.clinicmanagementsystem.user_roles.service;
 
-import com.example.clinicmanagementsystem.userRoles.entity.UserRolesEntity;
-import com.example.clinicmanagementsystem.userRoles.repository.UserRoleRepository;
+import com.example.clinicmanagementsystem.user_roles.entity.UserRolesEntity;
+import com.example.clinicmanagementsystem.user_roles.repository.UserRoleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

@@ -5,6 +5,7 @@ import com.example.clinicmanagementsystem.role.repository.RoleRepository;
 import com.example.clinicmanagementsystem.user.entity.UserEntity;
 import com.example.clinicmanagementsystem.user.model.UserModel;
 import com.example.clinicmanagementsystem.user.repository.UserRepository;
+import com.example.clinicmanagementsystem.user_roles.repository.UserRoleRepository;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import org.modelmapper.ModelMapper;
@@ -21,6 +22,8 @@ public class UserService {
 
     @PersistenceContext
     private EntityManager entityManager;
+    @Autowired
+    private UserRoleRepository userRoleRepository;
 
     //Connects to UserRepo
     @Autowired
@@ -73,6 +76,9 @@ public class UserService {
     //DELETE USER BY ID NUMBER
     public void deleteUserById(int id) {
         try {
+            //Remove user-role mapping
+            userRoleRepository.deleteByUserId(id);
+            //Delete user
             userRepository.deleteById(id);
         } catch (Exception e) {
             System.out.println(e.getMessage());

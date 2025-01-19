@@ -1,5 +1,6 @@
 package com.example.clinicmanagementsystem.role.service;
 
+import com.example.clinicmanagementsystem.role.Role;
 import com.example.clinicmanagementsystem.role.entity.RoleEntity;
 import com.example.clinicmanagementsystem.role.repository.RoleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,5 +19,9 @@ public class RoleService {
 
     public Optional<RoleEntity> getRoleById(Integer roleId) {
         return roleRepository.findById(roleId);
+    }
+
+    public Optional<RoleEntity> getRoleByName(Role roleName) {
+        return roleRepository.findByRoleName(roleName);
     }
 }

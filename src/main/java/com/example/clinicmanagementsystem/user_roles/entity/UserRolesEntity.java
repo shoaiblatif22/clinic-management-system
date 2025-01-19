@@ -1,4 +1,4 @@
-package com.example.clinicmanagementsystem.userRoles.entity;
+package com.example.clinicmanagementsystem.user_roles.entity;
 
 import jakarta.persistence.*;
 
