@@ -9,6 +9,9 @@ import com.example.clinicmanagementsystem.user_roles.service.UserRoleService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -41,6 +44,7 @@ public class UserController {
      * represented as an empty array or list in the response.
      */
     @GetMapping("/users")
+    @PreAuthorize("hasRole('client_admin')")
     public List<UserModel> findAllUsers() {
         return userService.findAll();
     }
