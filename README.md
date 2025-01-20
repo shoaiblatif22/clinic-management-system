@@ -32,7 +32,7 @@ The Admin Dashboard will serve as the central control panel for managing the sys
     - Interactive charts for real-time analytics (e.g., using Chart.js or D3.js).
 
 - **Role-Based Access Control (RBAC)**:
-    - Limit access to certain features based on user roles.🔄
+    - Limit access to certain features based on user roles.✅
     - Admins have full access, while staff may have restricted permissions.🔄
 
 - **System Logs and Monitoring**:
