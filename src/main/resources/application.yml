@@ -1,0 +1,55 @@
+# Application Configuration
+spring:
+  application:
+    name: clinic-management-system
+  server:
+    port: 8081
+
+# Database Configuration
+  datasource:
+    url: jdbc:postgresql://localhost:5432/clinic_management_system
+    username: admin
+    password: root
+    driver-class-name: org.postgresql.Driver
+
+# JPA Configuration
+  jpa:
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        boot:
+          allow_jdbc_metadata_access: false
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    open-in-view: false
+
+# Flyway Configuration
+flyway:
+  enabled: false
+
+# Logging
+logging:
+  level:
+    org.springframework.security: INFO
+  pattern:
+    console: "%d{dd-MM-yyyy HH:mm:ss} %magenta([%thread]) %highlight(%-5level) %logger.%M - %msg%n"
+
+# Keycloak Configuration
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: http://localhost:8080/realms/Shoaib
+          jwk-set-uri: ${spring.security.oauth2.resourceserver.jwt.issuer-uri}/protocol/openid-connect/certs
+
+jwt:
+  auth:
+    converter:
+      resource-id: shoaib-rest-api
+      principle-attribute: preferred_username
+
+
+
+
+
