@@ -115,6 +115,14 @@
             <scope>runtime</scope>
             <version>42.7.3</version>
         </dependency>
+        <dependency>
+            <groupId>org.keycloak</groupId>
+            <artifactId>keycloak-spring-boot-starter</artifactId>
+            <version>20.0.3</version>
+        </dependency>
+
+
+
 
     </dependencies>
 

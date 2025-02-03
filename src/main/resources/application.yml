@@ -1,18 +1,18 @@
-# Application Configuration
 spring:
   application:
     name: clinic-management-system
-  server:
-    port: 8081
+server:
+  port: 8081
 
-# Database Configuration
+
+  # Database Configuration
   datasource:
     url: jdbc:postgresql://localhost:5432/clinic_management_system
     username: admin
     password: root
     driver-class-name: org.postgresql.Driver
 
-# JPA Configuration
+  # JPA Configuration
   jpa:
     properties:
       hibernate:
@@ -23,6 +23,7 @@ spring:
       ddl-auto: update
     show-sql: true
     open-in-view: false
+
 
 # Flyway Configuration
 flyway:
@@ -35,21 +36,19 @@ logging:
   pattern:
     console: "%d{dd-MM-yyyy HH:mm:ss} %magenta([%thread]) %highlight(%-5level) %logger.%M - %msg%n"
 
-# Keycloak Configuration
-  security:
-    oauth2:
-      resourceserver:
-        jwt:
-          issuer-uri: http://localhost:8080/realms/Shoaib
-          jwk-set-uri: ${spring.security.oauth2.resourceserver.jwt.issuer-uri}/protocol/openid-connect/certs
+# Security Configuration
+security:
+  oauth2:
+    resourceserver:
+      jwt:
+        issuer-uri: http://localhost:8080/realms/clinical-management-realm
+        jwk-set-uri: http://localhost:8080/realms/clinical-management-realm/protocol/openid-connect/certs
 
-jwt:
+# Keycloak Configuration (properly structured)
+keycloak:
+  realm: clinical-management-realm
   auth:
     converter:
-      resource-id: shoaib-rest-api
+      resource-id: rest-api-doctor
       principle-attribute: preferred_username
-
-
-
-
 
