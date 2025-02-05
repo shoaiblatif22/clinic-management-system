@@ -7,10 +7,12 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/api/auth")
+
 public class AuthController {
-    @GetMapping("/hello")
-    public String hello() {
-        return "Hello World";
+    @GetMapping("/doctor")
+    @PreAuthorize("hasRole('client_doctor')")
+    public String helloDoctor() {
+        return "Hello Dcotor";
     }
 
     @GetMapping("/admin")

@@ -32,6 +32,7 @@ public class JwtAuthConverter implements org.springframework.core.convert.conver
      */
     @Override
     public Collection<GrantedAuthority> convert(@NonNull Jwt jwt) {
+
         Collection<GrantedAuthority> authorities = new HashSet<>(defaultConverter.convert(jwt));
 
         Map<String, Object> realmAccess = jwt.getClaim("realm_access");
@@ -40,12 +41,10 @@ public class JwtAuthConverter implements org.springframework.core.convert.conver
                 List<String> realmRoles = (List<String>) realmAccess.get("roles");
                 authorities.addAll(realmRoles.stream()
                         .map(role -> new SimpleGrantedAuthority("ROLE_" + role))
-                        .collect(Collectors.toList()));
+                        .toList());
             } catch (Exception e) {
                 throw new IllegalArgumentException(e.getMessage(), e);
             }
-
-
         }
 
         // Extract client roles (Keycloak client roles)
@@ -58,7 +57,6 @@ public class JwtAuthConverter implements org.springframework.core.convert.conver
                     .map(role -> new SimpleGrantedAuthority("ROLE_" + role))
                     .collect(Collectors.toList()));
         }
-
         return authorities;
     }
 }
