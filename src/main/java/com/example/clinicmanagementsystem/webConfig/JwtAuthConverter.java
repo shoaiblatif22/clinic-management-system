@@ -1,5 +1,6 @@
 package com.example.clinicmanagementsystem.webConfig;
 
+import lombok.NonNull;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.oauth2.jwt.Jwt;
@@ -30,15 +31,21 @@ public class JwtAuthConverter implements org.springframework.core.convert.conver
      * @return A collection of {@link GrantedAuthority} representing the user's roles.
      */
     @Override
-    public Collection<GrantedAuthority> convert(Jwt jwt) {
+    public Collection<GrantedAuthority> convert(@NonNull Jwt jwt) {
         Collection<GrantedAuthority> authorities = new HashSet<>(defaultConverter.convert(jwt));
 
         Map<String, Object> realmAccess = jwt.getClaim("realm_access");
         if (realmAccess != null && realmAccess.containsKey("roles")) {
-            List<String> realmRoles = (List<String>) realmAccess.get("roles");
-            authorities.addAll(realmRoles.stream()
-                    .map(role -> new SimpleGrantedAuthority("ROLE_" + role))
-                    .collect(Collectors.toList()));
+            try {
+                List<String> realmRoles = (List<String>) realmAccess.get("roles");
+                authorities.addAll(realmRoles.stream()
+                        .map(role -> new SimpleGrantedAuthority("ROLE_" + role))
+                        .collect(Collectors.toList()));
+            } catch (Exception e) {
+                throw new IllegalArgumentException(e.getMessage(), e);
+            }
+
+
         }
 
         // Extract client roles (Keycloak client roles)
