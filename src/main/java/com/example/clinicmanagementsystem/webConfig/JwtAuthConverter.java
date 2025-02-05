@@ -1,74 +1,57 @@
 package com.example.clinicmanagementsystem.webConfig;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.PropertySource;
-import org.springframework.core.convert.converter.Converter;
-import org.springframework.lang.NonNull;
-import org.springframework.security.authentication.AbstractAuthenticationToken;
+
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.oauth2.jwt.Jwt;
-import org.springframework.security.oauth2.jwt.JwtClaimNames;
-import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationToken;
 import org.springframework.security.oauth2.server.resource.authentication.JwtGrantedAuthoritiesConverter;
-import org.springframework.stereotype.Component;
 
-import java.util.Collection;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
-@Component
-@PropertySource(value = {"classpath:application.yml"})
-public class JwtAuthConverter implements Converter<Jwt, AbstractAuthenticationToken> {
-    private final JwtGrantedAuthoritiesConverter jwtGrantedAuthoritiesConverter =
-            new JwtGrantedAuthoritiesConverter();
+/**
+ * JwtAuthConverter is responsible for extracting roles from a JWT token issued by Keycloak.
+ * <p>
+ * It converts the JWT token into a collection of {@link GrantedAuthority} instances for use
+ * in Spring Security authorization.
+ * <p>
+ * This converter retrieves:
+ * - **Realm Roles** from the `realm_access` claim
+ * - **Client Roles** from the `resource_access` claim (specific to `rest-api-doctor`)
+ * <p>
+ * Roles are **prefixed with "ROLE_"** to comply with Spring Security's expectations.
+ */
+public class JwtAuthConverter implements org.springframework.core.convert.converter.Converter<Jwt, Collection<GrantedAuthority>> {
 
-    @Value("${keycloak.auth.converter.principle-attribute}")
-    private String principleAttribute;
-    @Value("${keycloak.auth.converter.resource-id}")
-    private String resourceId;
-
+    private final JwtGrantedAuthoritiesConverter defaultConverter = new JwtGrantedAuthoritiesConverter();
+    /**
+     * Extracts and converts Keycloak roles from the JWT into a collection of granted authorities.
+     *
+     * @param jwt The JSON Web Token (JWT) received from the client.
+     * @return A collection of {@link GrantedAuthority} representing the user's roles.
+     */
     @Override
-    public AbstractAuthenticationToken convert(@NonNull Jwt jwt) {
-        Collection<GrantedAuthority> authorities = Stream.concat(
-                jwtGrantedAuthoritiesConverter.convert(jwt).stream(),
-                extractResourceRoles(jwt).stream()
-        ).collect(Collectors.toSet());
+    public Collection<GrantedAuthority> convert(Jwt jwt) {
+        Collection<GrantedAuthority> authorities = new HashSet<>(defaultConverter.convert(jwt));
 
-        return new JwtAuthenticationToken(
-                jwt,
-                authorities,
-                getPrincipleClaimName(jwt)
-        );
-    }
-
-    private String getPrincipleClaimName(Jwt jwt) {
-        String claimName = JwtClaimNames.SUB;
-        if (principleAttribute != null) {
-            claimName = principleAttribute;
+        Map<String, Object> realmAccess = jwt.getClaim("realm_access");
+        if (realmAccess != null && realmAccess.containsKey("roles")) {
+            List<String> realmRoles = (List<String>) realmAccess.get("roles");
+            authorities.addAll(realmRoles.stream()
+                    .map(role -> new SimpleGrantedAuthority("ROLE_" + role))
+                    .collect(Collectors.toList()));
         }
-        return jwt.getClaim(claimName);
-    }
 
-    private Collection<? extends GrantedAuthority> extractResourceRoles(Jwt jwt) {
-        Map<String, Object> resourceAccess;
-        Map<String, Object> resource;
-        Collection<String> resourceRoles;
-        if (jwt.getClaim("resource_access") == null) {
-            return Set.of();
+        // Extract client roles (Keycloak client roles)
+        Map<String, Object> resourceAccess = jwt.getClaim("resource_access");
+        if (resourceAccess != null && resourceAccess.containsKey("rest-api-doctor")) {
+            Map<String, Object> client = (Map<String, Object>) resourceAccess.get("rest-api-doctor");
+            List<String> roles = (List<String>) client.get("roles");
+
+            authorities.addAll(roles.stream()
+                    .map(role -> new SimpleGrantedAuthority("ROLE_" + role))
+                    .collect(Collectors.toList()));
         }
-        resourceAccess = jwt.getClaim("resource_access");
 
-        if (resourceAccess.get(resourceId) == null) {
-            return Set.of();
-        }
-        resource = (Map<String, Object>) resourceAccess.get(resourceId);
-
-        resourceRoles = (Collection<String>) resource.get("roles");
-        return resourceRoles
-                .stream()
-                .map(role -> new SimpleGrantedAuthority("ROLE_" + role))
-                .collect(Collectors.toSet());
+        return authorities;
     }
 }

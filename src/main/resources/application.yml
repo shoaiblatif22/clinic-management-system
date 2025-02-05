@@ -45,8 +45,7 @@ security:
         jwk-set-uri: http://localhost:8080/realms/clinical-management-realm/protocol/openid-connect/certs
 
 # Keycloak Configuration (properly structured)
-keycloak:
-  realm: clinical-management-realm
+jwt:
   auth:
     converter:
       resource-id: rest-api-doctor

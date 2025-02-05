@@ -1,18 +1,20 @@
 package com.example.clinicmanagementsystem.user;
 
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/api/Auth")
+@RequestMapping("/api/auth")
 public class AuthController {
     @GetMapping("/hello")
     public String hello() {
         return "Hello World";
     }
 
-    @GetMapping("/hello-admin")
+    @GetMapping("/admin")
+    @PreAuthorize("hasRole('client_admin')")
     public String helloAdmin() {
         return "Hello Admin";
     }
