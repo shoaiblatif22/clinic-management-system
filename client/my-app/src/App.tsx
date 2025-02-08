@@ -1,28 +1,29 @@
-import React, { useState } from 'react';
-import './App.css';
-import RegistrationForm from './components/RegistrationForm';
-import MedicalHistoryForm from './components/MedicalHistoryForm';
+import { useState } from "react";
+import RegistrationForm from "./forms/RegistrationForm.tsx";
+import Landing from "./pages/landing";
 
 function App() {
-    const [currentStep, setCurrentStep] = useState<'registration' | 'medical'>('registration');
-    // @ts-ignore
-    const [registrationComplete, setRegistrationComplete] = useState(false);
+    const [currentStep, setCurrentStep] = useState<"landing" | "registration">("landing");
 
-    const handleRegistrationComplete = () => {
-        setRegistrationComplete(true);
-        setCurrentStep('medical');
+    // Function to handle the "Get Started" button click
+    const handleGetStartedClick = () => {
+        setCurrentStep("registration"); // Update the current step to "registration"
     };
 
     return (
-        <div className="App">
-            {currentStep === 'registration' && (
-                <div className="form-container">
-                    <RegistrationForm onComplete={handleRegistrationComplete} />
-                </div>
-            )}
-            {currentStep === 'medical' && (
-                <div className="form-container">
-                    <MedicalHistoryForm />
+        <div>
+            {currentStep === "landing" && (
+                    <Landing
+                        main_title="Revolutionize Clinical Management with AI"
+                        sub_title="Streamline patient care, improve diagnostics, and enhance workflows with our AI-powered platform"
+                        onClick={handleGetStartedClick}>
+                    </Landing>
+
+                )}
+
+            {currentStep === "registration" && (
+                <div>
+                    <RegistrationForm />
                 </div>
             )}
         </div>

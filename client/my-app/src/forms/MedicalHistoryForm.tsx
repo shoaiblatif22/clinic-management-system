@@ -10,7 +10,7 @@ import {
     EmergencyContact,
     FamilyHistory,
     LifestyleFactors,
-} from '../types/medicalTypes';
+} from '../types/medicalTypes.ts';
 
 const commonConditions = [
     'Diabetes',
@@ -33,6 +33,10 @@ const initialLifestyleState: LifestyleFactors = {
     occupation: '',
     workplaceHazards: '',
 };
+
+interface Props {
+    onComplete: () => void;
+}
 
 const MedicalHistoryForm: React.FC = () => {
     const [formData, setFormData] = useState<MedicalHistoryFormData>({

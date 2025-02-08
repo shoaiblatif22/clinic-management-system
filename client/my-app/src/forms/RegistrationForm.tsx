@@ -156,7 +156,7 @@ const RegistrationForm: React.FC<Props> = ({ onComplete }) => {
     return (
         <div className="max-w-[1400px] mx-auto my-8 p-12 bg-white rounded-xl shadow-sm border border-gray-200 relative">
             <div
-                className="absolute left-0 top-0 h-full w-1 bg-gradient-to-b from-blue-500 to-blue-400 rounded-l-xl"></div>
+                className="absolute left--1 top-0 h-fit w-1 bg-gradient-to-b from-blue-500 to-blue-400 rounded-l-xl"></div>
             <h2 className="text-center text-2xl font-semibold text-gray-800 mb-8 relative pb-4">
                 Patient Registration Form
                 <div
@@ -178,7 +178,7 @@ const RegistrationForm: React.FC<Props> = ({ onComplete }) => {
                                 name="firstName"
                                 value={formData.firstName}
                                 onChange={handleChange}
-                                className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                className="w-full p-3 border border-gray-300 rounded-lg bg-blue-50 text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                             />
                             {errors.firstName && <span className="text-sm text-red-500">{errors.firstName}</span>}
                         </div>
@@ -192,7 +192,7 @@ const RegistrationForm: React.FC<Props> = ({ onComplete }) => {
                                 name="lastName"
                                 value={formData.lastName}
                                 onChange={handleChange}
-                                className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                className="w-full p-3 border border-gray-300 rounded-lg bg-blue-50 text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                             />
                             {errors.lastName && <span className="text-sm text-red-500">{errors.lastName}</span>}
                         </div>
@@ -246,7 +246,7 @@ const RegistrationForm: React.FC<Props> = ({ onComplete }) => {
                                 name="phoneNumber"
                                 value={formData.phoneNumber}
                                 onChange={handleChange}
-                                className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                className="w-full p-3 border border-gray-300 rounded-lg bg-blue-50 text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                             />
                             {errors.phoneNumber && <span className="text-sm text-red-500">{errors.phoneNumber}</span>}
                         </div>
