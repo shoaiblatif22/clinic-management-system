@@ -1,6 +1,5 @@
-package com.example.clinicmanagementsystem.dashboard;
+package com.example.clinicmanagementsystem.controller.dashboard;
 
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 

@@ -1,4 +1,4 @@
-package com.example.clinicmanagementsystem.user;
+package com.example.clinicmanagementsystem.controller.user;
 
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,7 +19,5 @@ public class AuthController {
     public String redirectClientAdminToDashboard() {
         return "redirect:/dashboard";
     }
-
-   // https://stackoverflow.com/questions/39356300/avoid-keycloak-default-login-page-and-use-project-login-page
 
 }
