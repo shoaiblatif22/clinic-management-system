@@ -3,6 +3,7 @@ package com.example.clinicmanagementsystem.service;
 import com.example.clinicmanagementsystem.entity.UserEntity;
 import com.example.clinicmanagementsystem.model.UserModel;
 import com.example.clinicmanagementsystem.repository.UserRepository;
+import org.hibernate.validator.internal.engine.valueextraction.ValueExtractorDescriptor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -34,6 +35,8 @@ public class UserService {
         UserEntity userEntity = new UserEntity(userModel, keycloakId);
         userRepository.save(userEntity);
     }
+//    private boolean keycloakUserRegistered(UserModel userModel) {
+//    }
 
     private boolean isEmailVerified(UserModel userModel) {
         String emailAddress = userModel.getEmailAddress();
@@ -41,8 +44,8 @@ public class UserService {
         return emailAddress != null && !emailAddress.isEmpty();
     };
     private boolean isPhoneNumberVerified(UserModel userModel) {
-        Integer phoneNumber = userModel.getPhoneNumber();
+        String phoneNumber = userModel.getPhoneNumber();
 
-        return phoneNumber != null && phoneNumber > 0;
+        return phoneNumber != null;
     };
 }
