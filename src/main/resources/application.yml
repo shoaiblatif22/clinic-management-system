@@ -7,9 +7,9 @@ server:
 
   # Database Configuration
   datasource:
-    url: jdbc:postgresql://localhost:5432/clinic_management_system
-    username: admin
-    password: root
+    url: jdbc:postgresql://localhost:5433/clinical_management_db
+    username: clinic_user
+    password: clinic_password
     driver-class-name: org.postgresql.Driver
 
   # JPA Configuration

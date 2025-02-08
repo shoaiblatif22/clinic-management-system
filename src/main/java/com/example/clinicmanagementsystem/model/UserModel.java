@@ -30,14 +30,14 @@ public class UserModel {
     @Getter
     private String addressLineTwo;
     @Getter
-    private String town_or_city;
+    private String townOrcity;
     @Getter
     private String postcode;
     @Getter
     private String country;
 
     //overloaded constructor
-    public UserModel(@NonNull String firstName, @NonNull String lastName, @NonNull Integer dateOfBirth, String gender, Integer phoneNumber, String emailAddress, String addressLineOne, String addressLineTwo, String town_or_city, String postcode, String country) {
+    public UserModel(@NonNull String firstName, @NonNull String lastName, @NonNull Integer dateOfBirth, String gender, Integer phoneNumber, String emailAddress, String addressLineOne, String addressLineTwo, String townOrcity, String postcode, String country) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.dateOfBirth = dateOfBirth;
@@ -46,7 +46,7 @@ public class UserModel {
         this.emailAddress = emailAddress;
         this.addressLineOne = addressLineOne;
         this.addressLineTwo = addressLineTwo;
-        this.town_or_city = town_or_city;
+        this.townOrcity = townOrcity;
         this.postcode = postcode;
         this.country = country;
     }
@@ -127,7 +127,7 @@ public class UserModel {
         this.country = country;
     }
 
-    public void setTown_or_city(String town_or_city) {
-        this.town_or_city = town_or_city;
+    public void setTownOrcity(String townOrcity) {
+        this.townOrcity = townOrcity;
     }
 }
