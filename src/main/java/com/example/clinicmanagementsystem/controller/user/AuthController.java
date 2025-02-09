@@ -1,14 +1,27 @@
 package com.example.clinicmanagementsystem.controller.user;
 
+import com.example.clinicmanagementsystem.model.UserModel;
+import com.example.clinicmanagementsystem.repository.KeycloakRepository;
+import com.example.clinicmanagementsystem.service.KeycloakService;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.view.RedirectView;
 
 @RestController
 @RequestMapping("/api/auth")
 public class AuthController {
+    private final KeycloakService keycloakService;
+
+    public AuthController(KeycloakService keycloakService) {
+        this.keycloakService = keycloakService;
+    }
+
+    @PostMapping("/register")
+    public ResponseEntity<String> registerUser(@RequestBody UserModel userModel) {
+        return keycloakService.registerUser(userModel);
+    }
+
     @GetMapping("/user/patient")
     @PreAuthorize("hasRole('client_patient')")
     public RedirectView redirectClientPatientToDashboard() {

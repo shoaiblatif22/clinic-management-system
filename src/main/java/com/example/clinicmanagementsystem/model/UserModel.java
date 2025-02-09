@@ -43,5 +43,6 @@ public class UserModel {
     private String townOrcity;
     private String postcode;
     private String country;
+    private String password;
 
 }
