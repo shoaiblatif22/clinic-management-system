@@ -21,7 +21,6 @@ public class RegistrationController {
         this.keycloakService = keycloakService;
     }
 
-
     @PostMapping("/register")
     public ResponseEntity<RedirectView> register(@RequestBody UserModel user) {
         try {

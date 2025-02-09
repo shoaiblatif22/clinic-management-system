@@ -17,6 +17,8 @@ public class AuthController {
         this.keycloakService = keycloakService;
     }
 
+    //Keycloak controller
+
     @PostMapping("/register")
     public ResponseEntity<String> registerUser(@RequestBody UserModel userModel) {
         return keycloakService.registerUser(userModel);
