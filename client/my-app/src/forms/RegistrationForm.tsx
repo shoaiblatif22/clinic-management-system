@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import axios from "axios";
 
 interface FormData {
     firstName: string;
@@ -125,10 +126,6 @@ const RegistrationForm: React.FC<Props> = ({ onComplete }) => {
             newErrors.email = 'Please enter a valid email address';
         }
 
-        if (formData.password.length < 8) {
-            newErrors.password = 'Password must be at least 8 characters long';
-        }
-
         if (formData.password !== formData.confirmPassword) {
             newErrors.confirmPassword = 'Passwords do not match';
         }
@@ -145,11 +142,17 @@ const RegistrationForm: React.FC<Props> = ({ onComplete }) => {
         }));
     };
 
-    const handleSubmit = (e: React.FormEvent) => {
+    const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        if (validateForm()) {
-            console.log('Form submitted:', formData);
-            onComplete();
+        const isValid = validateForm();
+        if (isValid)
+            try {
+                const response = await axios.post('http://localhost:8081/registration/register', formData)
+                if(response.status === 200) {
+                    onComplete();
+            }
+        } catch(error) {
+            console.error("There was an error during registration:", error);
         }
     };
 
