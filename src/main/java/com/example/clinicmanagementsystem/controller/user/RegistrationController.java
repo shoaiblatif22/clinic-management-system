@@ -8,10 +8,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.view.RedirectView;
 
-
-@RestController()
+@RestController
 @RequestMapping(value = "/registration")
-@CrossOrigin(origins = "http://localhost:5173")
+@CrossOrigin(origins = "*") // Allow multiple origins dynamically
 public class RegistrationController {
     private final UserService userService;
     private final KeycloakService keycloakService;
@@ -22,14 +21,22 @@ public class RegistrationController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<RedirectView> register(@RequestBody UserModel user) {
+    public ResponseEntity<?> register(@RequestBody UserModel user) {
         try {
-            userService.registerUser(user, keycloakService.toString());
-            RedirectView redirectView = new RedirectView("/api/auth/user/patient");
-            return ResponseEntity.status(HttpStatus.CREATED).body(redirectView);
+            // Register the user in Keycloak first
+            String keycloakId = keycloakService.registerUser(user);
+
+            // Wait for email verification before saving user to DB
+            boolean isVerified = keycloakService.isEmailVerified(keycloakId);
+
+            if (isVerified) {
+                userService.registerUser(user, keycloakId);
+                return ResponseEntity.status(HttpStatus.CREATED).body(new RedirectView("/api/auth/user/patient"));
+            } else {
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Email not verified. Please check your inbox.");
+            }
         } catch (Exception e) {
-            RedirectView redirectView = new RedirectView("/registration/error");
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(redirectView);
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Error: " + e.getMessage());
         }
     }
 }
