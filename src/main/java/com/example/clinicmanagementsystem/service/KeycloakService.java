@@ -1,6 +1,10 @@
 package com.example.clinicmanagementsystem.service;
 
 import com.example.clinicmanagementsystem.model.UserModel;
+import org.keycloak.OAuth2Constants;
+import org.keycloak.admin.client.Keycloak;
+import org.keycloak.admin.client.KeycloakBuilder;
+import org.keycloak.representations.idm.UserRepresentation;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.util.LinkedMultiValueMap;
@@ -51,7 +55,7 @@ public class KeycloakService {
     }
 
 
-    public ResponseEntity<String> registerUser(UserModel userModel) {
+    public String registerUser(UserModel userModel) {
         String accessToken = getAdminAccessToken();
         String url = keycloakServerUrl + "/admin/realms/" + keycloakRealm + "/users";
 
@@ -61,8 +65,8 @@ public class KeycloakService {
 
         Map<String, Object> user = new HashMap<>();
         user.put("username", userModel.getEmailAddress());
-        user.put("firstname", userModel.getFirstName());
-        user.put("lastname", userModel.getLastName());
+        user.put("firstName", userModel.getFirstName());
+        user.put("lastName", userModel.getLastName());
         user.put("email", userModel.getEmailAddress());
 
         Map<String, Object> credentials = new HashMap<>();
@@ -73,10 +77,51 @@ public class KeycloakService {
         user.put("credentials", Collections.singletonList(credentials));
 
         HttpEntity<Map<String, Object>> request = new HttpEntity<>(user, headers);
-        ResponseEntity<String> response = restTemplate.postForEntity(url, request, String.class);
+        ResponseEntity<Void> response = restTemplate.postForEntity(url, request, Void.class);
 
-        return response;
+        if (response.getStatusCode().is2xxSuccessful()) {
+            return getUserKeycloakIdByEmail(userModel.getEmailAddress(), accessToken);
+        } else {
+            throw new RuntimeException("Failed to register user in Keycloak");
+        }
     }
+
+    // Retrieve Keycloak User ID
+    private String getUserKeycloakIdByEmail(String email, String accessToken) {
+        String url = keycloakServerUrl + "/admin/realms/" + keycloakRealm + "/users?email=" + email;
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setBearerAuth(accessToken);
+
+        HttpEntity<Void> request = new HttpEntity<>(headers);
+        ResponseEntity<List> response = restTemplate.exchange(url, HttpMethod.GET, request, List.class);
+
+        if (response.getStatusCode().is2xxSuccessful() && response.getBody() != null && !response.getBody().isEmpty()) {
+            LinkedHashMap<String, Object> user = (LinkedHashMap<String, Object>) response.getBody().get(0);
+            return user.get("id").toString();
+        }
+
+        throw new RuntimeException("Keycloak user ID not found");
+    }
+
+    public boolean isEmailVerified(String keycloakId) {
+        Keycloak keycloak = KeycloakBuilder.builder()
+                .serverUrl("http://localhost:8080/auth")
+                .realm("")
+                .clientId("")
+                .clientSecret("")
+                .grantType(OAuth2Constants.CLIENT_CREDENTIALS)
+                .build();
+
+        UserRepresentation user = keycloak.realm("")
+                .users()
+                .get(keycloakId)
+                .toRepresentation();
+
+        return user.isEmailVerified();
+    }
+
+
 }
 
 
