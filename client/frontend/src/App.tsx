@@ -1,8 +1,5 @@
 import React from "react";
-import { PaymentPage } from "./pages/PaymentPage";
-import {LandingPage} from "./pages/LandingPage.tsx";
-import {RegisterPage} from "./pages/RegisterPage.tsx";
-import {AnalyticsPage} from "./pages/AnalyticsPage.tsx";
+import Router from "./components/Router.tsx";
 export function App() {
-  return <AnalyticsPage />;
+  return <Router />;
 }

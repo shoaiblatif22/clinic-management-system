@@ -90,6 +90,7 @@ export function DashboardContent() {
       </div>
     </div>;
 }
+
 function MetricCard({
   icon: Icon,
   title,
