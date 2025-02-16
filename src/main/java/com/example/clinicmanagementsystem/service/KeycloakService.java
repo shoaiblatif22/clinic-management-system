@@ -19,7 +19,7 @@ public class KeycloakService {
     @Value("${keycloak.server-url}")
     private String keycloakServerUrl;
 
-    @Value("${keycloak.realm}")
+    @Value("${keycloak.my_realm}")
     private String keycloakRealm;
 
     @Value("${keycloak.client-id}")

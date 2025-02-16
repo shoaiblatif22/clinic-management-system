@@ -51,10 +51,9 @@ jwt:
       resource-id: rest-api-doctor
       principle-attribute: preferred_username
 
-
 keycloak:
   server-url: ${KEYCLOAK_SERVER_URL}
-  realm: ${KEYCLOAK_REALM}
+  my_realm: ${KEYCLOAK_REALM}
   client-id: ${KEYCLOAK_CLIENT_ID}
   client-secret: ${KEYCLOAK_CLIENT_SECRET}
   admin-username: ${KEYCLOAK_ADMIN_USERNAME}
