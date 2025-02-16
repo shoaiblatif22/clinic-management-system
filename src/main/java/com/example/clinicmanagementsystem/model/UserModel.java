@@ -40,8 +40,9 @@ public class UserModel {
 
     private String addressLineOne;
     private String addressLineTwo;
-    private String townOrcity;
+    private String townOrCity;
     private String postcode;
+    private String county;
     private String country;
     private String password;
 
