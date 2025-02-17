@@ -1,9 +1,8 @@
 package com.example.clinicmanagementsystem.service;
 
 import com.example.clinicmanagementsystem.model.UserModel;
-import org.keycloak.OAuth2Constants;
-import org.keycloak.admin.client.Keycloak;
-import org.keycloak.admin.client.KeycloakBuilder;
+import org.keycloak.models.DefaultActionTokenKey;
+import org.keycloak.models.SingleUseObjectKeyModel;
 import org.keycloak.representations.idm.UserRepresentation;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -12,6 +11,7 @@ import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.http.*;
 import java.util.*;
+import org.keycloak.representations.JsonWebToken;
 
 @Service
 public class KeycloakService {
@@ -54,74 +54,78 @@ public class KeycloakService {
         return response.getBody().get("access_token").toString();
     }
 
-
     public String registerUser(UserModel userModel) {
-        String accessToken = getAdminAccessToken();
+        // Obtain the admin access token
+        String adminToken = getAdminAccessToken();
+
+        // Use the token to create the user via Keycloak REST API
         String url = keycloakServerUrl + "/admin/realms/" + keycloakRealm + "/users";
 
+        // Build user representation
+        UserRepresentation user = new UserRepresentation();
+        user.setUsername(userModel.getEmailAddress());
+        user.setFirstName(userModel.getFirstName());
+        user.setLastName(userModel.getLastName());
+        user.setEmail(userModel.getEmailAddress());
+        user.setEnabled(true);
+
+        // Add custom attributes
+        Map<String, List<String>> attributes = new HashMap<>();
+        attributes.put("dateOfBirth", Collections.singletonList(String.valueOf(userModel.getDateOfBirth())));
+        attributes.put("gender", Collections.singletonList(userModel.getGender()));
+        attributes.put("phoneNumber", Collections.singletonList(userModel.getPhoneNumber()));
+        attributes.put("addressLine1", Collections.singletonList(userModel.getAddressLineOne()));
+        attributes.put("addressLine2", Collections.singletonList(userModel.getAddressLineTwo()));
+        attributes.put("townCity", Collections.singletonList(userModel.getTownOrCity()));
+        attributes.put("country", Collections.singletonList(userModel.getCountry()));
+        attributes.put("postcode", Collections.singletonList(userModel.getPostcode()));
+
+        user.setAttributes(attributes);
+
+        // Create HTTP request with admin access token
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
-        headers.setBearerAuth(accessToken);
+        headers.set("Authorization", "Bearer " + adminToken);
 
-        Map<String, Object> user = new HashMap<>();
-        user.put("username", userModel.getEmailAddress());
-        user.put("firstName", userModel.getFirstName());
-        user.put("lastName", userModel.getLastName());
-        user.put("email", userModel.getEmailAddress());
+        HttpEntity<UserRepresentation> request = new HttpEntity<>(user, headers);
 
-        Map<String, Object> credentials = new HashMap<>();
-        credentials.put("type", "password");
-        credentials.put("value", userModel.getPassword());
-        credentials.put("temporary", false);
+        // Send request to Keycloak to create the user
+        ResponseEntity<String> response = restTemplate.exchange(url, HttpMethod.POST, request, String.class);
 
-        user.put("credentials", Collections.singletonList(credentials));
-
-        HttpEntity<Map<String, Object>> request = new HttpEntity<>(user, headers);
-        ResponseEntity<Void> response = restTemplate.postForEntity(url, request, Void.class);
-
-        if (response.getStatusCode().is2xxSuccessful()) {
-            return getUserKeycloakIdByEmail(userModel.getEmailAddress(), accessToken);
+        // Check response and return appropriate message
+        if (response.getStatusCode() == HttpStatus.CREATED) {
+            return "User registered successfully";
         } else {
-            throw new RuntimeException("Failed to register user in Keycloak");
+            return "User registration failed";
         }
     }
 
-    // Retrieve Keycloak User ID
-    private String getUserKeycloakIdByEmail(String email, String accessToken) {
-        String url = keycloakServerUrl + "/admin/realms/" + keycloakRealm + "/users?email=" + email;
+//    public class VerifyEmailActionToken extends DefaultActionToken {
+//
+//
+//    }
 
-        HttpHeaders headers = new HttpHeaders();
-        headers.setBearerAuth(accessToken);
-
-        HttpEntity<Void> request = new HttpEntity<>(headers);
-        ResponseEntity<List> response = restTemplate.exchange(url, HttpMethod.GET, request, List.class);
-
-        if (response.getStatusCode().is2xxSuccessful() && response.getBody() != null && !response.getBody().isEmpty()) {
-            LinkedHashMap<String, Object> user = (LinkedHashMap<String, Object>) response.getBody().get(0);
-            return user.get("id").toString();
-        }
-
-        throw new RuntimeException("Keycloak user ID not found");
-    }
-
-    public boolean isEmailVerified(String keycloakId) {
-        Keycloak keycloak = KeycloakBuilder.builder()
-                .serverUrl("http://localhost:8080/auth")
-                .realm("")
-                .clientId("")
-                .clientSecret("")
-                .grantType(OAuth2Constants.CLIENT_CREDENTIALS)
-                .build();
-
-        UserRepresentation user = keycloak.realm("")
-                .users()
-                .get(keycloakId)
-                .toRepresentation();
-
-        return user.isEmailVerified();
-    }
-
-
+//    public class DefaultActionToken extends JsonWebToken implements SingleUseObjectKeyModel {
+//        @Override
+//        public String getUserId() {
+//            return "";
+//        }
+//
+//        @Override
+//        public String getActionId() {
+//            return "";
+//        }
+//
+//        @Override
+//        public UUID getActionVerificationNonce() {
+//            return null;
+//        }
+//        public DefaultActionTokenKey(String userId,
+//                                     String actionId,
+//                                     int absoluteExpirationInSecs,
+//                                     UUID actionVerificationNonce);
+//    }
 }
+
 
 

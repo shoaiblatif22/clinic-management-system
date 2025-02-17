@@ -33,6 +33,7 @@ public class UserEntity {
     private String addressLineTwo;
     private String townOrCity;
     private String postcode;
+    private String county;
     private String country;
 
     public UserEntity(UserModel userModel, String keycloakId) {
