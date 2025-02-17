@@ -2,17 +2,16 @@ package com.example.clinicmanagementsystem.controller.user;
 
 import com.example.clinicmanagementsystem.model.UserModel;
 import com.example.clinicmanagementsystem.service.KeycloakService;
-import com.example.clinicmanagementsystem.service.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.Map;
 
 @RestController
 @RequestMapping(value = "/api/v1/registration")
-@CrossOrigin(origins = "*") // Allow multiple origins dynamically
+@CrossOrigin
 public class RegistrationController {
-    private final KeycloakService keycloakService;
 
+    private final KeycloakService keycloakService;
+    @Autowired
     public RegistrationController(KeycloakService keycloakService) {
         this.keycloakService = keycloakService;
     }

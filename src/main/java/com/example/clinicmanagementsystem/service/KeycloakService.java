@@ -1,6 +1,8 @@
 package com.example.clinicmanagementsystem.service;
 
 import com.example.clinicmanagementsystem.model.UserModel;
+import org.keycloak.models.DefaultActionTokenKey;
+import org.keycloak.models.SingleUseObjectKeyModel;
 import org.keycloak.representations.idm.UserRepresentation;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -9,6 +11,7 @@ import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.http.*;
 import java.util.*;
+import org.keycloak.representations.JsonWebToken;
 
 @Service
 public class KeycloakService {
@@ -96,6 +99,32 @@ public class KeycloakService {
             return "User registration failed";
         }
     }
+
+//    public class VerifyEmailActionToken extends DefaultActionToken {
+//
+//
+//    }
+
+//    public class DefaultActionToken extends JsonWebToken implements SingleUseObjectKeyModel {
+//        @Override
+//        public String getUserId() {
+//            return "";
+//        }
+//
+//        @Override
+//        public String getActionId() {
+//            return "";
+//        }
+//
+//        @Override
+//        public UUID getActionVerificationNonce() {
+//            return null;
+//        }
+//        public DefaultActionTokenKey(String userId,
+//                                     String actionId,
+//                                     int absoluteExpirationInSecs,
+//                                     UUID actionVerificationNonce);
+//    }
 }
 
 
