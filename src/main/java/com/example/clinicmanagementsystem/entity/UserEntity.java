@@ -1,6 +1,6 @@
 package com.example.clinicmanagementsystem.entity;
 
-import com.example.clinicmanagementsystem.model.UserModel;
+import com.example.clinicmanagementsystem.model.AppUserModel;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -36,7 +36,7 @@ public class UserEntity {
     private String county;
     private String country;
 
-    public UserEntity(UserModel userModel, String keycloakId) {
+    public UserEntity(AppUserModel appUserModel, String keycloakId) {
     }
 }
 
