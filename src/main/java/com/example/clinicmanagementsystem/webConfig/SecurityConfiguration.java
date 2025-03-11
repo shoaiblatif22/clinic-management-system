@@ -1,7 +1,10 @@
 package com.example.clinicmanagementsystem.webConfig;
 
 import com.example.clinicmanagementsystem.service.AppUserService;
+import com.example.clinicmanagementsystem.service.CachingUserDetailsService;
+import com.example.clinicmanagementsystem.service.ConcurrentMapUserCache;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -13,6 +16,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.core.userdetails.UserCache;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
@@ -66,4 +70,16 @@ public class SecurityConfiguration {
     public UserDetailsService userDetailsService() {
         return appUserService;
     }
+
+    @Bean
+    public CachingUserDetailsService cachingUserDetailsService(@Qualifier("appUserService") UserDetailsService delegate) {
+        return new CachingUserDetailsService(delegate);
+    }
+
+
+    @Bean
+    public UserCache userCache() {
+        return new ConcurrentMapUserCache();  // Can also configure a custom cache
+    }
+
 }
