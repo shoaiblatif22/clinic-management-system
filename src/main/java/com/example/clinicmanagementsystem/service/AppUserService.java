@@ -3,9 +3,8 @@ package com.example.clinicmanagementsystem.service;
 import com.example.clinicmanagementsystem.entity.AppUser;
 import com.example.clinicmanagementsystem.repository.AppUserRepository;
 
+import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
-import org.apache.commons.codec.BinaryEncoder;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -15,20 +14,28 @@ import org.springframework.stereotype.Service;
 @Service
 @AllArgsConstructor
 public class AppUserService implements UserDetailsService {
-    @Autowired
-    private PasswordEncoder passwordEncoder;
 
-    private final static String USER_NOT_FOUND_MSG = "User with email %s not found";
     private final AppUserRepository appUserRepository;
+    private final PasswordEncoder passwordEncoder;
 
     @Override
-    public UserDetails loadUserByUsername(String emailAddress) throws UsernameNotFoundException {
-        return appUserRepository.findByEmailAddress(emailAddress)
-                .orElseThrow(() -> new UsernameNotFoundException(String.format(USER_NOT_FOUND_MSG, emailAddress)));
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        return appUserRepository.findByEmailAddress(username)
+                .orElseThrow(() -> new UsernameNotFoundException("User not found"));
     }
 
-    public AppUser regiserUser(AppUser appUser, String password) {
-        appUser.setPassword(passwordEncoder.encode(password));
+    @Transactional
+    public AppUser registerUser(AppUser appUser, String password) {
+        // Perform validation on the appUser object
+        if (appUser == null || appUser.getEmailAddress() == null || appUser.getEmailAddress().isEmpty()) {
+            throw new IllegalArgumentException("Invalid user data");
+        }
+
+        // Hash the password
+        String encodedPassword = passwordEncoder.encode(password);
+        appUser.setPassword(encodedPassword);
+
+        // Save the user to the database
         return appUserRepository.save(appUser);
     }
 }

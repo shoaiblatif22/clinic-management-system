@@ -19,7 +19,8 @@ public class CachingUserDetailsService implements UserDetailsService {
         UserDetails cachedUser = userCache.getUserFromCache(username);
         if (cachedUser != null) {
             return cachedUser;
-        } else {
+        }
+        else {
             cachedUser = delegate.loadUserByUsername(username);
             userCache.putUserInCache(cachedUser);
             return cachedUser;

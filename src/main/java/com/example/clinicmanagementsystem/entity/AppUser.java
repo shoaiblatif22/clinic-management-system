@@ -11,6 +11,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 import java.time.LocalDate;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashSet;
+import java.util.Set;
 
 @Setter
 @Getter
@@ -19,7 +21,7 @@ import java.util.Collections;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "users")
-public class AppUserEntity implements UserDetails {
+public class AppUser implements UserDetails {
     @Id
     @SequenceGenerator(name = "user_sequence",
             sequenceName = "user_sequence",
@@ -47,10 +49,10 @@ public class AppUserEntity implements UserDetails {
     private Boolean locked;
     private Boolean enabled;
 
-    public AppUserEntity(AppUserModel appUserModel, String keycloakId) {
+    public AppUser(AppUserModel appUserModel, String keycloakId) {
     }
 
-    public AppUserEntity(String firstName, String lastName, LocalDate dateOfBirth, String gender, String phoneNumber, String emailAddress, String addressLineOne, String addressLineTwo, String townOrCity, String postcode, String county, String country, String password, AppUserRole appUserRole, Boolean locked, Boolean enabled) {
+    public AppUser(String firstName, String lastName, LocalDate dateOfBirth, String gender, String phoneNumber, String emailAddress, String addressLineOne, String addressLineTwo, String townOrCity, String postcode, String county, String country, String password, AppUserRole appUserRole, Boolean locked, Boolean enabled) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.dateOfBirth = dateOfBirth;
@@ -71,8 +73,9 @@ public class AppUserEntity implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        SimpleGrantedAuthority authority = new SimpleGrantedAuthority(appUserRole.name());
-        return Collections.singletonList(authority);
+        Set<GrantedAuthority> authorities = new HashSet<>();
+        authorities.add(new SimpleGrantedAuthority(appUserRole.name()));
+        return authorities;
     }
 
     @Override

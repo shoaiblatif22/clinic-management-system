@@ -1,8 +1,9 @@
-package com.example.clinicmanagementsystem.controller;
+package com.example.clinicmanagementsystem.controller.user;
 
 import com.example.clinicmanagementsystem.entity.AppUser;
 import com.example.clinicmanagementsystem.service.AppUserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -15,7 +16,7 @@ public class AuthController {
 
     @PostMapping("/register")
     public ResponseEntity<AppUser> registerUser(@RequestBody AppUser appUser, @RequestParam String password) {
-        AppUser registeredUser = appUserService.regiserUser(appUser, password);
-        return ResponseEntity.ok(registeredUser);  // Return the registered user or any relevant response
+        AppUser registeredUser = appUserService.registerUser(appUser, password);
+        return ResponseEntity.ok(registeredUser);
     }
 }

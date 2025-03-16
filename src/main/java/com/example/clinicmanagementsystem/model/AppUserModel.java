@@ -14,6 +14,7 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @AllArgsConstructor
 public class AppUserModel {
+
     @NotEmpty(message = "First name cannot be empty")
     @Size(min = 2, max = 30, message = "First name must be between 2 and 30 characters")
     @Pattern(regexp = "^[a-zA-Z]*$", message = "First name must contain only alphabetic characters")
@@ -37,6 +38,7 @@ public class AppUserModel {
     @NotEmpty(message = "Email cannot be empty")
     @Email(message = "Email must be valid")
     private String emailAddress;
+
     private String addressLineOne;
     private String addressLineTwo;
     private String townOrCity;

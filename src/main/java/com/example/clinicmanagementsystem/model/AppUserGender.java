@@ -1,5 +1,18 @@
 package com.example.clinicmanagementsystem.model;
 
+import lombok.Getter;
+
+@Getter
 public enum AppUserGender {
-    MALE, FEMALE, OTHER, PREFER_NOT_TO_SAY;
+    MALE("Male"),
+    FEMALE("Female"),
+    OTHER("Other"),
+    PREFER_NOT_TO_SAY("Prefer not to say"),
+    UNKNOWN("Unknown");
+
+    private final String displayName;
+
+    AppUserGender(String displayName) {
+        this.displayName = displayName;
+    }
 }

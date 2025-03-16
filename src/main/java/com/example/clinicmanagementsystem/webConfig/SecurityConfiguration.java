@@ -7,6 +7,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Lazy;
+import org.springframework.context.annotation.Primary;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
@@ -30,6 +32,7 @@ public class SecurityConfiguration {
 
     private final AppUserService appUserService;
 
+    @Primary
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http, WebMvcConfigurer customCorsConfig) throws Exception {
 
@@ -76,7 +79,7 @@ public class SecurityConfiguration {
         return new CachingUserDetailsService(delegate);
     }
 
-
+    @Lazy
     @Bean
     public UserCache userCache() {
         return new ConcurrentMapUserCache();  // Can also configure a custom cache
