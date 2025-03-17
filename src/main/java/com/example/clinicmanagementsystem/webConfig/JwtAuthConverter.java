@@ -24,12 +24,7 @@ import java.util.stream.Collectors;
 public class JwtAuthConverter implements org.springframework.core.convert.converter.Converter<Jwt, Collection<GrantedAuthority>> {
 
     private final JwtGrantedAuthoritiesConverter defaultConverter = new JwtGrantedAuthoritiesConverter();
-    /**
-     * Extracts and converts Keycloak roles from the JWT into a collection of granted authorities.
-     *
-     * @param jwt The JSON Web Token (JWT) received from the client.
-     * @return A collection of {@link GrantedAuthority} representing the user's roles.
-     */
+
     @Override
     public Collection<GrantedAuthority> convert(@NonNull Jwt jwt) {
 
