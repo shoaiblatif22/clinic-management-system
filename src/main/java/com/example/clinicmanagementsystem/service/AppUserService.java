@@ -1,6 +1,6 @@
 package com.example.clinicmanagementsystem.service;
 
-import com.example.clinicmanagementsystem.entity.AppUser;
+import com.example.clinicmanagementsystem.entity.ClinicAppUser;
 import com.example.clinicmanagementsystem.repository.AppUserRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -24,21 +24,21 @@ public class AppUserService implements UserDetailsService {
     }
 
     @Transactional
-    public AppUser registerUser(AppUser appUser) {
+    public ClinicAppUser registerUser(ClinicAppUser clinicAppUser) {
         // Check if email already exists
-        if (appUserRepository.findByEmailAddress(appUser.getEmailAddress()).isPresent()) {
+        if (appUserRepository.findByEmailAddress(clinicAppUser.getEmailAddress()).isPresent()) {
             throw new IllegalArgumentException("Email is already taken");
         }
         // Validate user fields
-        if (appUser.getEmailAddress() == null || appUser.getEmailAddress().isEmpty()) {
+        if (clinicAppUser.getEmailAddress() == null || clinicAppUser.getEmailAddress().isEmpty()) {
             throw new IllegalArgumentException("Email is required");
         }
-        if (appUser.getPassword() == null || appUser.getPassword().isEmpty()) {
+        if (clinicAppUser.getPassword() == null || clinicAppUser.getPassword().isEmpty()) {
             throw new IllegalArgumentException("Password is required");
         }
         // Hash the password before saving
-        appUser.setPassword(passwordEncoder.encode(appUser.getPassword()));
+        clinicAppUser.setPassword(passwordEncoder.encode(clinicAppUser.getPassword()));
         // Save and return user
-        return appUserRepository.save(appUser);
+        return appUserRepository.save(clinicAppUser);
     }
 }

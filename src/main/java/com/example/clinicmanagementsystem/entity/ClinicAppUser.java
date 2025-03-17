@@ -20,7 +20,7 @@ import java.util.Set;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "users")
-public class AppUser implements UserDetails {
+public class ClinicAppUser implements UserDetails {
     @Id
     @SequenceGenerator(name = "user_sequence",
             sequenceName = "user_sequence",
@@ -48,10 +48,10 @@ public class AppUser implements UserDetails {
     private Boolean locked;
     private Boolean enabled;
 
-    public AppUser(AppUserModelRegister appUserModelRegister, String keycloakId) {
+    public ClinicAppUser(AppUserModelRegister appUserModelRegister, String keycloakId) {
     }
 
-    public AppUser(String firstName, String lastName, LocalDate dateOfBirth, String gender, String phoneNumber, String emailAddress, String addressLineOne, String addressLineTwo, String townOrCity, String postcode, String county, String country, String password, AppUserRole appUserRole, Boolean locked, Boolean enabled) {
+    public ClinicAppUser(String firstName, String lastName, LocalDate dateOfBirth, String gender, String phoneNumber, String emailAddress, String addressLineOne, String addressLineTwo, String townOrCity, String postcode, String county, String country, String password, AppUserRole appUserRole, Boolean locked, Boolean enabled) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.dateOfBirth = dateOfBirth;

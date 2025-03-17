@@ -13,7 +13,7 @@ import java.time.LocalDate;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class AppUserModel {
+public class AppUserModelRegister {
 
     @NotEmpty(message = "First name cannot be empty")
     @Size(min = 2, max = 30, message = "First name must be between 2 and 30 characters")
