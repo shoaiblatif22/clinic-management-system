@@ -1,6 +1,6 @@
 package com.example.clinicmanagementsystem.entity;
 
-import com.example.clinicmanagementsystem.model.AppUserModel;
+import com.example.clinicmanagementsystem.model.AppUserModelRegister;
 import com.example.clinicmanagementsystem.model.AppUserRole;
 import jakarta.persistence.*;
 import lombok.*;
@@ -10,7 +10,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import java.time.LocalDate;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -49,7 +48,7 @@ public class AppUser implements UserDetails {
     private Boolean locked;
     private Boolean enabled;
 
-    public AppUser(AppUserModel appUserModel, String keycloakId) {
+    public AppUser(AppUserModelRegister appUserModelRegister, String keycloakId) {
     }
 
     public AppUser(String firstName, String lastName, LocalDate dateOfBirth, String gender, String phoneNumber, String emailAddress, String addressLineOne, String addressLineTwo, String townOrCity, String postcode, String county, String country, String password, AppUserRole appUserRole, Boolean locked, Boolean enabled) {
