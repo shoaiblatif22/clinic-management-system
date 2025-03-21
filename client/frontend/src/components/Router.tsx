@@ -7,8 +7,7 @@ import {RegisterPage} from "../pages/RegisterPage.tsx";
 import {ForgotPasswordPage} from "../pages/ForgotPasswordPage.tsx";
 import {ReadingsPage} from "../pages/ReadingsPage.tsx";
 import {AIInsightsPage} from "../pages/AIInsightsPage.tsx";
-import {DoctorDashboard} from "../pages/DoctorDashboard.tsx";
-import {PatientDashboard} from "../pages/PatientDashboard.tsx";
+// import {PatientDashboard} from "../pages/PatientDashboard.tsx";
 import {AppointmentsPage} from "../pages/AppointmentsPage.tsx";
 
 
@@ -22,10 +21,10 @@ const Router = () => {
           <Route path="/register" element={<RegisterPage />} />
           <Route path="/payment" element={<PaymentPage />} />
           <Route path="/pricing" element={<PricingPage />} />
-          <Route path="/ReadingsPage" element={<ReadingsPage />} />
+          <Route path="/readings" element={<ReadingsPage />} />
           <Route path="/insights" element={<AIInsightsPage />} />
 
-        <Route path="/DoctorDashboard" element={<DoctorDashboard />} />
+        {/*<Route path="/DoctorDashboard" element={<DoctorDashboard />} />*/}
         <Route path="/appointments" element={<AppointmentsPage />} />
       </Routes>
     </BrowserRouter>

@@ -1,9 +1,11 @@
 package com.example.clinicmanagementsystem.service;
 
 import com.example.clinicmanagementsystem.entity.ClinicAppUser;
+import com.example.clinicmanagementsystem.events.RegistrationCompleteEvent;
 import com.example.clinicmanagementsystem.repository.AppUserRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -16,6 +18,7 @@ public class AppUserService implements UserDetailsService {
 
     private final AppUserRepository appUserRepository;
     private final PasswordEncoder passwordEncoder;
+    private final ApplicationEventPublisher eventPublisher;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
@@ -38,6 +41,8 @@ public class AppUserService implements UserDetailsService {
         }
         // Hash the password before saving
         clinicAppUser.setPassword(passwordEncoder.encode(clinicAppUser.getPassword()));
+        // Publish event
+        eventPublisher.publishEvent(new RegistrationCompleteEvent(clinicAppUser, null));
         // Save and return user
         return appUserRepository.save(clinicAppUser);
     }

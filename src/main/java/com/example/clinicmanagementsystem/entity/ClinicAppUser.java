@@ -46,12 +46,14 @@ public class ClinicAppUser implements UserDetails {
     @Enumerated(EnumType.STRING)
     private AppUserRole appUserRole;
     private Boolean locked;
+    @Column(name = "enabled")
     private Boolean enabled;
 
-    public ClinicAppUser(AppUserModelRegister appUserModelRegister, String keycloakId) {
+    public ClinicAppUser(AppUserModelRegister appUserModelRegister) {
     }
 
     public ClinicAppUser(String firstName, String lastName, LocalDate dateOfBirth, String gender, String phoneNumber, String emailAddress, String addressLineOne, String addressLineTwo, String townOrCity, String postcode, String county, String country, String password, AppUserRole appUserRole, Boolean locked, Boolean enabled) {
+        super();
         this.firstName = firstName;
         this.lastName = lastName;
         this.dateOfBirth = dateOfBirth;
@@ -67,7 +69,7 @@ public class ClinicAppUser implements UserDetails {
         this.password = password;
         this.appUserRole = appUserRole;
         this.locked = locked;
-        this.enabled = enabled;
+        this.enabled = false;
     }
 
     @Override
