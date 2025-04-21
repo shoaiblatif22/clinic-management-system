@@ -1,10 +1,17 @@
 package com.example.clinicmanagementsystem.user.registration.service;
 
 import com.example.clinicmanagementsystem.user.registration.entity.ClinicAppUser;
+import com.example.clinicmanagementsystem.user.registration.entity.VerificationToken;
 import com.example.clinicmanagementsystem.user.registration.events.RegistrationCompleteEvent;
 import com.example.clinicmanagementsystem.user.registration.repository.AppUserRepository;
+import com.example.clinicmanagementsystem.user.registration.repository.VerificationTokenRepository;
+
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+
+import java.time.LocalDateTime;
+import java.util.UUID;
+
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -19,6 +26,7 @@ public class AppUserService implements UserDetailsService {
     private final AppUserRepository appUserRepository;
     private final PasswordEncoder passwordEncoder;
     private final ApplicationEventPublisher eventPublisher;
+    private final VerificationTokenRepository tokenRepository;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
@@ -39,11 +47,15 @@ public class AppUserService implements UserDetailsService {
         if (clinicAppUser.getPassword() == null || clinicAppUser.getPassword().isEmpty()) {
             throw new IllegalArgumentException("Password is required");
         }
+        clinicAppUser.setLocked(true);
+        clinicAppUser.setEnabled(false);
         // Hash the password before saving
         clinicAppUser.setPassword(passwordEncoder.encode(clinicAppUser.getPassword()));
-        // Publish event
-        eventPublisher.publishEvent(new RegistrationCompleteEvent(clinicAppUser, null));
-        // Save and return user
-        return appUserRepository.save(clinicAppUser);
+        //save user
+        ClinicAppUser savedUser = appUserRepository.save(clinicAppUser);
+        // register event
+        eventPublisher.publishEvent(new RegistrationCompleteEvent(savedUser, null));
+        // return savedUser
+        return savedUser;
     }
 }
