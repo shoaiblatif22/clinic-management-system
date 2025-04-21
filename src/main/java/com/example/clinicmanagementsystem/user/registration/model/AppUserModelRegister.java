@@ -1,4 +1,4 @@
-package com.example.clinicmanagementsystem.model;
+package com.example.clinicmanagementsystem.user.registration.model;
 
 
 import jakarta.validation.constraints.*;

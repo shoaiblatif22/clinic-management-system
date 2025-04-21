@@ -1,4 +1,4 @@
-package com.example.clinicmanagementsystem.service;
+package com.example.clinicmanagementsystem.user.registration.service;
 
 import org.springframework.security.core.userdetails.UserCache;
 import org.springframework.security.core.userdetails.UserDetails;

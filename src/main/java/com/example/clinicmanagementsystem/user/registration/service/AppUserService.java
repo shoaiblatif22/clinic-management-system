@@ -1,8 +1,8 @@
-package com.example.clinicmanagementsystem.service;
+package com.example.clinicmanagementsystem.user.registration.service;
 
-import com.example.clinicmanagementsystem.entity.ClinicAppUser;
-import com.example.clinicmanagementsystem.events.RegistrationCompleteEvent;
-import com.example.clinicmanagementsystem.repository.AppUserRepository;
+import com.example.clinicmanagementsystem.user.registration.entity.ClinicAppUser;
+import com.example.clinicmanagementsystem.user.registration.events.RegistrationCompleteEvent;
+import com.example.clinicmanagementsystem.user.registration.repository.AppUserRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.ApplicationEventPublisher;

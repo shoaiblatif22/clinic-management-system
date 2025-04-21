@@ -1,7 +1,7 @@
-package com.example.clinicmanagementsystem.repository;
+package com.example.clinicmanagementsystem.user.registration.repository;
 
-import com.example.clinicmanagementsystem.entity.ClinicAppUser;
-import com.example.clinicmanagementsystem.model.AppUserRole;
+import com.example.clinicmanagementsystem.user.registration.entity.ClinicAppUser;
+import com.example.clinicmanagementsystem.user.registration.model.AppUserRole;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;

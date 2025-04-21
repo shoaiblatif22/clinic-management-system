@@ -1,4 +1,4 @@
-package com.example.clinicmanagementsystem.webConfig;
+package com.example.clinicmanagementsystem.user.registration.webConfig;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -20,5 +20,4 @@ public class CorsConfig {
             }
         };
     }
-
 }

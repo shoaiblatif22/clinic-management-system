@@ -1,4 +1,4 @@
-package com.example.clinicmanagementsystem.events;
+package com.example.clinicmanagementsystem.user.registration.events;
 
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;

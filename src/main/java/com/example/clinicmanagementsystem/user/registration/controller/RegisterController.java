@@ -1,11 +1,10 @@
-package com.example.clinicmanagementsystem.controller.user;
+package com.example.clinicmanagementsystem.user.registration.controller;
 
-import com.example.clinicmanagementsystem.entity.ClinicAppUser;
-import com.example.clinicmanagementsystem.events.RegistrationCompleteEvent;
-import com.example.clinicmanagementsystem.service.AppUserService;
+import com.example.clinicmanagementsystem.user.registration.entity.ClinicAppUser;
+import com.example.clinicmanagementsystem.user.registration.events.RegistrationCompleteEvent;
+import com.example.clinicmanagementsystem.user.registration.service.AppUserService;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -33,3 +32,5 @@ public class RegisterController {
         }
     }
 }
+//
+

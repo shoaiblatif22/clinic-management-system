@@ -1,4 +1,4 @@
-package com.example.clinicmanagementsystem.service;
+package com.example.clinicmanagementsystem.user.registration.service;
 
 import lombok.Setter;
 import org.springframework.security.core.userdetails.*;

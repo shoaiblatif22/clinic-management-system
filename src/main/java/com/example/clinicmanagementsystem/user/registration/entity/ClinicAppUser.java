@@ -1,7 +1,7 @@
-package com.example.clinicmanagementsystem.entity;
+package com.example.clinicmanagementsystem.user.registration.entity;
 
-import com.example.clinicmanagementsystem.model.AppUserModelRegister;
-import com.example.clinicmanagementsystem.model.AppUserRole;
+import com.example.clinicmanagementsystem.user.registration.model.AppUserModelRegister;
+import com.example.clinicmanagementsystem.user.registration.model.AppUserRole;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
