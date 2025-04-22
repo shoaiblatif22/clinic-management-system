@@ -1,7 +1,7 @@
 import React from "react";
 import { Activity, Heart, Brain, Calendar, Settings, Home, Target, Book } from "lucide-react";
 import {Route} from "react-router-dom";
-import {PatientDashboard} from "../pages/PatientDashboard.tsx";
+import {PatientDashboard} from "../pages/patient/PatientDashboard.tsx";
 export function Sidebar() {
   return <aside className="w-64 bg-white border-r border-gray-200 h-screen flex flex-col">
     <div className="p-6">

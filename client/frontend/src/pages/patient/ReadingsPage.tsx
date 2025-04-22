@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Layout } from "../components/Layout";
+import { Layout } from "../../components/Layout.tsx";
 import { Calendar, Clock, Download, Link as LinkIcon, Plus, Activity, AlertCircle, CheckCircle2, Timer, Smartphone, ChevronDown } from "lucide-react";
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, ReferenceLine } from "recharts";
 // Mock data for the chart

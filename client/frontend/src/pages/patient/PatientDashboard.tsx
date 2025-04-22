@@ -1,5 +1,5 @@
 import React from "react";
-import { Sidebar } from "../components/Sidebar"; // Ensure the correct import path
+import { Sidebar } from "../../components/Sidebar.tsx"; // Ensure the correct import path
 import { Activity, Target, Droplet, Brain } from "lucide-react";
 
 export function PatientDashboard() {

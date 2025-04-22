@@ -1,6 +1,8 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { ArrowLeft, Check } from "lucide-react";
 export function RegisterPage() {
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     firstName: "",
     lastName: "",
@@ -27,6 +29,7 @@ export function RegisterPage() {
     })
     if (response.ok) {
       console.log("Form submitted successfully!");
+      navigate("/verify");
     } else {
       console.error("Error submitting form");
     }
