@@ -31,7 +31,7 @@ public class RegisterController {
         try {
             ClinicAppUser registeredUser = appUserService.registerUser(clinicAppUser);
 
-            String appUrl = request.getContextPath();
+            String appUrl = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort();
             eventPublisher.publishEvent(new RegistrationCompleteEvent(registeredUser, appUrl));
 
             return ResponseEntity.status(HttpStatus.CREATED).body(registeredUser);
