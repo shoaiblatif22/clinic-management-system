@@ -147,29 +147,29 @@ export function RegisterPage() {
               </h2>
               <div className="grid grid-cols-1 gap-6">
                 <div>
-                  <label htmlFor="addressLine1" className="block text-sm font-medium text-gray-700 mb-1">
+                  <label htmlFor="addressLineOne" className="block text-sm font-medium text-gray-700 mb-1">
                     Address Line 1
                   </label>
-                  <input type="text" id="addressLine1" name="addressLine1" value={formData.addressLineOne}
+                  <input type="text" id="addressLineOne" name="addressLineOne" value={formData.addressLineOne}
                          onChange={handleChange}
                          className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent"
                          required/>
                 </div>
                 <div>
-                  <label htmlFor="addressLine2" className="block text-sm font-medium text-gray-700 mb-1">
+                  <label htmlFor="addressLineTwo" className="block text-sm font-medium text-gray-700 mb-1">
                     Address Line 2{" "}
                     <span className="text-gray-400">(Optional)</span>
                   </label>
-                  <input type="text" id="addressLine2" name="addressLine2" value={formData.addressLineTwo}
+                  <input type="text" id="addressLineTwo" name="addressLineTwo" value={formData.addressLineTwo}
                          onChange={handleChange}
                          className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent"/>
                 </div>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div>
-                    <label htmlFor="townCity" className="block text-sm font-medium text-gray-700 mb-1">
+                    <label htmlFor="townOrCity" className="block text-sm font-medium text-gray-700 mb-1">
                       Town/City
                     </label>
-                    <input type="text" id="townCity" name="townCity" value={formData.townOrCity} onChange={handleChange}
+                    <input type="text" id="townOrCity" name="townOrCity" value={formData.townOrCity} onChange={handleChange}
                            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent"
                            required/>
                   </div>
@@ -211,10 +211,10 @@ export function RegisterPage() {
               </h2>
               <div className="grid grid-cols-1 gap-6">
                 <div>
-                  <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">
+                  <label htmlFor="emailAddress" className="block text-sm font-medium text-gray-700 mb-1">
                     Email Address
                   </label>
-                  <input type="email" id="email" name="email" value={formData.emailAddress} onChange={handleChange}
+                  <input type="email" id="emailAddress" name="emailAddress" value={formData.emailAddress} onChange={handleChange}
                          className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent"
                          required/>
                 </div>
