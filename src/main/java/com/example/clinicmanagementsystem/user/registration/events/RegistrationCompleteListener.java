@@ -1,6 +1,7 @@
 package com.example.clinicmanagementsystem.user.registration.events;
 
 import java.time.LocalDateTime;
+import java.util.Optional;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,8 +25,22 @@ public class RegistrationCompleteListener {
     @EventListener
     public void handleRegistrationCompleteEvent(RegistrationCompleteEvent event) {
         ClinicAppUser user = event.clinicAppUser();
+        
         String token = UUID.randomUUID().toString();
-        VerificationToken verificationToken = new VerificationToken(token, user, LocalDateTime.now().plusHours(24));
+        LocalDateTime expiryDate = LocalDateTime.now().plusHours(24);
+        
+        // Try to find an existing token for this user
+        Optional<VerificationToken> existingTokenOpt = tokenRepository.findByUser(user);
+        VerificationToken verificationToken;
+        if (existingTokenOpt.isPresent()) {
+            // Update the existing token
+            verificationToken = existingTokenOpt.get();
+            verificationToken.setToken(token);
+            verificationToken.setExpiryDate(expiryDate);
+        } else {
+            // Create a new token if none exists
+            verificationToken = new VerificationToken(token, user, expiryDate);
+        }
         tokenRepository.save(verificationToken);
 
         String verificationUrl = event.appUrl() + "/api/v1/registration/verify?token=" + token;

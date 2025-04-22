@@ -53,8 +53,6 @@ public class AppUserService implements UserDetailsService {
         clinicAppUser.setPassword(passwordEncoder.encode(clinicAppUser.getPassword()));
         //save user
         ClinicAppUser savedUser = appUserRepository.save(clinicAppUser);
-        // register event
-        eventPublisher.publishEvent(new RegistrationCompleteEvent(savedUser, null));
         // return savedUser
         return savedUser;
     }
