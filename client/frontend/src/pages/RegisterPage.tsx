@@ -7,19 +7,18 @@ export function RegisterPage() {
     dateOfBirth: "",
     gender: "",
     phoneNumber: "",
-    addressLine1: "",
-    addressLine2: "",
-    townCity: "",
+    emailAddress: "",
+    addressLineOne: "",
+    addressLineTwo: "",
+    townOrCity: "",
+    postcode: "",
     county: "",
     country: "",
-    postcode: "",
-    email: "",
-    password: "",
-    confirmPassword: ""
+    password: ""
   });
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    const response = await fetch("http://localhost:8081/api/v1/registration/register", {
+    const response = await fetch("http://localhost:8080/api/v1/auth/register", {
       method: "POST",
       headers: {
         "Content-Type": "application/json"
@@ -151,7 +150,7 @@ export function RegisterPage() {
                   <label htmlFor="addressLine1" className="block text-sm font-medium text-gray-700 mb-1">
                     Address Line 1
                   </label>
-                  <input type="text" id="addressLine1" name="addressLine1" value={formData.addressLine1}
+                  <input type="text" id="addressLine1" name="addressLine1" value={formData.addressLineOne}
                          onChange={handleChange}
                          className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent"
                          required/>
@@ -161,7 +160,7 @@ export function RegisterPage() {
                     Address Line 2{" "}
                     <span className="text-gray-400">(Optional)</span>
                   </label>
-                  <input type="text" id="addressLine2" name="addressLine2" value={formData.addressLine2}
+                  <input type="text" id="addressLine2" name="addressLine2" value={formData.addressLineTwo}
                          onChange={handleChange}
                          className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent"/>
                 </div>
@@ -170,7 +169,7 @@ export function RegisterPage() {
                     <label htmlFor="townCity" className="block text-sm font-medium text-gray-700 mb-1">
                       Town/City
                     </label>
-                    <input type="text" id="townCity" name="townCity" value={formData.townCity} onChange={handleChange}
+                    <input type="text" id="townCity" name="townCity" value={formData.townOrCity} onChange={handleChange}
                            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent"
                            required/>
                   </div>
@@ -215,7 +214,7 @@ export function RegisterPage() {
                   <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">
                     Email Address
                   </label>
-                  <input type="email" id="email" name="email" value={formData.email} onChange={handleChange}
+                  <input type="email" id="email" name="email" value={formData.emailAddress} onChange={handleChange}
                          className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent"
                          required/>
                 </div>
@@ -224,15 +223,6 @@ export function RegisterPage() {
                     Password
                   </label>
                   <input type="password" id="password" name="password" value={formData.password} onChange={handleChange}
-                         className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent"
-                         required/>
-                </div>
-                <div>
-                  <label htmlFor="confirmPassword" className="block text-sm font-medium text-gray-700 mb-1">
-                    Confirm Password
-                  </label>
-                  <input type="password" id="confirmPassword" name="confirmPassword" value={formData.confirmPassword}
-                         onChange={handleChange}
                          className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent"
                          required/>
                 </div>
