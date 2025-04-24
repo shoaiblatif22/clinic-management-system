@@ -37,7 +37,7 @@ public class RegistrationVerificationController {
         userRepository.save(user);
         tokenRepository.delete(verificationToken);
         return ResponseEntity.status(302)
-                .header("Location", "http://localhost:5173/verification-success")
+                .header("Location", "http://localhost:5173/verify-success")
                 .build();
     }
 }
