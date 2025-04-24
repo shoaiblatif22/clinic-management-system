@@ -44,7 +44,7 @@ public class ClinicAppUser implements UserDetails {
     private String country;
     private String password;
     @Enumerated(EnumType.STRING)
-    private AppUserRole appUserRole;
+    private AppUserRole appUserRole = AppUserRole.USER;
     private Boolean locked;
     @Column(name = "enabled")
     private Boolean enabled;

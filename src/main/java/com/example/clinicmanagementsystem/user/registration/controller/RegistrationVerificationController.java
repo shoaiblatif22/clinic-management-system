@@ -5,6 +5,7 @@ import com.example.clinicmanagementsystem.user.registration.entity.VerificationT
 import com.example.clinicmanagementsystem.user.registration.repository.AppUserRepository;
 import com.example.clinicmanagementsystem.user.registration.repository.VerificationTokenRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -35,6 +36,8 @@ public class RegistrationVerificationController {
         user.setEnabled(true);
         userRepository.save(user);
         tokenRepository.delete(verificationToken);
-        return ResponseEntity.ok("Account verified!");
+        return ResponseEntity.status(302)
+                .header("Location", "http://localhost:5173/verification-success")
+                .build();
     }
 }

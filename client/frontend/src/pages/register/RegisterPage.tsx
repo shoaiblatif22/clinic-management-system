@@ -29,7 +29,7 @@ export function RegisterPage() {
     })
     if (response.ok) {
       console.log("Form submitted successfully!");
-      navigate("/verify");
+      navigate("/verify-pending");
     } else {
       console.error("Error submitting form");
     }
