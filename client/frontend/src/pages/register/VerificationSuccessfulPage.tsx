@@ -1,6 +1,6 @@
-import React from 'react'
 import { CheckCircle, ArrowRight } from 'lucide-react'
 export function VerificationSuccessPage() {
+
     return (
         <div className="min-h-screen bg-gray-50 flex flex-col justify-center py-12 px-4 sm:px-6 lg:px-8">
             <div className="sm:mx-auto sm:w-full sm:max-w-md">
@@ -31,11 +31,14 @@ export function VerificationSuccessPage() {
                         </div>
                     </div>
                     {/* Action Button */}
-                    <button className="w-full flex justify-center items-center py-3 px-4 rounded-lg text-sm font-medium text-white bg-teal-500 hover:bg-teal-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-teal-500 transition-colors">
-                        <span>Continue to Dashboard</span>
-                        <ArrowRight className="w-4 h-4 ml-2" />
-                    </button>
-                    {/* Help Link */}
+                    <a href="/login">
+                        <button
+                            className="w-full flex justify-center items-center py-3 px-4 rounded-lg text-sm font-medium text-white bg-teal-500 hover:bg-teal-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-teal-500 transition-colors">
+                            <span>Continue to Login</span>
+                            <ArrowRight className="w-4 h-4 ml-2"/>
+                        </button>
+                    </a>
+                {/* Help Link */}
                     <div className="mt-6 text-center">
                         <a
                             href="/help"

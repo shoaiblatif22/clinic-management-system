@@ -29,12 +29,13 @@ public class ClinicAppUser implements UserDetails {
             generator = "user_sequence")
     private Long id;
 
-    @Column(unique = true, nullable = false)
+    @Column(nullable = false)
     private String firstName;
     private String lastName;
     private LocalDate dateOfBirth;
     private String gender;
     private String phoneNumber;
+    @Column(unique = true)
     private String emailAddress;
     private String addressLineOne;
     private String addressLineTwo;
