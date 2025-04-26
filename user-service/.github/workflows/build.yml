@@ -1,0 +1,43 @@
+name: Build
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v2
+        with:
+          submodules: recursive # Fetches submodules if any
+
+      - name: Set up Java 17
+        uses: actions/setup-java@v3
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+          working-directory: ./clinic-management-system
+
+      - name: Cache Maven dependencies
+        uses: actions/cache@v3
+        with:
+          path: ~/.m2/repository
+          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+          restore-keys: |
+            ${{ runner.os }}-maven-
+
+      - name: Check Java Version (for verification)
+        run: |
+          echo "Java Version:"
+          java -version
+          # Check for Java 17
+          if ! java -version 2>&1 | grep -q "17.*"; then
+            echo "Error: Java 17 is required!"
+            exit 1
+          fi
+
+      ##Placeholder -
+
