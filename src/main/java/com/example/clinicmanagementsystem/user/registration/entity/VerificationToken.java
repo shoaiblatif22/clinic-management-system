@@ -1,9 +1,12 @@
 package com.example.clinicmanagementsystem.user.registration.entity;
 
 import jakarta.persistence.*;
+import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
+
 import java.time.LocalDateTime;
 
 @Entity
+@EnableJpaAuditing
 public class VerificationToken {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

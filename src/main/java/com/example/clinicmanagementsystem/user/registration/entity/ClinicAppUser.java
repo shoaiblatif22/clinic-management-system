@@ -4,6 +4,7 @@ import com.example.clinicmanagementsystem.user.registration.model.AppUserModelRe
 import com.example.clinicmanagementsystem.user.registration.model.AppUserRole;
 import jakarta.persistence.*;
 import lombok.*;
+import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -19,6 +20,7 @@ import java.util.Set;
 @EqualsAndHashCode
 @NoArgsConstructor
 @AllArgsConstructor
+@EnableJpaAuditing
 @Table(name = "users")
 public class ClinicAppUser implements UserDetails {
     @Id

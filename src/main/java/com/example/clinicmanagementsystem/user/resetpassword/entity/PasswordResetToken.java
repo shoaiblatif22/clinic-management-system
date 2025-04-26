@@ -3,12 +3,14 @@ package com.example.clinicmanagementsystem.user.resetpassword.entity;
 import com.example.clinicmanagementsystem.user.registration.entity.ClinicAppUser;
 import jakarta.persistence.*;
 import lombok.Getter;
+import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 
 import java.util.Date;
 import java.util.Calendar;
 
 @Getter
 @Entity
+@EnableJpaAuditing
 public class PasswordResetToken {
 
     private static final int EXPIRATION = 60 * 24; // 24 hours

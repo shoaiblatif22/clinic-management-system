@@ -21,9 +21,11 @@ export function LandingPage() {
               <a href="#testimonials" className="text-gray-600 hover:text-gray-900">
                 Testimonials
               </a>
+              <a href="/register">
               <button className="bg-teal-500 text-white px-4 py-2 rounded-lg hover:bg-teal-600 transition-colors">
                 Get Started
               </button>
+              </a>
             </div>
           </div>
         </div>
@@ -104,9 +106,13 @@ export function LandingPage() {
                     <span className="text-gray-600">{benefit}</span>
                   </div>)}
               </div>
-              <button className="bg-teal-500 text-white px-6 py-3 rounded-lg hover:bg-teal-600 transition-colors">
-                Get Started Now
-              </button>
+              <div className="mt-8">
+                <a href="/register">
+                <button className="bg-teal-500 text-white px-6 py-3 rounded-lg hover:bg-teal-600 transition-colors">
+                  Get Started Now
+                </button>
+                </a>
+              </div>
             </div>
             <div className="bg-gray-50 p-8 rounded-2xl border border-gray-200">
               <div className="space-y-4">
@@ -183,9 +189,11 @@ export function LandingPage() {
               Join thousands of users who have transformed their diabetes
               management with DiabetesAI.
             </p>
+            <a href="/register">
             <button className="bg-white text-teal-600 px-8 py-3 rounded-lg hover:bg-teal-50 transition-colors">
               Get Started Free
             </button>
+            </a>
           </div>
         </div>
       </section>

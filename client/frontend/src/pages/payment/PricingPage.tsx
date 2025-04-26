@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { Check, Shield, Star, ArrowRight, Info } from "lucide-react";
+import { useState } from "react";
+import { Check, Shield, Star, ArrowRight } from "lucide-react";
 export function PricingPage() {
   const [billingPeriod, setBillingPeriod] = useState<"monthly" | "yearly">("monthly");
   const plans = {

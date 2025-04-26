@@ -1,10 +1,10 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import {LandingPage} from '../pages/LandingPage';
-import {LoginPage} from '../pages/LoginPage';
+import {LoginPage} from '../pages/login/LoginPage.tsx';
 import {PaymentPage} from "../pages/payment/PaymentPage.tsx";
 import {PricingPage} from "../pages/payment/PricingPage.tsx";
 import {RegisterPage} from "../pages/register/RegisterPage.tsx";
-import {ForgotPasswordPage} from "../pages/ForgotPasswordPage.tsx";
+import {ForgotPasswordPage} from "../pages/forgotpassword/ForgotPasswordPage.tsx";
 import {ReadingsPage} from "../pages/patient/ReadingsPage.tsx";
 import {AIInsightsPage} from "../pages/patient/AIInsightsPage.tsx";
 // import {PatientDashboard} from "../pages/PatientDashboard.tsx";
