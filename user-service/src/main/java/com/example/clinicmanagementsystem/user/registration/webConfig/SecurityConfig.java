@@ -24,13 +24,14 @@ public class SecurityConfig {
     @Primary
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+
         http
                 .csrf(AbstractHttpConfigurer::disable)
                 .cors(Customizer.withDefaults())
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
-                        .requestMatchers("/api/v1/auth/login", "/api/v1/registration/verify", "/api/v1/auth/register").permitAll()
-                        .requestMatchers("/api/password-reset/**").permitAll()
+                        .requestMatchers("/user/api/v1/auth/login", "/user/api/v1/registration/verify", "/user/api/v1/auth/register").permitAll()
+                        .requestMatchers("/user/api/password-reset/**").permitAll()
                         .requestMatchers("/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html").permitAll()
                         .anyRequest().authenticated()
                 )

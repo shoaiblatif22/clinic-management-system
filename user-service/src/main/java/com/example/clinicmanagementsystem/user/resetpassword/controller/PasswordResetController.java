@@ -13,7 +13,7 @@ import org.springframework.context.ApplicationEventPublisher;
 
 
 @RestController
-@RequestMapping("/api/password-reset")
+@RequestMapping("/user/api/password-reset")
 public class PasswordResetController {
 
     @Autowired

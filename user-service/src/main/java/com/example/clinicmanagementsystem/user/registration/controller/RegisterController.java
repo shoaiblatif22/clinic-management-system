@@ -20,7 +20,7 @@ import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/v1/auth")
+@RequestMapping("/user/api/v1/auth")
 @RequiredArgsConstructor
 public class RegisterController {
     private final ApplicationEventPublisher eventPublisher;

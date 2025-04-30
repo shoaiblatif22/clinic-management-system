@@ -11,6 +11,7 @@ import {AIInsightsPage} from "../pages/patient/AIInsightsPage.tsx";
 import {AppointmentsPage} from "../pages/patient/AppointmentsPage.tsx";
 import {VerificationPendingPage} from "../pages/register/VerificationPendingPage.tsx";
 import {VerificationSuccessPage} from "../pages/register/VerificationSuccessfulPage.tsx";
+import { DoctorAppointmentsPage } from '../pages/doctor/DoctorAppointments.tsx';
 
 
 const Router = () => {
@@ -26,7 +27,8 @@ const Router = () => {
           <Route path="/readings" element={<ReadingsPage />} />
           <Route path="/insights" element={<AIInsightsPage />} />
           <Route path="/verify-pending" element={<VerificationPendingPage />} />
-        <Route path="/verify-success" element={<VerificationSuccessPage />} />
+        <Route path="/verify-success" element={<VerificationSuccessPage />} />\
+      <Route path="/DoctorAppointments" element={<DoctorAppointmentsPage />} />
         {/*<Route path="/DoctorDashboard" element={<DoctorDashboard />} />*/}
         <Route path="/appointments" element={<AppointmentsPage />} />
       </Routes>

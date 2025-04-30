@@ -13,7 +13,7 @@ import java.time.LocalDateTime;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/api/v1/registration")
+@RequestMapping("/user/api/v1/registration")
 public class RegistrationVerificationController {
 
     @Autowired

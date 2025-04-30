@@ -1,0 +1,11 @@
+meta {
+  name: Test api-gateway
+  type: http
+  seq: 2
+}
+
+post {
+  url: http://localhost:8085/users/api/auth/register
+  body: none
+  auth: inherit
+}
