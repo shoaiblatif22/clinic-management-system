@@ -2,6 +2,7 @@ package com.api_gateway.SecurityConfig;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.web.server.ServerHttpSecurity;
 import org.springframework.security.web.server.SecurityWebFilterChain;
@@ -15,7 +16,7 @@ public class WebFluxSecurityConfig  {
         http
             .csrf(ServerHttpSecurity.CsrfSpec::disable)
             .authorizeExchange(exchanges -> exchanges
-                .pathMatchers("/user/api/v1/auth/login", "/user/api/v1/registration/verify", "/user/api/v1/auth/register").permitAll()
+                .pathMatchers( HttpMethod.POST,"/user/api/v1/auth/login", "/user/api/v1/auth/verify", "/user/api/v1/auth/register").permitAll()
                 .anyExchange().authenticated()
             );
         return http.build();
