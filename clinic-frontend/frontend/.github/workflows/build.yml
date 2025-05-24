@@ -1,0 +1,17 @@
+name: GitHub Actions Build Frontend
+run-name: ${{ github.actor }} is building the frontend
+on:
+    push:
+        branches:
+            - main
+jobs:
+    build:
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v3
+            - uses: actions/setup-node@v3
+              with:
+                node-version: 16
+            - run: echo "Running npm install" && npm install
+            - run: echo "Running npm run build" && npm run build
+            - run: echo "This job's status is ${{ job.status }}."
