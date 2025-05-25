@@ -1,0 +1,17 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "types": ["vitest", "@testing-library/jest-dom"],
+    "typeRoots": [
+      "./node_modules/@types",
+      "./tests"
+    ]
+  },
+  "include": [
+    "**/*.test.ts",
+    "**/*.test.tsx",
+    "**/*.spec.ts",
+    "**/*.spec.tsx",
+    "tests/vitest-axe.d.ts"
+  ]
+}

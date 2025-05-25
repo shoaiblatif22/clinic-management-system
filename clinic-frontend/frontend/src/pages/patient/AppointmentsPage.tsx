@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { Layout } from "../../components/Layout.tsx";
+import { useState } from "react";
+import { Layout } from "../../components/layout/Layout";
 import {
   Calendar as CalendarIcon,
   Clock,
@@ -15,6 +15,20 @@ import {
   ChevronRight,
   CheckCircle,
 } from "lucide-react";
+
+/**
+ * Represents a medical appointment in the system
+ * @typedef {Object} Appointment
+ * @property {string} id - Unique identifier for the appointment
+ * @property {string} title - Title/purpose of the appointment
+ * @property {"check-up" | "consultation" | "lab-test" | "follow-up"} type - Type of appointment
+ * @property {string} date - Date of the appointment in YYYY-MM-DD format
+ * @property {string} time - Time of the appointment in HH:MM format
+ * @property {string} doctor - Name of the doctor
+ * @property {string} location - Location of the appointment
+ * @property {"in-person" | "video"} mode - Whether the appointment is in-person or virtual
+ * @property {"confirmed" | "pending" | "cancelled"} status - Current status of the appointment
+ */
 type Appointment = {
   id: string;
   title: string;
@@ -26,6 +40,11 @@ type Appointment = {
   mode: "in-person" | "video";
   status: "confirmed" | "pending" | "cancelled";
 };
+
+/**
+ * Predefined appointment types for quick scheduling
+ * Each type includes an id, display label, icon component, and styling color
+ */
 const QUICK_APPOINTMENT_TYPES = [
   {
     id: "check-up",
@@ -46,11 +65,32 @@ const QUICK_APPOINTMENT_TYPES = [
     color: "bg-yellow-100 text-yellow-800 border-yellow-200",
   },
 ];
+/**
+ * Patient Appointments page component.
+ * 
+ * This component allows patients to:
+ * - View their upcoming and past appointments
+ * - Schedule new appointments
+ * - Reschedule or cancel existing appointments
+ * - Filter appointments by date, type, or status
+ * 
+ * The page includes a calendar view, quick appointment scheduling buttons,
+ * and a detailed list of appointments with status indicators.
+ * 
+ * @returns {JSX.Element} The complete appointments page
+ */
 export function AppointmentsPage() {
+  // State for controlling the appointment creation/edit modal
   const [showModal, setShowModal] = useState(false);
+
+  // State for tracking the selected date in the calendar
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
+
+  // State for the currently selected appointment (for editing or viewing details)
   const [selectedAppointment, setSelectedAppointment] =
     useState<Appointment | null>(null);
+
+  // Mock appointment data - would be fetched from an API in a real application
   const [appointments] = useState<Appointment[]>([
     {
       id: "1",
@@ -75,11 +115,24 @@ export function AppointmentsPage() {
       status: "pending",
     },
   ]);
+
+  /**
+   * Handles the quick appointment scheduling from the button panel
+   * 
+   * @param {string} type - The type of appointment to schedule
+   */
   const handleQuickAppointment = (type: string) => {
-    setSelectedAppointment(null);
-    setShowModal(true);
-    // Pre-fill appointment type
+    setSelectedAppointment(null); // Clear any selected appointment
+    setShowModal(true); // Show the appointment creation modal
+    // In a real implementation, we would pre-fill the appointment type
   };
+
+  /**
+   * Returns the appropriate CSS classes for styling appointment status badges
+   * 
+   * @param {string} status - The appointment status (confirmed, pending, cancelled)
+   * @returns {string} CSS classes for styling the status badge
+   */
   const getStatusColor = (status: string) => {
     const colors = {
       confirmed: "bg-green-100 text-green-800 border-green-200",
@@ -91,11 +144,14 @@ export function AppointmentsPage() {
   return (
     <Layout>
       <div className="space-y-6">
+        {/* Page header with title and description */}
         <div>
           <h1 className="text-2xl font-bold text-gray-900">Appointments</h1>
           <p className="mt-1 text-gray-600">
             Schedule and manage your medical appointments
           </p>
+
+          {/* Quick appointment scheduling buttons */}
           <div className="mt-6 flex flex-wrap gap-4">
             {QUICK_APPOINTMENT_TYPES.map((type) => (
               <button
@@ -109,10 +165,15 @@ export function AppointmentsPage() {
             ))}
           </div>
         </div>
+
+        {/* Main content grid - calendar and appointment list */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          {/* Calendar section - takes 2/3 of the width on large screens */}
           <div className="lg:col-span-2 bg-white rounded-xl border border-gray-200">
             <div className="p-6">
+              {/* Calendar header with month navigation and legend */}
               <div className="flex items-center justify-between mb-6">
+                {/* Month display and navigation buttons */}
                 <div className="flex items-center space-x-4">
                   <h2 className="text-lg font-semibold text-gray-900">
                     March 2024
@@ -126,6 +187,8 @@ export function AppointmentsPage() {
                     </button>
                   </div>
                 </div>
+
+                {/* Calendar legend for appointment types */}
                 <div className="flex items-center space-x-4 text-sm">
                   <div className="flex items-center space-x-1">
                     <div className="w-3 h-3 rounded-full bg-blue-500"></div>
@@ -137,7 +200,10 @@ export function AppointmentsPage() {
                   </div>
                 </div>
               </div>
+
+              {/* Calendar grid */}
               <div className="grid grid-cols-7 gap-px bg-gray-200 rounded-lg overflow-hidden">
+                {/* Day of week headers */}
                 {["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"].map(
                   (day) => (
                     <div key={day} className="bg-gray-50 py-2 text-center">
@@ -147,6 +213,8 @@ export function AppointmentsPage() {
                     </div>
                   ),
                 )}
+
+                {/* Calendar day cells */}
                 {Array.from({
                   length: 35,
                 }).map((_, i) => {
@@ -173,7 +241,9 @@ export function AppointmentsPage() {
               </div>
             </div>
           </div>
+          {/* Upcoming appointments list - takes 1/3 of the width on large screens */}
           <div className="bg-white rounded-xl border border-gray-200 p-6">
+            {/* Section header with title and view all button */}
             <div className="flex items-center justify-between mb-6">
               <h2 className="text-lg font-semibold text-gray-900">Upcoming</h2>
               <button
@@ -183,17 +253,21 @@ export function AppointmentsPage() {
                 View all
               </button>
             </div>
+
+            {/* List of upcoming appointments */}
             <div className="space-y-4">
               {appointments.map((appointment) => (
                 <div
                   key={appointment.id}
                   className="p-4 rounded-lg border border-gray-200 hover:border-gray-300 transition-all"
                 >
+                  {/* Appointment header with title, status, and action buttons */}
                   <div className="flex justify-between items-start mb-3">
                     <div>
                       <h3 className="font-medium text-gray-900">
                         {appointment.title}
                       </h3>
+                      {/* Status badge with dynamic color based on status */}
                       <span
                         className={`inline-block px-2 py-1 text-xs font-medium rounded-full mt-1 border ${getStatusColor(appointment.status)}`}
                       >
@@ -201,6 +275,8 @@ export function AppointmentsPage() {
                           appointment.status.slice(1)}
                       </span>
                     </div>
+
+                    {/* Edit and delete buttons */}
                     <div className="flex items-center space-x-2">
                       <button className="p-1 text-gray-400 hover:text-gray-600">
                         <Edit2 className="w-4 h-4" />
@@ -210,17 +286,24 @@ export function AppointmentsPage() {
                       </button>
                     </div>
                   </div>
+
+                  {/* Appointment details with icons */}
                   <div className="space-y-2 text-sm text-gray-600">
+                    {/* Date and time */}
                     <div className="flex items-center space-x-2">
                       <CalendarIcon className="w-4 h-4" />
                       <span>{appointment.date}</span>
                       <Clock className="w-4 h-4 ml-2" />
                       <span>{appointment.time}</span>
                     </div>
+
+                    {/* Doctor information */}
                     <div className="flex items-center space-x-2">
                       <User className="w-4 h-4" />
                       <span>{appointment.doctor}</span>
                     </div>
+
+                    {/* Location with conditional icon based on appointment mode */}
                     <div className="flex items-center space-x-2">
                       {appointment.mode === "video" ? (
                         <VideoIcon className="w-4 h-4" />
@@ -235,9 +318,12 @@ export function AppointmentsPage() {
             </div>
           </div>
         </div>
+
+        {/* Appointment creation/edit modal - conditionally rendered */}
         {showModal && (
           <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
             <div className="bg-white rounded-xl p-6 w-full max-w-md">
+              {/* Modal header with title and close button */}
               <div className="flex justify-between items-center mb-6">
                 <h2 className="text-xl font-semibold text-gray-900">
                   Schedule Appointment
@@ -249,8 +335,11 @@ export function AppointmentsPage() {
                   <X className="w-5 h-5" />
                 </button>
               </div>
+              {/* Appointment form */}
               <form className="space-y-4">
+                {/* Date and time selection - 2-column grid */}
                 <div className="grid grid-cols-2 gap-4">
+                  {/* Date field */}
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-1">
                       Date
@@ -260,6 +349,8 @@ export function AppointmentsPage() {
                       className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500"
                     />
                   </div>
+
+                  {/* Time field */}
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-1">
                       Time
@@ -270,6 +361,8 @@ export function AppointmentsPage() {
                     />
                   </div>
                 </div>
+
+                {/* Appointment type dropdown */}
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">
                     Type
@@ -281,6 +374,8 @@ export function AppointmentsPage() {
                     <option value="follow-up">Follow-up</option>
                   </select>
                 </div>
+
+                {/* Doctor selection dropdown */}
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">
                     Doctor
@@ -291,11 +386,14 @@ export function AppointmentsPage() {
                     <option value="dr-patel">Dr. Priya Patel</option>
                   </select>
                 </div>
+
+                {/* Appointment mode selection (in-person or video) */}
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">
                     Mode
                   </label>
                   <div className="flex space-x-4">
+                    {/* In-person option */}
                     <label className="flex items-center space-x-2">
                       <input
                         type="radio"
@@ -305,6 +403,8 @@ export function AppointmentsPage() {
                       />
                       <span>In-person</span>
                     </label>
+
+                    {/* Video call option */}
                     <label className="flex items-center space-x-2">
                       <input
                         type="radio"
@@ -316,13 +416,18 @@ export function AppointmentsPage() {
                     </label>
                   </div>
                 </div>
+
+                {/* Form action buttons */}
                 <div className="pt-4 flex space-x-3">
+                  {/* Submit button */}
                   <button
                     type="submit"
                     className="flex-1 bg-teal-500 text-white px-4 py-2 rounded-lg hover:bg-teal-600 transition-colors"
                   >
                     Schedule Appointment
                   </button>
+
+                  {/* Cancel button */}
                   <button
                     type="button"
                     onClick={() => setShowModal(false)}
