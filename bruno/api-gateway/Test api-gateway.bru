@@ -5,7 +5,27 @@ meta {
 }
 
 post {
-  url: http://localhost:8085/users/api/auth/register
-  body: none
+  url: http://localhost:8085/user/api/v1/auth/register
+  body: json
   auth: inherit
+}
+
+body:json {
+  {
+    "firstName": "Layla",
+    "lastName": "Nguyen",
+    "emailAddress": "shoaiblatif@gmail.com",
+    "password": "PlainTextPassword123!",
+    "phoneNumber": "5559876543",
+    "dateOfBirth": "1995-07-14",
+    "gender": "Female",
+    "addressLineOne": "321 Oak Avenue",
+    "addressLineTwo": "Apt 12B",
+    "townOrCity": "Riverton",
+    "county": "Northvale",
+    "country": "USA",
+    "postcode": "30567",
+    "appUserRole": "USER"
+  }
+  
 }

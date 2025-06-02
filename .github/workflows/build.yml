@@ -24,14 +24,15 @@ jobs:
         working-directory: ./clinic-frontend/frontend
         run: | 
           npm install
-      # Build your project
-      - name: Build project
-        working-directory: ./clinic-frontend/frontend
-        run: |
-          npm run build
       # Run tests
       - name: Run tests
         working-directory: ./clinic-frontend/frontend
         run: |
           npm run test
+      # Build your project
+      - name: Build project
+        working-directory: ./clinic-frontend/frontend
+        run: |
+          npm run build
+
       - run: echo "🍏 This job's status is ${{ job.status }}."
