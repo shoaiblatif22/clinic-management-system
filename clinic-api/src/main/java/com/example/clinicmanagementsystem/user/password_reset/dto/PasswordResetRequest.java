@@ -1,4 +1,4 @@
-package com.example.clinicmanagementsystem.user.resetpassword.dto;
+package com.example.clinicmanagementsystem.user.password_reset.dto;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;

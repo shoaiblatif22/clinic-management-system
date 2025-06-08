@@ -1,4 +1,4 @@
-package com.example.clinicmanagementsystem.user.resetpassword.service;
+package com.example.clinicmanagementsystem.user.password_reset.service;
 
 import com.example.clinicmanagementsystem.user.registration.entity.UserEntity;
 

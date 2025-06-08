@@ -1,22 +1,21 @@
-package com.example.clinicalmanagementsystem.tests.IntegrationTestingResetPassword;
+package com.example.clinicmanagementsystem.tests.IntegrationTestingResetPassword;
 
 import com.example.clinicmanagementsystem.ClinicManagementSystemApplication;
+import com.example.clinicmanagementsystem.user.password_reset.repository.PasswordResetTokenRepository;
 import com.example.clinicmanagementsystem.user.registration.entity.UserEntity;
 import com.example.clinicmanagementsystem.user.registration.repository.UserRepository;
-import com.example.clinicmanagementsystem.user.resetpassword.repository.PasswordResetTokenRepository;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.time.LocalDate;
 
@@ -30,7 +29,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc
 @ActiveProfiles("test")
 @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
-public class PasswordRestIntegrationTests {
+public class PasswordResetIntegrationTests {
 
     @Autowired
     private MockMvc mockMvc;
@@ -80,7 +79,7 @@ public class PasswordRestIntegrationTests {
         String requestBody = "{\"emailAddress\":\"test@example.com\"}";
 
         // Act & Assert
-        mockMvc.perform(post("/user/api/password-reset/request")
+        mockMvc.perform(post("/user/api/v1/password-reset/request")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(requestBody))
                 .andExpect(status().isCreated());
@@ -95,7 +94,7 @@ public class PasswordRestIntegrationTests {
     public void requestPasswordReset_WithNonExistentEmail_ShouldReturnBadRequest() throws Exception {
         String requestBody = "{\"emailAddress\":\"nonexistent@example.com\"}";
 
-        mockMvc.perform(post("/user/api/password-reset/request")
+        mockMvc.perform(post("/user/api/v1/password-reset/request")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(requestBody))
                 .andExpect(status().isBadRequest())
@@ -107,7 +106,7 @@ public class PasswordRestIntegrationTests {
     public void requestPasswordReset_WithEmptyEmail_ShouldReturnBadRequest() throws Exception {
         String requestBody = "{\"emailAddress\":\"\"}";
 
-        mockMvc.perform(post("/user/api/password-reset/request")
+        mockMvc.perform(post("/user/api/v1/password-reset/request")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(requestBody))
                 .andExpect(status().isBadRequest())
@@ -117,6 +116,10 @@ public class PasswordRestIntegrationTests {
     @Test
     @Disabled
     public void resetPassword_WithExpiredToken_ShouldReturnBadRequest() throws Exception {
+        //Arrange
+        String requestBody = "{\"emailAdress\":\"testEmail@example.com\"}";
+        String expiredToken = "myexpiredtoken";
+
 
     }
 

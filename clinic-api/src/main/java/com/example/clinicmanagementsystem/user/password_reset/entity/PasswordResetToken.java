@@ -1,4 +1,4 @@
-package com.example.clinicmanagementsystem.user.resetpassword.entity;
+package com.example.clinicmanagementsystem.user.password_reset.entity;
 
 import com.example.clinicmanagementsystem.user.registration.entity.UserEntity;
 import jakarta.persistence.*;

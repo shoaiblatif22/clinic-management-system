@@ -1,15 +1,16 @@
-package com.example.clinicmanagementsystem.user.resetpassword.service;
+package com.example.clinicmanagementsystem.user.password_reset.service;
 
 import com.example.clinicmanagementsystem.user.registration.entity.UserEntity;
 import com.example.clinicmanagementsystem.user.registration.repository.UserRepository;
-import com.example.clinicmanagementsystem.user.resetpassword.entity.PasswordResetToken;
-import com.example.clinicmanagementsystem.user.resetpassword.repository.PasswordResetTokenRepository;
+import com.example.clinicmanagementsystem.user.password_reset.entity.PasswordResetToken;
+import com.example.clinicmanagementsystem.user.password_reset.events.PasswordResetEvent;
+import com.example.clinicmanagementsystem.user.password_reset.repository.PasswordResetTokenRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.mail.SimpleMailMessage;
-import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 import java.util.Optional;
@@ -23,7 +24,7 @@ public class PasswordResetServiceImpl implements PasswordResetService {
     private final UserRepository userRepository;
     private final PasswordResetTokenRepository tokenRepository;
     private final PasswordEncoder passwordEncoder;
-    private final JavaMailSender mailSender;
+    private final ApplicationEventPublisher eventPublisher;
 
     private static final String PASSWORD_PATTERN =
         "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=])(?=\\S+$).{8,}$";
@@ -73,30 +74,23 @@ public class PasswordResetServiceImpl implements PasswordResetService {
     }
 
     @Override
+    @Transactional
     public void requestPasswordReset(String emailAddress) {
         UserEntity user = userRepository.findByEmailAddress(emailAddress)
             .orElseThrow(() -> new IllegalArgumentException("User not found with email: " + emailAddress));
 
         String token = UUID.randomUUID().toString();
         createPasswordResetToken(user, token);
-        sendPasswordResetEmail(user.getEmailAddress(), token);
-        log.info("Password reset token generated and email sent to user: {}", emailAddress);
+        log.info("Created password reset token for user: {}", emailAddress);
+        
+        // Publish event to send email
+        // Note: The appUrl is set to null here. It will be handled by the listener with a default value
+        // In a production environment, you might want to pass the actual application URL here
+        eventPublisher.publishEvent(new PasswordResetEvent(user, token, null));
+        log.info("Published password reset event for user: {}", emailAddress);
     }
     
-    private void sendPasswordResetEmail(String email, String token) {
-        try {
-            SimpleMailMessage mailMessage = new SimpleMailMessage();
-            mailMessage.setTo(email);
-            mailMessage.setSubject("Password Reset Request");
-            mailMessage.setText("To reset your password, click the link below:\n" +
-                "http://your-frontend-url/reset-password?token=" + token);
-            
-            mailSender.send(mailMessage);
-        } catch (Exception e) {
-            log.error("Error sending password reset email", e);
-            throw new RuntimeException("Error sending password reset email", e);
-        }
-    }
+
 
     @Override
     public void resetPassword(String token, String newPassword) {

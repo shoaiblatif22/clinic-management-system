@@ -1,7 +1,7 @@
-package com.example.clinicmanagementsystem.user.resetpassword.repository;
+package com.example.clinicmanagementsystem.user.password_reset.repository;
 
 import com.example.clinicmanagementsystem.user.registration.entity.UserEntity;
-import com.example.clinicmanagementsystem.user.resetpassword.entity.PasswordResetToken;
+import com.example.clinicmanagementsystem.user.password_reset.entity.PasswordResetToken;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;
