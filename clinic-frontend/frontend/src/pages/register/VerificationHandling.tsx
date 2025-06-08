@@ -10,7 +10,7 @@ export default function VerifyHandlerPage() {
     if (!token) {
         throw new Error("No token provided");
     }
-    fetch(`http://localhost:8080/api/v1/registration/verify?token=${token}`)
+    fetch(`http://localhost:8081/user/api/v1/verify-email?token=${token}`)
       .then(res => {
         if (res.ok) {
           navigate("/verification-success");

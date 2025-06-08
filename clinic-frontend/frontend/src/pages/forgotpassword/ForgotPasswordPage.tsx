@@ -41,7 +41,7 @@ export function ForgotPasswordPage() {
 
     try {
       // Make API request to password reset endpoint
-      const response = await fetch("http://localhost:8080/api/password-reset/request", {
+      const response = await fetch("http://localhost:8081/user/api/password-reset/request", {
         method: "POST",
         headers: {
           "Content-Type": "application/x-www-form-urlencoded"
