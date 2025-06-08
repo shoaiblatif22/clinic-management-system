@@ -13,6 +13,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.util.Date;
 import java.util.Optional;
@@ -23,8 +24,8 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-@ExtendWith(MockitoExtension.class)
-public class PasswordRestServiceImplUnitTests {
+@ExtendWith(SpringExtension.class)
+public class PasswordResetServiceImplUnitTests {
     @Mock
     private UserRepository userRepository;
 
@@ -33,9 +34,6 @@ public class PasswordRestServiceImplUnitTests {
 
     @Mock
     private PasswordEncoder passwordEncoder;
-
-    @Mock
-    private ApplicationEventPublisher eventPublisher;
 
     @InjectMocks
     private PasswordResetServiceImpl passwordResetService;
