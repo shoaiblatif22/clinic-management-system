@@ -6,9 +6,7 @@ import com.example.clinicmanagementsystem.user.password_reset.repository.Passwor
 import com.example.clinicmanagementsystem.user.registration.entity.UserEntity;
 import com.example.clinicmanagementsystem.user.registration.repository.UserRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import jdk.jfr.Name;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -124,7 +122,7 @@ public class PasswordResetIntegrationTests {
     public void resetPassword_WithExpiredToken_ShouldReturnBadRequest() throws Exception {
         // Create an expired token
         PasswordResetToken token = new PasswordResetToken(INVALID_TOKEN, testUser);
-        
+
         // Manually set expiry date to the past
         token.setExpiryDate(new Date(System.currentTimeMillis() - 1000 * 60 * 60 * 24)); // 24 hours ago
         tokenRepository.save(token);
@@ -141,7 +139,7 @@ public class PasswordResetIntegrationTests {
     }
 
     @Test
-    @Disabled
+    @DisplayName("Rest password with a weak password which should return a bad request")
     public void resetPassword_WithWeakPassword_ShouldReturnBadRequest() throws Exception {
         //Arrange request body
         String newPassword = "NewPassword123!"; //Weak password as it contains exclamation mark
@@ -162,18 +160,122 @@ public class PasswordResetIntegrationTests {
     }
 
     @Test
-    @Disabled
+    @DisplayName("Consecutive password reset requests should invalidate previous tokens")
     public void consecutivePasswordResetRequests_ShouldInvalidatePreviousTokens() throws Exception {
+        // Arrange
+        String requestBody = "{\"emailAddress\":\"test@example.com\"}";
+
+        // Act - First request
+        mockMvc.perform(post("/user/api/v1/password-reset/request")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(requestBody))
+                .andExpect(status().is2xxSuccessful());
+
+        // Get the first token
+        PasswordResetToken firstToken = tokenRepository.findByUser(testUser).orElseThrow();
+        String firstTokenValue = firstToken.getToken();
+
+        // Act - Second request
+        mockMvc.perform(post("/user/api/v1/password-reset/request")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(requestBody))
+                .andExpect(status().is2xxSuccessful());
+
+        // Get the second token
+        PasswordResetToken secondToken = tokenRepository.findByUser(testUser).orElseThrow();
+        String secondTokenValue = secondToken.getToken();
+
+        // Assert - Tokens should be different
+        assertTrue(!firstTokenValue.equals(secondTokenValue), 
+                "Second token should be different from first token");
+
+        // Try to use the first token to reset password
+        String newPassword = "NewPassword123#";
+        String resetRequestWithFirstToken = String.format("token=%s&newPassword=%s", firstTokenValue, newPassword);
+
+        // Assert - First token should be invalid
+        mockMvc.perform(post("/user/api/v1/password-reset/reset")
+                        .contentType(MediaType.APPLICATION_FORM_URLENCODED)
+                        .content(resetRequestWithFirstToken))
+                .andExpect(status().is4xxClientError())
+                .andExpect(content().string(containsString("Invalid or expired token")));
+
+        // Try to use the second token to reset password
+        String resetRequestWithSecondToken = String.format("token=%s&newPassword=%s", secondTokenValue, newPassword);
+
+        // Assert - Second token should be valid
+        mockMvc.perform(post("/user/api/v1/password-reset/reset")
+                        .contentType(MediaType.APPLICATION_FORM_URLENCODED)
+                        .content(resetRequestWithSecondToken))
+                .andExpect(status().isOk())
+                .andExpect(content().string(containsString("Password has been reset successfully")));
     }
 
     @Test
-    @Disabled
+    @DisplayName("Password reset for disabled account should return bad request")
     public void passwordReset_ForDisabledAccount_ShouldReturnBadRequest() throws Exception {
+        // Arrange - Create a disabled user
+        UserEntity disabledUser = new UserEntity(
+                "Jane",
+                "Doe",
+                LocalDate.of(1990, 1, 1),
+                "FEMALE",
+                "9876543210",
+                "disabled@example.com",
+                "456 Test St",
+                "Apt 7C",
+                "Test City",
+                "54321",
+                "Test County",
+                "Test Country",
+                "password123",
+                USER,
+                false,
+                false  // disabled account
+        );
+        disabledUser = userRepository.save(disabledUser);
+
+        // Arrange request body
+        String requestBody = "{\"emailAddress\":\"disabled@example.com\"}";
+
+        // Act & Assert - Attempt to request password reset for disabled account
+        mockMvc.perform(post("/user/api/v1/password-reset/request")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(requestBody))
+                .andExpect(status().is4xxClientError())
+                .andExpect(content().string(containsString("Account is disabled")));
     }
 
     @Test
-    @Disabled
+    @DisplayName("Password reset with different email case should work")
     public void passwordReset_EmailCaseInsensitive_ShouldWork() throws Exception {
-    }
+        // Arrange - Use uppercase email for the same user
+        String uppercaseEmail = "TEST@EXAMPLE.COM";
+        String requestBody = "{\"emailAddress\":\"" + uppercaseEmail + "\"}";
 
+        // Act - Request password reset with uppercase email
+        mockMvc.perform(post("/user/api/v1/password-reset/request")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(requestBody))
+                .andExpect(status().is2xxSuccessful());
+
+        // Verify token was created for the user despite case difference
+        assertTrue(tokenRepository.findByUser(testUser).isPresent(),
+                "Token should be created for user regardless of email case");
+
+        // Get the token
+        PasswordResetToken token = tokenRepository.findByUser(testUser).orElseThrow();
+        String tokenValue = token.getToken();
+
+        // Reset password using the token
+        String newPassword = "NewPassword123#";
+        String resetRequest = String.format("token=%s&newPassword=%s", tokenValue, newPassword);
+
+        // Act & Assert - Reset password
+        mockMvc.perform(post("/user/api/v1/password-reset/reset")
+                        .contentType(MediaType.APPLICATION_FORM_URLENCODED)
+                        .content(resetRequest))
+                .andExpect(status().isOk())
+                .andExpect(content().string(containsString("Password has been reset successfully")));
+    }
 }

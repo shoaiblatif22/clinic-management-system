@@ -43,7 +43,7 @@ public class PasswordResetServiceImpl implements PasswordResetService {
             resetToken = new PasswordResetToken(token, user);
         }
         tokenRepository.save(resetToken);
-        
+
         log.info("Created password reset token for user: {}", user.getEmailAddress());
     }
 
@@ -51,12 +51,12 @@ public class PasswordResetServiceImpl implements PasswordResetService {
     public String validatePasswordResetToken(String token) {
         PasswordResetToken resetToken = tokenRepository.findByToken(token)
             .orElseThrow(() -> new IllegalArgumentException("Invalid token"));
-            
+
         if (resetToken.isExpired()) {
             tokenRepository.delete(resetToken);
             throw new IllegalArgumentException("Token has expired");
         }
-        
+
         return resetToken.getUser().getEmailAddress();
     }
 
@@ -67,7 +67,7 @@ public class PasswordResetServiceImpl implements PasswordResetService {
                 "contain at least one digit, one lowercase letter, one uppercase letter, " +
                 "one special character (@#$%^&+=), and no whitespace");
         }
-        
+
         user.setPassword(passwordEncoder.encode(newPassword));
         userRepository.save(user);
         log.info("Password changed successfully for user: {}", user.getEmailAddress());
@@ -76,20 +76,25 @@ public class PasswordResetServiceImpl implements PasswordResetService {
     @Override
     @Transactional
     public void requestPasswordReset(String emailAddress) {
-        UserEntity user = userRepository.findByEmailAddress(emailAddress)
+        UserEntity user = userRepository.findByEmailAddressIgnoreCase(emailAddress)
             .orElseThrow(() -> new IllegalArgumentException("User not found with email: " + emailAddress));
+
+        // Check if account is disabled
+        if (!user.isEnabled()) {
+            throw new IllegalArgumentException("Account is disabled");
+        }
 
         String token = UUID.randomUUID().toString();
         createPasswordResetToken(user, token);
         log.info("Created password reset token for user: {}", emailAddress);
-        
+
         // Publish event to send email
         // Note: The appUrl is set to null here. It will be handled by the listener with a default value
         // In a production environment, you might want to pass the actual application URL here
         eventPublisher.publishEvent(new PasswordResetEvent(user, token, null));
         log.info("Published password reset event for user: {}", emailAddress);
     }
-    
+
 
 
     @Override

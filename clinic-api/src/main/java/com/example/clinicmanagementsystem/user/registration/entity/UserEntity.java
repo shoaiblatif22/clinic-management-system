@@ -74,7 +74,7 @@ public class UserEntity implements UserDetails {
         this.password = password;
         this.userRole = userRole;
         this.locked = locked;
-        this.enabled = false;
+        this.enabled = enabled;
     }
 
     @Override
@@ -114,4 +114,3 @@ public class UserEntity implements UserDetails {
         return enabled;
     }
 }
-

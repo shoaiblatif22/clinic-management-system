@@ -46,7 +46,7 @@ public class UserService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         log.debug("Loading user by email: {}", email);
-        return userRepository.findByEmailAddress(email)
+        return userRepository.findByEmailAddressIgnoreCase(email)
                 .orElseThrow(() -> {
                     String errorMessage = String.format(USER_NOT_FOUND, email);
                     log.warn(errorMessage);
@@ -65,24 +65,24 @@ public class UserService implements UserDetailsService {
     @Transactional
     public UserEntity registerUser(UserEntity userEntity) {
         log.info("Registering new user with email: {}", userEntity.getEmailAddress());
-        
+
         // Validate input
         validateUserRegistration(userEntity);
-        
+
         // Check if email already exists
-        if (userRepository.findByEmailAddress(userEntity.getEmailAddress()).isPresent()) {
+        if (userRepository.findByEmailAddressIgnoreCase(userEntity.getEmailAddress()).isPresent()) {
             log.warn("Registration failed - email already exists: {}", userEntity.getEmailAddress());
             throw new IllegalArgumentException(EMAIL_ALREADY_EXISTS);
         }
-        
+
         // Create and save new user
         UserEntity newUser = buildNewUser(userEntity);
         UserEntity savedUser = userRepository.save(newUser);
-        
+
         log.info("Successfully registered user with ID: {}", savedUser.getId());
         return savedUser;
     }
-    
+
     /**
      * Validates user registration data.
      *
@@ -93,16 +93,16 @@ public class UserService implements UserDetailsService {
         if (userEntity == null) {
             throw new IllegalArgumentException("User cannot be null");
         }
-        
+
         if (StringUtils.isBlank(userEntity.getEmailAddress())) {
             throw new IllegalArgumentException(INVALID_EMAIL);
         }
-        
+
         if (StringUtils.isBlank(userEntity.getPassword())) {
             throw new IllegalArgumentException(INVALID_PASSWORD);
         }
     }
-    
+
     /**
      * Builds a new UserEntity with the provided details.
      * Applies security settings like password encoding and account status.
