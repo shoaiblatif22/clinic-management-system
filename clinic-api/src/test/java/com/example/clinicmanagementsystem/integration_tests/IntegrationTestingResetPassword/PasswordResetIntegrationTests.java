@@ -1,4 +1,4 @@
-package com.example.clinicmanagementsystem.tests.IntegrationTestingResetPassword;
+package com.example.clinicmanagementsystem.integration_tests.IntegrationTestingResetPassword;
 
 import com.example.clinicmanagementsystem.ClinicManagementSystemApplication;
 import com.example.clinicmanagementsystem.user.password_reset.entity.PasswordResetToken;

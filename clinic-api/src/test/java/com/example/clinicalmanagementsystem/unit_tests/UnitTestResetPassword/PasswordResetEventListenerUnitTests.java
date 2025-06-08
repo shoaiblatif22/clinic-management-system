@@ -1,4 +1,4 @@
-package com.example.clinicalmanagementsystem.tests.UnitTestResetPassword;
+package com.example.clinicalmanagementsystem.unit_tests.UnitTestResetPassword;
 
 import com.example.clinicmanagementsystem.user.registration.entity.UserEntity;
 import org.junit.jupiter.api.extension.ExtendWith;

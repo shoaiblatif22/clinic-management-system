@@ -87,9 +87,10 @@ public class UserService implements UserDetailsService {
      * Validates user registration data.
      *
      * @param userEntity the user to validate
+     * @return userEntity
      * @throws IllegalArgumentException if validation fails
      */
-    private void validateUserRegistration(UserEntity userEntity) {
+    public UserEntity validateUserRegistration(UserEntity userEntity) {
         if (userEntity == null) {
             throw new IllegalArgumentException("User cannot be null");
         }
@@ -101,6 +102,7 @@ public class UserService implements UserDetailsService {
         if (StringUtils.isBlank(userEntity.getPassword())) {
             throw new IllegalArgumentException(INVALID_PASSWORD);
         }
+        return userEntity;
     }
 
     /**

@@ -1,4 +1,4 @@
-package com.example.clinicalmanagementsystem.tests.UnitTestResetPassword;
+package com.example.clinicalmanagementsystem.unit_tests.UnitTestResetPassword;
 
 import com.example.clinicmanagementsystem.user.password_reset.entity.PasswordResetToken;
 import com.example.clinicmanagementsystem.user.password_reset.repository.PasswordResetTokenRepository;
@@ -10,8 +10,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 

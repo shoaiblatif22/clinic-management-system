@@ -6,7 +6,7 @@ import lombok.extern.slf4j.Slf4j;
  * Utility class for string operations with enhanced logging.
  */
 @Slf4j
-public abstract class StringUtils {
+public class StringUtils {
     
     /**
      * Check if a string has text (not null and not blank after trimming).
