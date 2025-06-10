@@ -218,9 +218,6 @@
                             <goal>report</goal>
                         </goals>
                         <configuration>
-                            <includes>
-                                <include>**/registration/**</include>
-                            </includes>
                         </configuration>
                     </execution>
                 </executions>
@@ -228,9 +225,6 @@
                     <rules>
                         <rule>
                             <element>PACKAGE</element>
-                            <includes>
-                                <include>**/registration/**</include>
-                            </includes>
                         </rule>
                     </rules>
                 </configuration>
