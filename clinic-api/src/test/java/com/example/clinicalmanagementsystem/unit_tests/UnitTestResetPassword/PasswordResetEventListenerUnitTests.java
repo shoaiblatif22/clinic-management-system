@@ -1,6 +1,7 @@
 package com.example.clinicalmanagementsystem.unit_tests.UnitTestResetPassword;
 
 import com.example.clinicmanagementsystem.user.registration.entity.UserEntity;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.mail.MailSendException;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
@@ -40,6 +41,7 @@ public class PasswordResetEventListenerUnitTests {
     }
 
     @Test
+    @DisplayName("Test 1: Password reset event which should send an email with a reset link")
     void handlePasswordResetEvent_ShouldSendEmailWithResetLink() {
         // Arrange
         PasswordResetEvent event = new PasswordResetEvent(testUser, testToken, "http://test-app.com");
@@ -59,6 +61,7 @@ public class PasswordResetEventListenerUnitTests {
     }
 
     @Test
+    @DisplayName("Test 2: Password reset event which should use a default url when not provided")
     void handlePasswordResetEvent_ShouldUseDefaultUrlWhenNotProvided() {
         // Arrange
         PasswordResetEvent event = new PasswordResetEvent(testUser, testToken, null);
@@ -75,6 +78,7 @@ public class PasswordResetEventListenerUnitTests {
     }
 
     @Test
+    @DisplayName("Test 3: Password reset event should log error when email fails")
     void handlePasswordResetEvent_ShouldLogErrorWhenEmailFails() {
         // Arrange
         PasswordResetEvent event = new PasswordResetEvent(testUser, testToken, "http://test-app.com");

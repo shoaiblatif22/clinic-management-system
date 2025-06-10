@@ -6,6 +6,7 @@ import com.example.clinicmanagementsystem.user.password_reset.service.PasswordRe
 import com.example.clinicmanagementsystem.user.registration.entity.UserEntity;
 import com.example.clinicmanagementsystem.user.registration.repository.UserRepository;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -51,6 +52,7 @@ public class PasswordResetServiceImplUnitTests {
     }
 
     @Test
+    @DisplayName("Test 1")
     void createPasswordResetToken_NewToken() {
         when(tokenRepository.findByUser(testUser)).thenReturn(Optional.empty());
 
@@ -60,6 +62,7 @@ public class PasswordResetServiceImplUnitTests {
     }
 
     @Test
+    @DisplayName("Test 2")
     void validatePasswordResetToken_ValidToken() {
         when(tokenRepository.findByToken("valid-token"))
                 .thenReturn(Optional.of(testToken));
@@ -70,6 +73,7 @@ public class PasswordResetServiceImplUnitTests {
     }
 
     @Test
+    @DisplayName("Test 3")
     void validatePasswordResetToken_ExpiredToken() {
         testToken.setExpiryDate(new Date(System.currentTimeMillis() - 1000));
         when(tokenRepository.findByToken("expired-token"))
@@ -82,6 +86,7 @@ public class PasswordResetServiceImplUnitTests {
     }
 
     @Test
+    @DisplayName("Test 4")
     void changeUserPassword_ValidPassword() {
         passwordResetService.changeUserPassword(testUser, "NewPass123#");
 
@@ -90,12 +95,14 @@ public class PasswordResetServiceImplUnitTests {
     }
 
     @Test
+    @DisplayName("Test 5")
     void changeUserPassword_InvalidPassword() {
         assertThrows(IllegalArgumentException.class, () ->
                 passwordResetService.changeUserPassword(testUser, "weak"));
     }
 
     @Test
+    @DisplayName("Test 6")
     void requestPasswordReset_UserNotFound() {
         when(userRepository.findByEmailAddressIgnoreCase("nonexistent@example.com"))
                 .thenReturn(Optional.empty());
@@ -105,6 +112,7 @@ public class PasswordResetServiceImplUnitTests {
     }
 
     @Test
+    @DisplayName("Test 7")
     void resetPassword_ValidInput() {
         when(tokenRepository.findByToken("valid-token"))
                 .thenReturn(Optional.of(testToken));

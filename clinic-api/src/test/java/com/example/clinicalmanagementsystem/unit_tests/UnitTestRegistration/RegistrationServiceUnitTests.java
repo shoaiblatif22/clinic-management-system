@@ -187,4 +187,6 @@ class RegistrationServiceUnitTests {
         );
         assertEquals("Email is already registered", exception.getMessage());
     }
+
+    // Note: loadUserByUsername tests have been removed as the method was moved to SecurityConfig
 }

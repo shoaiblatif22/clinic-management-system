@@ -9,50 +9,27 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.ApplicationEventPublisher;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 /**
- * Service class for managing user accounts and authentication.
- * Handles user registration, loading user details, and related operations.
+ * Service class for managing user accounts.
+ * Handles user registration and related operations.
  */
 @Slf4j
-
 @Service
 @RequiredArgsConstructor
-public class UserService implements UserDetailsService {
+public class UserService {
 
     // Error messages
     private static final String EMAIL_ALREADY_EXISTS = "Email is already registered";
     private static final String INVALID_EMAIL = "Email is required and cannot be empty";
     private static final String INVALID_PASSWORD = "Password is required and cannot be empty";
-    private static final String USER_NOT_FOUND = "User not found with email: %s";
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final ApplicationEventPublisher eventPublisher;
     private final UserVerificationTokenRepository tokenRepository;
-
-    /**
-     * Loads a user by their email address (username).
-     *
-     * @param email the email address of the user to load
-     * @return UserDetails containing the user's information
-     * @throws UsernameNotFoundException if the user is not found
-     */
-    @Override
-    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        log.debug("Loading user by email: {}", email);
-        return userRepository.findByEmailAddressIgnoreCase(email)
-                .orElseThrow(() -> {
-                    String errorMessage = String.format(USER_NOT_FOUND, email);
-                    log.warn(errorMessage);
-                    return new UsernameNotFoundException(errorMessage);
-                });
-    }
 
     /**
      * Registers a new user with the provided user details.
