@@ -28,10 +28,10 @@ export function ForgotPasswordPage() {
 
   /**
    * Handles the form submission to request a password reset
-   * 
+   *
    * Makes an API call to the password reset endpoint with the user's email.
    * Updates the UI based on the response (success or error).
-   * 
+   *
    * @param {React.FormEvent} e - The form submission event
    */
   const handleSubmit = async (e: React.FormEvent) => {
@@ -41,12 +41,12 @@ export function ForgotPasswordPage() {
 
     try {
       // Make API request to password reset endpoint
-      const response = await fetch("http://localhost:8081/user/api/password-reset/request", {
+      const response = await fetch("http://localhost:8081/user/api/v1/password-reset/request", {
         method: "POST",
         headers: {
-          "Content-Type": "application/x-www-form-urlencoded"
+          "Content-Type": "application/json"
         },
-        body: new URLSearchParams({ emailAddress: email }).toString()
+        body: JSON.stringify({ emailAddress: email })
       });
 
       if (response.ok) {

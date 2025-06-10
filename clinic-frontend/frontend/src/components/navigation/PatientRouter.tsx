@@ -21,7 +21,7 @@ export const patientRoutes = [
     key="readings" 
     path="/readings" 
     element={
-      <ProtectedRoute allowedRoles={['patient', 'admin']}>
+      <ProtectedRoute allowedRoles={['USER', 'patient', 'admin']}>
         <ReadingsPage />
       </ProtectedRoute>
     } 
@@ -30,7 +30,7 @@ export const patientRoutes = [
     key={"patient-dashboard"}
     path="/patient-dashboard"
     element={
-      <ProtectedRoute allowedRoles={['patient', 'admin']}>
+      <ProtectedRoute allowedRoles={['USER', 'patient', 'admin']}>
         <PatientDashboard />
       </ProtectedRoute>
     }
@@ -39,7 +39,7 @@ export const patientRoutes = [
     key="insights" 
     path="/insights" 
     element={
-      <ProtectedRoute allowedRoles={['patient', 'admin']}>
+      <ProtectedRoute allowedRoles={['USER', 'patient', 'admin']}>
         <AIInsightsPage />
       </ProtectedRoute>
     } 
@@ -48,7 +48,7 @@ export const patientRoutes = [
     key="appointments" 
     path="/appointments" 
     element={
-      <ProtectedRoute allowedRoles={['patient', 'admin']}>
+      <ProtectedRoute allowedRoles={['USER', 'patient', 'admin']}>
         <AppointmentsPage />
       </ProtectedRoute>
     } 

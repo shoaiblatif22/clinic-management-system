@@ -7,7 +7,7 @@ import { Bell, Search, User } from "lucide-react";
  * @property {string} [userName="John Doe"] - The name of the current user, displayed in the header
  */
 type HeaderProps = {
-  userRole?: "patient" | "doctor";
+  userRole?: "USER" | "patient" | "doctor";
   userName?: string;
 };
 

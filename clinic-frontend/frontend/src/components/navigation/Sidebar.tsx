@@ -36,7 +36,7 @@ type NavItem = {
  * @property {"patient" | "doctor"} [userRole="patient"] - The role of the current user, determines which navigation items to display
  */
 type SidebarProps = {
-  userRole: "patient" | "doctor";
+  userRole: "USER" | "patient" | "doctor";
 };
 
 /**

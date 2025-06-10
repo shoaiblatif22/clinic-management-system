@@ -19,6 +19,16 @@ import { ArrowLeft, Eye, EyeOff, Mail, Lock } from "lucide-react";
  */
 export function LoginPage() {
   const navigate = useNavigate();
+
+  // State for the email input field
+  const [email, setEmail] = useState("");
+
+  // State to track if the form has been successfully submitted
+  const [submitted, setSubmitted] = useState(false);
+
+  // State for error messages
+  const [error, setError] = useState<string | null>(null);
+
   // State for password visibility toggle
   const [showPassword, setShowPassword] = useState(false);
 
@@ -30,18 +40,58 @@ export function LoginPage() {
 
   /**
    * Handles form submission for login
-   * 
-   * Prevents default form submission behavior and processes the login data.
-   * In a real application, this would make an API call to authenticate the user.
-   * 
    * @param {React.FormEvent} e - The form submission event
    */
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log(formData);
-    // In a real app, you would make an API call here to authenticate the user
-    // For now, we'll just navigate to the dashboard
-    navigate('/patient-dashboard');
+    setSubmitted(false);
+    setError(null);
+    
+    // Basic validation
+    if (!formData.email || !formData.password) {
+      setError("Please enter both email and password");
+      return;
+    }
+
+    try {
+      // Make API request to login endpoint
+      const response = await fetch("http://localhost:8081/user/api/v1/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        credentials: 'include', // Important for cookies/session
+        body: JSON.stringify({
+          email: formData.email,
+          password: formData.password
+        })
+      });
+
+      const data = await response.json();
+      
+      if (response.ok) {
+        // Store the jwt authentication token
+        if (data.token) {
+          localStorage.setItem('authToken', data.token);
+        }
+        setSubmitted(true);
+        console.log("Login successful, redirecting to dashboard...");
+        console.log("Response data:", data);
+        
+        // Store user role in localStorage for ProtectedRoute
+        if (data.role) {
+          localStorage.setItem('userRole', data.role);
+        }
+        
+        // Force a hard navigation to the patient dashboard
+        window.location.href = '/patient-dashboard';
+      } else {
+        setError(data.message || "Invalid email or password. Please try again.");
+      }
+    } catch (err) {
+      console.error('Login error:', err);
+      setError("An error occurred during login. Please try again later.");
+    }
   };
 
   /**

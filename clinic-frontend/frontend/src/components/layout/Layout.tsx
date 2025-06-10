@@ -10,7 +10,7 @@ import { Header } from "../navigation/Header";
  */
 type LayoutProps = {
   children: React.ReactNode;
-  userRole?: "patient" | "doctor";
+  userRole?: "USER" | "patient" | "doctor";
   userName?: string;
 };
 
