@@ -228,7 +228,8 @@
     <MESSAGE value="KAN-8 [SL] This commit will add the following:&#10;- create a github action for clinic frontend.&#10;- install dependancies, run build and clean up job" />
     <MESSAGE value="edited" />
     <MESSAGE value="corrected typo" />
-    <option name="LAST_COMMIT_MESSAGE" value="corrected typo" />
+    <MESSAGE value="*" />
+    <option name="LAST_COMMIT_MESSAGE" value="*" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
