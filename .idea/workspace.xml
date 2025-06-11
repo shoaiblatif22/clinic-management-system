@@ -4,48 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="947a413e-bccd-4ba6-88e9-22b85e8e1c62" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/Documentation/Intro2Moduliths.md" beforeDir="false" afterPath="$PROJECT_DIR$/Documentation/Intro2Moduliths.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/clinic-api/clinic-user/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/clinic-api/clinic-user/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/clinic-api/src/main/java/com/example/clinicmanagementsystem/ClinicManagementSystemApplication.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/clinic-api/src/main/java/com/example/clinicmanagementsystem/user/exception/GlobalExceptionHandler.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/clinic-api/src/main/java/com/example/clinicmanagementsystem/user/exception/InvalidPasswordException.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/clinic-api/src/main/java/com/example/clinicmanagementsystem/user/login/controller/LoginController.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/clinic-api/src/main/java/com/example/clinicmanagementsystem/user/login/dto/LoginRequest.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/clinic-api/src/main/java/com/example/clinicmanagementsystem/user/login/dto/LoginResponse.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/clinic-api/src/main/java/com/example/clinicmanagementsystem/user/login/mapper/CustomUserMapper.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/clinic-api/src/main/java/com/example/clinicmanagementsystem/user/login/service/JwtService.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/clinic-api/src/main/java/com/example/clinicmanagementsystem/user/password_reset/README.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/clinic-api/src/main/java/com/example/clinicmanagementsystem/user/password_reset/controller/PasswordResetController.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/clinic-api/src/main/java/com/example/clinicmanagementsystem/user/password_reset/dto/PasswordResetRequest.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/clinic-api/src/main/java/com/example/clinicmanagementsystem/user/password_reset/entity/PasswordResetToken.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/clinic-api/src/main/java/com/example/clinicmanagementsystem/user/password_reset/events/PasswordResetEvent.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/clinic-api/src/main/java/com/example/clinicmanagementsystem/user/password_reset/events/PasswordResetListener.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/clinic-api/src/main/java/com/example/clinicmanagementsystem/user/password_reset/repository/PasswordResetTokenRepository.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/clinic-api/src/main/java/com/example/clinicmanagementsystem/user/password_reset/service/PasswordResetService.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/clinic-api/src/main/java/com/example/clinicmanagementsystem/user/password_reset/service/PasswordResetServiceImpl.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/clinic-api/src/main/java/com/example/clinicmanagementsystem/user/registration/README.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/clinic-api/src/main/java/com/example/clinicmanagementsystem/user/registration/controller/UserRegistrationController.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/clinic-api/src/main/java/com/example/clinicmanagementsystem/user/registration/entity/UserEntity.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/clinic-api/src/main/java/com/example/clinicmanagementsystem/user/registration/entity/UserVerificationToken.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/clinic-api/src/main/java/com/example/clinicmanagementsystem/user/registration/events/RegistrationCompleteEvent.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/clinic-api/src/main/java/com/example/clinicmanagementsystem/user/registration/events/RegistrationCompleteListener.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/clinic-api/src/main/java/com/example/clinicmanagementsystem/user/registration/model/UserGender.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/clinic-api/src/main/java/com/example/clinicmanagementsystem/user/registration/model/UserModel.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/clinic-api/src/main/java/com/example/clinicmanagementsystem/user/registration/model/UserRole.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/clinic-api/src/main/java/com/example/clinicmanagementsystem/user/registration/repository/UserRepository.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/clinic-api/src/main/java/com/example/clinicmanagementsystem/user/registration/repository/UserVerificationTokenRepository.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/clinic-api/src/main/java/com/example/clinicmanagementsystem/user/registration/service/UserService.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/clinic-api/src/main/java/com/example/clinicmanagementsystem/user/registration/utils/StringUtils.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/clinic-api/src/main/java/com/example/clinicmanagementsystem/user/webConfig/MailConfig.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/clinic-api/src/main/java/com/example/clinicmanagementsystem/user/webConfig/SecurityConfig.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/clinic-api/src/main/resources/application.properties" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/clinic-api/src/test/java/com/example/clinicalmanagementsystem/unit_tests/UnitTestRegistration/RegistrationServiceUnitTests.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/clinic-api/src/test/java/com/example/clinicalmanagementsystem/unit_tests/UnitTestRegistration/StringUtilsUnitTests.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/clinic-api/src/test/java/com/example/clinicalmanagementsystem/unit_tests/UnitTestResetPassword/PasswordResetEventListenerUnitTests.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/clinic-api/src/test/java/com/example/clinicalmanagementsystem/unit_tests/UnitTestResetPassword/PasswordResetServiceImplUnitTests.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/clinic-api/src/test/java/com/example/clinicmanagementsystem/integration_tests/IntegrationTestingResetPassword/PasswordResetIntegrationTests.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/clinic-api/src/test/resources/application-test.properties" beforeDir="false" />
+    <list default="true" id="947a413e-bccd-4ba6-88e9-22b85e8e1c62" name="Changes" comment="squash! corrected typo">
+      <change beforePath="$PROJECT_DIR$/.github/workflows/quodana.yml" beforeDir="false" afterPath="$PROJECT_DIR$/.github/workflows/quodana.yml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -68,10 +28,10 @@
   <component name="HighlightingSettingsPerFile">
     <setting file="file://$PROJECT_DIR$/clinic-frontend/frontend/src/pages/doctor/DoctorAppointments.tsx" root0="SKIP_INSPECTION" />
   </component>
-  <component name="KubernetesApiPersistence"><![CDATA[{}]]></component>
-  <component name="KubernetesApiProvider"><![CDATA[{
-  "isMigrated": true
-}]]></component>
+  <component name="KubernetesApiPersistence">{}</component>
+  <component name="KubernetesApiProvider">{
+  &quot;isMigrated&quot;: true
+}</component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 3
 }</component>
@@ -80,43 +40,43 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "Application.ClinicUserApplication.executor": "Run",
-    "ModuleVcsDetector.initialDetectionPerformed": "true",
-    "RequestMappingsPanelOrder0": "0",
-    "RequestMappingsPanelOrder1": "1",
-    "RequestMappingsPanelWidth0": "75",
-    "RequestMappingsPanelWidth1": "75",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.git.unshallow": "true",
-    "SHELLCHECK.PATH": "/Users/shoaiblatif/Library/Application Support/JetBrains/IntelliJIdea2024.1/plugins/Shell Script/shellcheck",
-    "Spring Boot.ClinicManagementSystemApplication.executor": "Run",
-    "Vitest.LoginPage.should redirect to dashboard after successful login.executor": "Run",
-    "Vitest.LoginPage.should show validation errors for invalid inputs.executor": "Run",
-    "Vitest.LoginPage.test.tsx.executor": "Debug",
-    "Vitest.Sample Test.executor": "Run",
-    "Vitest.Sample Test.should pass (1).executor": "Run",
-    "Vitest.Sample Test.should pass.executor": "Run",
-    "com.codeium.enabled": "true",
-    "git-widget-placeholder": "modular-monolith-change",
-    "junie.onboarding.icon.badge.shown": "true",
-    "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "/Users/shoaiblatif/Documents/Personal-Projects/healthTechProject",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "npm.install.executor": "Run",
-    "project.structure.last.edited": "Project",
-    "project.structure.proportion": "0.0",
-    "project.structure.side.proportion": "0.0",
-    "settings.editor.selected.configurable": "preferences.pluginManager",
-    "ts.external.directory.path": "/Applications/IntelliJ IDEA.app/Contents/plugins/javascript-plugin/jsLanguageServicesImpl/external",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Application.ClinicUserApplication.executor&quot;: &quot;Run&quot;,
+    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
+    &quot;RequestMappingsPanelOrder0&quot;: &quot;0&quot;,
+    &quot;RequestMappingsPanelOrder1&quot;: &quot;1&quot;,
+    &quot;RequestMappingsPanelWidth0&quot;: &quot;75&quot;,
+    &quot;RequestMappingsPanelWidth1&quot;: &quot;75&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;SHELLCHECK.PATH&quot;: &quot;/Users/shoaiblatif/Library/Application Support/JetBrains/IntelliJIdea2024.1/plugins/Shell Script/shellcheck&quot;,
+    &quot;Spring Boot.ClinicManagementSystemApplication.executor&quot;: &quot;Run&quot;,
+    &quot;Vitest.LoginPage.should redirect to dashboard after successful login.executor&quot;: &quot;Run&quot;,
+    &quot;Vitest.LoginPage.should show validation errors for invalid inputs.executor&quot;: &quot;Run&quot;,
+    &quot;Vitest.LoginPage.test.tsx.executor&quot;: &quot;Debug&quot;,
+    &quot;Vitest.Sample Test.executor&quot;: &quot;Run&quot;,
+    &quot;Vitest.Sample Test.should pass (1).executor&quot;: &quot;Run&quot;,
+    &quot;Vitest.Sample Test.should pass.executor&quot;: &quot;Run&quot;,
+    &quot;com.codeium.enabled&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;modular-monolith-change&quot;,
+    &quot;junie.onboarding.icon.badge.shown&quot;: &quot;true&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/Users/shoaiblatif/Documents/Personal-Projects/healthTechProject&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;npm.install.executor&quot;: &quot;Run&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Project&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.0&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.0&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;,
+    &quot;ts.external.directory.path&quot;: &quot;/Applications/IntelliJ IDEA.app/Contents/plugins/javascript-plugin/jsLanguageServicesImpl/external&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/Documentation" />
@@ -246,7 +206,7 @@
       <workItem from="1749675035910" duration="20000" />
       <workItem from="1749675062984" duration="19000" />
       <workItem from="1749675238586" duration="9000" />
-      <workItem from="1749675252261" duration="573000" />
+      <workItem from="1749675252261" duration="5232000" />
     </task>
     <servers />
   </component>
@@ -266,7 +226,9 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="KAN-8 [SL] This commit will add the following:&#10;- create a github action for clinic frontend.&#10;- install dependancies, run build and clean up job" />
-    <option name="LAST_COMMIT_MESSAGE" value="KAN-8 [SL] This commit will add the following:&#10;- create a github action for clinic frontend.&#10;- install dependancies, run build and clean up job" />
+    <MESSAGE value="edited" />
+    <MESSAGE value="corrected typo" />
+    <option name="LAST_COMMIT_MESSAGE" value="corrected typo" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

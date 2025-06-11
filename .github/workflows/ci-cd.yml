@@ -32,7 +32,7 @@ jobs:
   quodana:
     name: Qodana Analysis
     needs: build
-    uses: ./.github/workflows/quodana.yml
+    uses: ./.github/workflows/qodana.yml
     secrets: inherit
 
   # 3. Check for vulnerable dependencies 
