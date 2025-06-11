@@ -29,16 +29,16 @@ jobs:
     secrets: inherit
 
   # 2. Run code quality checks 
-  code-quality:
-    name: Code Quality
+  quodana:
+    name: Qodana Analysis
     needs: build
-    uses: ./.github/workflows/code-quality.yml
+    uses: ./.github/workflows/quodana.yml
     secrets: inherit
 
   # 3. Check for vulnerable dependencies 
   dependency-check:
     name: Dependency Check
-    needs: code-quality
+    needs: quodana
     uses: ./.github/workflows/dependency-check.yml
     secrets: inherit
 
