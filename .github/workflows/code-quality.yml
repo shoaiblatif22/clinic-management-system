@@ -40,13 +40,11 @@ jobs:
           
       # Run Qodana analysis
       - name: Run Qodana
-        uses: JetBrains/qodana-action@v5
+        uses: JetBrains/qodana-action@v4
         with:
-          linter: jetbrains/qodana-jvm-android:latest
+          linter: jetbrains/qodana-jvm-community:latest
           # Fail the build if problems are found
           fail-total-problems: true
-          # Save the report as an artifact
-          artifact-name: qodana-report
           # Set the path to analyze 
           paths: 'clinic-api'
           # Additional Qodana arguments
@@ -55,10 +53,11 @@ jobs:
       # Upload the Qodana report
       - name: Upload Qodana report
         if: always()
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: qodana-report
           path: ${{ github.workspace }}/.qodana/report/
+          retention-days: 7
           
       - name: Comment on PR
         if: github.event_name == 'pull_request' && failure()

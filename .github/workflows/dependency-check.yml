@@ -61,7 +61,7 @@ jobs:
       # Upload the dependency check reports as artifacts
       - name: Upload dependency check reports
         if: always()
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: dependency-check-reports
           path: dependency-check-reports/
