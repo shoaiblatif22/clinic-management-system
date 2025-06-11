@@ -10,7 +10,7 @@ A **Modular Monolith** is an architectural style where an application is built a
 
 <br>
 
-<img src="./Assets/architectures.jpg" alt="Multiple architectures" style="width:500px; height:650px;"/>
+<img src="../Assets/architectures.jpg" alt="Multiple architectures" style="width:500px; height:650px;"/>
 
 
 

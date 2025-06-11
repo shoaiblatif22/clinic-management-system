@@ -1,0 +1,63 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    paths:
+      - '.github/workflows/**.yml'
+      - 'clinic-api/**'
+  pull_request:
+    paths:
+      - '.github/workflows/**.yml'
+      - 'clinic-api/**'
+  workflow_dispatch:
+    inputs:
+      reason:
+        description: 'Reason for manual trigger'
+        required: true
+        default: 'Manual run'
+
+# Environment variables available to all jobs
+env:
+  MAVEN_OPTS: -Dhttp.keepAlive=false -Dmaven.wagon.http.pool=false
+  MAVEN_CACHE: ${{ github.workspace }}/.m2/repository
+
+jobs:
+  # 1. Build the application
+  build:
+    name: Build
+    uses: ./.github/workflows/reusable/build.yml
+    secrets: inherit
+
+  # 2. Run code quality checks 
+  code-quality:
+    name: Code Quality
+    needs: build
+    uses: ./.github/workflows/reusable/code-quality.yml
+    secrets: inherit
+
+  # 3. Check for vulnerable dependencies 
+  dependency-check:
+    name: Dependency Check
+    needs: code-quality
+    uses: ./.github/workflows/reusable/dependency-check.yml
+    secrets: inherit
+
+  # 4. Run tests 
+  test:
+    name: Run Tests
+    needs: dependency-check
+    uses: ./.github/workflows/reusable/test.yml
+    secrets: inherit
+
+  # 5. Build and push Docker image
+  docker-build:
+    name: Build Docker Image
+    needs: test
+    uses: ./.github/workflows/reusable/docker-build.yml
+    with:
+      tag: ${{ github.sha }}
+    secrets: inherit
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
