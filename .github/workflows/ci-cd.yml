@@ -25,35 +25,35 @@ jobs:
   # 1. Build the application
   build:
     name: Build
-    uses: ./.github/workflows/reusable/build.yml
+    uses: ./.github/workflows/build.yml
     secrets: inherit
 
   # 2. Run code quality checks 
   code-quality:
     name: Code Quality
     needs: build
-    uses: ./.github/workflows/reusable/code-quality.yml
+    uses: ./.github/workflows/code-quality.yml
     secrets: inherit
 
   # 3. Check for vulnerable dependencies 
   dependency-check:
     name: Dependency Check
     needs: code-quality
-    uses: ./.github/workflows/reusable/dependency-check.yml
+    uses: ./.github/workflows/dependency-check.yml
     secrets: inherit
 
   # 4. Run tests 
   test:
     name: Run Tests
     needs: dependency-check
-    uses: ./.github/workflows/reusable/test.yml
+    uses: ./.github/workflows/test.yml
     secrets: inherit
 
   # 5. Build and push Docker image
   docker-build:
     name: Build Docker Image
     needs: test
-    uses: ./.github/workflows/reusable/docker-build.yml
+    uses: ./.github/workflows/docker-build.yml
     with:
       tag: ${{ github.sha }}
     secrets: inherit
