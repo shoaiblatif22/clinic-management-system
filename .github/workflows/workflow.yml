@@ -37,8 +37,8 @@ jobs:
       - name: Build with Maven
         run: |
           cd clinic-api
-          mvn -B clean package -DskipTests
-          cp target/*.jar target/clinic-api.jar
+          mvn -B clean install -DskipTests
+          find . -name "*.jar" -exec echo "Generated JAR: {}" \;
 
       - name: Run Unit Tests
         run: |
