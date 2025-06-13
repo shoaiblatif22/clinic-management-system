@@ -20,7 +20,7 @@ pipeline {
         stage('Build Clinic API and run tests') {
             steps {
                 dir('clinic-api') {
-                    sh 'mvn clean test -Dspring.profiles.active=test'
+                    sh 'mvn clean install -U'
                 }
             }
         }
