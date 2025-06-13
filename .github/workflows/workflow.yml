@@ -1,0 +1,55 @@
+name: workflow.yml
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+
+    services:
+      mailhog:
+        image: mailhog/mailhog
+        ports:
+          - 1025:1025
+          - 8025:8025
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v3
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+
+      - name: Verify MailHog
+        run: |
+          curl --retry 5 --retry-delay 5 --retry-max-time 30 \
+            --fail http://localhost:8025
+
+      - name: Build with Maven
+        run: |
+          cd clinic-api
+          mvn -B clean package -DskipTests
+          cp target/*.jar target/clinic-api.jar
+
+      - name: Run Unit Tests
+        run: |
+          cd clinic-api
+          mvn test
+
+      - name: Run Integration Tests
+        run: |
+          cd clinic-api
+          mvn verify -Dspring.profiles.active=test
+
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: clinic-api
+          path: clinic-api/target/*.jar
