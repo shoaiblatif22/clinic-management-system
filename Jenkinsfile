@@ -15,7 +15,9 @@ pipeline {
         MAVEN_OPTS = "-Dmaven.repo.local=.m2/repository"
     }
 
-    stage('Start MailHog') {
+
+    stages {
+        stage('Start MailHog') {
             steps {
                 sh 'docker run -d -p 1025:1025 -p 8025:8025 --name mailhog mailhog/mailhog'
                 sleep 10
@@ -29,8 +31,7 @@ pipeline {
                 '''
             }
         }
-
-    stages {
+        
         stage('Checkout') {
             steps {
                 checkout scm
