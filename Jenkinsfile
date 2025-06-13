@@ -2,8 +2,8 @@ pipeline {
     agent any
 
     tools {
-        maven 'maven3' 
-        jdk 'jdk17'    
+        maven 'maven3'
+        jdk 'jdk17'
     }
 
     environment {
@@ -17,12 +17,6 @@ pipeline {
             }
         }
 
-        stage('Run mailhog') {
-            steps {
-                 sh 'docker run -d -p 1025:1025 -p 8025:8025 --name mailhog mailhog/mailhog'
-            }
-        }
-
         stage('Build clinic-api') {
             steps {
                 dir('clinic-api') {
@@ -31,9 +25,29 @@ pipeline {
             }
         }
 
-        stage('Run tests') {
+        stage('Run Unit Tests') {
             steps {
-                sh 'mvn test'
+                dir('clinic-api') {
+                    echo 'Running unit tests only...'
+                    sh 'mvn test'
+                }
+            }
+        }
+
+        stage('Start MailHog') {
+            steps {
+                sh 'docker run -d -p 1025:1025 -p 8025:8025 --name mailhog mailhog/mailhog'
+                sleep 5
+            }
+        }
+
+        stage('Run Integration Tests') {
+            steps {
+                dir('clinic-api') {
+                    echo 'Running integration tests...'
+                    sh 'mvn verify'
+                }
+            }
         }
 
         stage('Archive Artifacts') {
@@ -54,7 +68,6 @@ pipeline {
         }
         always {
             sh 'docker rm -f mailhog || true'
-            }
         }
     }
 }
