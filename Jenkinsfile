@@ -54,6 +54,7 @@ pipeline {
         }
         always {
             sh 'docker rm -f mailhog || true'
+            }
         }
     }
 }
