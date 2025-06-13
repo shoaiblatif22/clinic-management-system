@@ -37,15 +37,23 @@ pipeline {
         stage('Start MailHog') {
             steps {
                 sh 'docker run -d -p 1025:1025 -p 8025:8025 --name mailhog mailhog/mailhog'
-                sleep 5
+                sleep 10
+                sh '''
+                    if curl --fail localhost:8025; then
+                      echo "MailHog UI is up"
+                    else
+                      echo "MailHog UI not reachable"
+                      exit 1
+                    fi
+                '''
             }
         }
 
         stage('Run Integration Tests') {
             steps {
                 dir('clinic-api') {
-                    echo 'Running integration tests...'
-                    sh 'mvn verify'
+                    echo 'Running integration tests with spring profile "test"...'
+                    sh 'mvn verify -Dspring.profiles.active=test'
                 }
             }
         }
