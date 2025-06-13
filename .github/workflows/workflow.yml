@@ -44,15 +44,15 @@ jobs:
         run: |
           cd clinic-api
           mvn test \
-            -Dtest="com/example/unittests/**/*Test.java" \
-            -DfailIfNoTests=false
+            -Dtest="**/unittests/**/*.java" \
+            -Dsurefire.failIfNoSpecifiedTests=false
 
       - name: Run Integration Tests
         run: |
           cd clinic-api
           mvn verify \
-            -Dtest="com/example/integrationtests/**/*IT.java" \
-            -DfailIfNoTests=false \
+            -Dit.test="**/integrationtests/**/*.java" \
+            -Dsurefire.failIfNoSpecifiedTests=false \
             -Dspring.profiles.active=test
 
       - name: Upload Artifact
