@@ -15,6 +15,21 @@ pipeline {
         MAVEN_OPTS = "-Dmaven.repo.local=.m2/repository"
     }
 
+    stage('Start MailHog') {
+            steps {
+                sh 'docker run -d -p 1025:1025 -p 8025:8025 --name mailhog mailhog/mailhog'
+                sleep 10
+                sh '''
+                    if curl --fail localhost:8025; then
+                      echo "MailHog UI is up"
+                    else
+                      echo "MailHog UI not reachable"
+                      exit 1
+                    fi
+                '''
+            }
+        }
+
     stages {
         stage('Checkout') {
             steps {
@@ -36,21 +51,6 @@ pipeline {
                     echo 'Running unit tests only...'
                     sh 'mvn test'
                 }
-            }
-        }
-
-        stage('Start MailHog') {
-            steps {
-                sh 'docker run -d -p 1025:1025 -p 8025:8025 --name mailhog mailhog/mailhog'
-                sleep 10
-                sh '''
-                    if curl --fail localhost:8025; then
-                      echo "MailHog UI is up"
-                    else
-                      echo "MailHog UI not reachable"
-                      exit 1
-                    fi
-                '''
             }
         }
 
