@@ -17,12 +17,23 @@ pipeline {
             }
         }
 
-        stage('Build Clinic API and run tests') {
+        stage('Run mailhog') {
+            steps {
+                 sh 'docker run -d -p 1025:1025 -p 8025:8025 --name mailhog mailhog/mailhog'
+            }
+        }
+
+        stage('Build clinic-api') {
             steps {
                 dir('clinic-api') {
-                    sh 'mvn clean install -U'
+                    sh 'mvn clean'
                 }
             }
+        }
+
+        stage('Run tests') {
+            steps {
+                sh 'mvn test'
         }
 
         stage('Archive Artifacts') {
@@ -40,6 +51,9 @@ pipeline {
         }
         failure {
             echo 'Build failed.'
+        }
+        always {
+            sh 'docker rm -f mailhog || true'
         }
     }
 }
