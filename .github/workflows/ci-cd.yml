@@ -1,5 +1,4 @@
 name: CI/CD Pipeline
-
 on:
   push:
     branches: [modular-monolith-change]
@@ -13,7 +12,6 @@ jobs:
     needs: build
     if: success()
     uses: ./.github/workflows/deployment.yml
-    with:
-      serviceId: ${{ secrets.RENDER_SERVICE_ID }}
-      apiKey: ${{ secrets.RENDER_API_KEY }}
-    secrets: inherit
+    secrets:
+      RENDER_SERVICE_ID: ${{ secrets.RENDER_SERVICE_ID }}
+      RENDER_API_KEY: ${{ secrets.RENDER_API_KEY }}
