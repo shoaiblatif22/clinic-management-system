@@ -3,11 +3,9 @@ on:
   push:
     branches: [modular-monolith-change]
   workflow_dispatch:
-
 jobs:
   build:
     uses: ./.github/workflows/workflow.yml
-
   deploy:
     needs: build
     if: success()
