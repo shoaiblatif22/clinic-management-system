@@ -52,7 +52,7 @@ jobs:
 
       - name: Verify JAR exists
         run: |
-          ls -la clinic-api/target/*.jar || echo "No JAR file found!"
+          ls -la clinic-api/clinic-user/target/*.jar || echo "No JAR file found!"
 
 
       - name: Upload Artifact
