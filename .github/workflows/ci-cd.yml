@@ -1,31 +1,14 @@
-name: CI/CD Pipeline Orchestrator
+name: CI/CD Pipeline
 on:
-  workflow_dispatch: 
   push:
-    branches: [modular-monolith-change] 
+    branches: [modular-monolith-change]
+  workflow_dispatch:
 
 jobs:
-  trigger-build-test:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Trigger Build and Test Workflow
-        uses: actions/trigger-workflow-and-wait@v1
-        with:
-          owner: ${{ github.repository_owner }}
-          repo: ${{ github.repository }}
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          workflow_file_name: 'workflow.yml' 
-          wait_interval: 10  # Seconds between status checks
+  build:
+    uses: ./.github/workflows/build-test.yml
 
-  trigger-deploy:
-    needs: trigger-build-test
+  deploy:
+    needs: build
     if: success()
-    runs-on: ubuntu-latest
-    steps:
-      - name: Trigger Deploy Workflow
-        uses: actions/trigger-workflow-and-wait@v1
-        with:
-          owner: ${{ github.repository_owner }}
-          repo: ${{ github.repository }}
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          workflow_file_name: 'deployment.yml'
+    uses: ./.github/workflows/deploy.yml
