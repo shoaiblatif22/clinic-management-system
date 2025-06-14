@@ -1,7 +1,10 @@
 name: Deploy to Render
 
 on:
-  workflow_dispatch:
+  workflow_run:
+    workflows: workflow.yml 
+    types:
+      - completed
 
 jobs:
   deploy:
