@@ -6,9 +6,9 @@ on:
 
 jobs:
   build:
-    uses: ./.github/workflows/build-test.yml
+    uses: ./.github/workflows/workflow.yml
 
   deploy:
     needs: build
     if: success()
-    uses: ./.github/workflows/deploy.yml
+    uses: ./.github/workflows/deployment.yml
