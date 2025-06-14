@@ -10,13 +10,12 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
-      - name: Download Artifact
+      - name: Download Artifact (optional)
         uses: actions/download-artifact@v4
         with:
           name: clinic-api
 
       - name: Trigger Render Deployment
         run: |
-          curl -X POST \
-            -H "Accept: application/json" \
-            "${{ secrets.RENDER_DEPLOY_HOOK_URL }}"
+          curl -sSf -X POST "${{ secrets.RENDER_DEPLOY_HOOK_URL }}"
+          echo "Render deployment triggered successfully"
