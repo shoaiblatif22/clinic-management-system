@@ -59,4 +59,4 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: clinic-api
-          path: clinic-api/target/*.jar
+          path: **/target/*.jar
