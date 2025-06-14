@@ -1,0 +1,22 @@
+name: Deploy to Render
+
+on:
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Build app
+        run: mvn clean package -DskipTests
+
+      - name: Deploy to Render
+        uses: sws2apps/render-deployment@v1.8.0
+        with:
+          serviceId: ${{ secrets.RENDER_SERVICE_ID }}
+          apiKey: ${{ secrets.RENDER_API_KEY }}
+          multipleDeployment: false
