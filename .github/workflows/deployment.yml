@@ -1,7 +1,14 @@
 name: Deploy to Render
 on:
-  workflow_call:  
-  workflow_dispatch:  
+  workflow_call:
+    inputs:
+      serviceId:
+        required: true
+        type: string
+      apiKey:
+        required: true
+        type: string
+  workflow_dispatch:
 
 jobs:
   deploy:
@@ -15,5 +22,6 @@ jobs:
       - name: Deploy to Render
         uses: sws2apps/render-deployment@v1.8.0
         with:
-          serviceId: ${{ secrets.RENDER_SERVICE_ID }}
-          apiKey: ${{ secrets.RENDER_API_KEY }}
+          serviceId: ${{ inputs.serviceId || secrets.RENDER_SERVICE_ID }}
+          apiKey: ${{ inputs.apiKey || secrets.RENDER_API_KEY }}
+          multipleDeployment: true
