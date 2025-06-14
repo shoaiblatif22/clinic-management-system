@@ -13,5 +13,4 @@ jobs:
     if: success()
     uses: ./.github/workflows/deployment.yml
     secrets:
-      RENDER_SERVICE_ID: ${{ secrets.RENDER_SERVICE_ID }}
-      RENDER_API_KEY: ${{ secrets.RENDER_API_KEY }}
+      RENDER_DEPLOY_HOOK_URL: ${{ secrets.RENDER_DEPLOY_HOOK_URL }}
