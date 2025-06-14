@@ -1,12 +1,19 @@
 name: CI/CD Pipeline
+
 on:
   push:
     branches: [modular-monolith-change]
   workflow_dispatch:
+
 jobs:
   build:
     uses: ./.github/workflows/workflow.yml
+
   deploy:
     needs: build
     if: success()
     uses: ./.github/workflows/deployment.yml
+    with:
+      serviceId: ${{ secrets.RENDER_SERVICE_ID }}
+      apiKey: ${{ secrets.RENDER_API_KEY }}
+    secrets: inherit
