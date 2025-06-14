@@ -1,0 +1,21 @@
+name: Deploy to Render
+on:
+  workflow_call:
+    secrets:
+      RENDER_DEPLOY_HOOK_URL:
+        required: true
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download Artifact (optional)
+        uses: actions/download-artifact@v4
+        with:
+          name: clinic-api
+
+      - name: Trigger Render Deployment
+        run: |
+          curl -v -X POST "${{ secrets.RENDER_DEPLOY_HOOK_URL }}"
+          echo "Render deployment triggered successfully"

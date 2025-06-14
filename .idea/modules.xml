@@ -2,6 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$PROJECT_DIR$/user-service/clinic-management-system.iml" filepath="$PROJECT_DIR$/user-service/clinic-management-system.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/healthTechProject.iml" filepath="$PROJECT_DIR$/.idea/healthTechProject.iml" />
     </modules>
   </component>

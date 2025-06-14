@@ -1,0 +1,96 @@
+Index: .github/workflows/quodana.yml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>name: Qodana Analysis\n\non:\n  workflow_call:\n  workflow_dispatch:\n  schedule:\n    - cron: '0 0 * * *'\n\njobs:\n  qodana:\n    name: Run Qodana Analysis\n    runs-on: ubuntu-latest\n    \n    steps:\n      - name: Checkout code\n        uses: actions/checkout@v4\n        with:\n          fetch-depth: 0\n          \n      - name: Set up JDK 17\n        uses: actions/setup-java@v3\n        with:\n          java-version: '17'\n          distribution: 'temurin'\n          \n      # Cache Maven packages for faster builds\n      - name: Cache Maven packages\n        uses: actions/cache@v3\n        with:\n          path: ~/.m2/repository\n          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}\n          \n      # Cache Qodana results for faster subsequent runs\n      - name: Cache Qodana results\n        uses: actions/cache@v3\n        with:\n          path: ${{ github.workspace }}/.qodana/cache\n          key: qodana-cache-${{ hashFiles('**/pom.xml') }}\n          \n      # Create Qodana configuration if it doesn't exist\n      - name: Setup Qodana config\n        run: |\n          mkdir -p .qodana\n          if [ ! -f .qodana/qodana.yaml ]; then\n            echo 'version: \"1.0\"\n        ide: QDJVMC\n        linter: jetbrains/qodana-jvm-community:latest' > .qodana/qodana.yaml\n          fi\n          \n      # Run Qodana analysis using community edition\n      - name: Run Qodana\n        uses: JetBrains/qodana-action@v4\n        with:\n          linter: jetbrains/qodana-jvm-community:latest\n          project-dir: clinic-api\n          fail-total-problems: true\n          args: --show-report --save-report\n          \n      # Upload the Qodana report\n      - name: Upload Qodana report\n        if: always()\n        uses: actions/upload-artifact@v4\n        with:\n          name: qodana-report\n          path: ${{ github.workspace }}/.qodana/report/\n          retention-days: 7\n\n      - name: Comment on PR\n        if: github.event_name == 'pull_request' && failure()\n        uses: actions/github-script@v7\n        with:\n          script: |\n            const fs = require('fs');\n            try {\n              const report = fs.readFileSync('${{ github.workspace }}/.qodana/log/ci.log', 'utf8');\n              const maxGitHubBodyLength = 65536;\n              const reportPreview = report.length > maxGitHubBodyLength\n                ? report.substring(0, maxGitHubBodyLength) + '\\n... Report was truncated'\n                : report;\n              await github.issues.createComment({\n                issue_number: context.issue.number,\n                owner: context.repo.owner,\n                repo: context.repo.repo,\n                body: '### Qodana found some issues\\n\\n```\\n' + reportPreview + '\\n```\\n\\n[Full Qodana Report](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}#summary)'\n              });\n            } catch (error) {\n              console.error('Error creating PR comment:', error);\n            }\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.github/workflows/quodana.yml b/.github/workflows/quodana.yml
+--- a/.github/workflows/quodana.yml	(revision f91dac053f8192a3e5e1e1a294840a7cea023e56)
++++ b/.github/workflows/quodana.yml	(date 1749680826531)
+@@ -16,53 +16,49 @@
+         uses: actions/checkout@v4
+         with:
+           fetch-depth: 0
+-          
++
+       - name: Set up JDK 17
+         uses: actions/setup-java@v3
+         with:
+           java-version: '17'
+           distribution: 'temurin'
+-          
+-      # Cache Maven packages for faster builds
++
+       - name: Cache Maven packages
+         uses: actions/cache@v3
+         with:
+           path: ~/.m2/repository
+           key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+-          
+-      # Cache Qodana results for faster subsequent runs
++
+       - name: Cache Qodana results
+         uses: actions/cache@v3
+         with:
+           path: ${{ github.workspace }}/.qodana/cache
+           key: qodana-cache-${{ hashFiles('**/pom.xml') }}
+-          
+-      # Create Qodana configuration if it doesn't exist
++
+       - name: Setup Qodana config
+         run: |
+           mkdir -p .qodana
+           if [ ! -f .qodana/qodana.yaml ]; then
+-            echo 'version: "1.0"
+-        ide: QDJVMC
+-        linter: jetbrains/qodana-jvm-community:latest' > .qodana/qodana.yaml
++            echo 'version: "1.0"' > .qodana/qodana.yaml
++            echo 'linter: jetbrains/qodana-jvm-community:2025.1' >> .qodana/qodana.yaml
+           fi
+-          
+-      # Run Qodana analysis using community edition
++
+       - name: Run Qodana
+-        uses: JetBrains/qodana-action@v4
++        uses: JetBrains/qodana-action@v2025.1.1
++        env:
++          QODANA_TOKEN: ${{ secrets.QODANA_TOKEN }}
+         with:
+-          linter: jetbrains/qodana-jvm-community:latest
+-          project-dir: clinic-api
+-          fail-total-problems: true
+-          args: --show-report --save-report
+-          
+-      # Upload the Qodana report
++          args: --fail-threshold=0
++          results-dir: ${{ github.workspace }}/.qodana/results
++          cache-dir: ${{ github.workspace }}/.qodana/cache
++          use-caches: true
++
+       - name: Upload Qodana report
+         if: always()
+         uses: actions/upload-artifact@v4
+         with:
+           name: qodana-report
+-          path: ${{ github.workspace }}/.qodana/report/
++          path: ${{ github.workspace }}/.qodana/results/
+           retention-days: 7
+ 
+       - name: Comment on PR
+@@ -72,7 +68,7 @@
+           script: |
+             const fs = require('fs');
+             try {
+-              const report = fs.readFileSync('${{ github.workspace }}/.qodana/log/ci.log', 'utf8');
++              const report = fs.readFileSync('${{ github.workspace }}/.qodana/results/log/ci.log', 'utf8');
+               const maxGitHubBodyLength = 65536;
+               const reportPreview = report.length > maxGitHubBodyLength
+                 ? report.substring(0, maxGitHubBodyLength) + '\n... Report was truncated'
+@@ -85,4 +81,4 @@
+               });
+             } catch (error) {
+               console.error('Error creating PR comment:', error);
+-            }
++            }
+\ No newline at end of file

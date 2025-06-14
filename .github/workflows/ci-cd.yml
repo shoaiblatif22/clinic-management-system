@@ -1,0 +1,16 @@
+name: CI/CD Pipeline
+on:
+  push:
+    branches: [modular-monolith-change]
+  workflow_dispatch:
+
+jobs:
+  build:
+    uses: ./.github/workflows/workflow.yml
+
+  deploy:
+    needs: build
+    if: success()
+    uses: ./.github/workflows/deployment.yml
+    secrets:
+      RENDER_DEPLOY_HOOK_URL: ${{ secrets.RENDER_DEPLOY_HOOK_URL }}
