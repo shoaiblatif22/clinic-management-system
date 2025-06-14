@@ -50,6 +50,11 @@ jobs:
             -Dsurefire.failIfNoSpecifiedTests=false \
             -Dspring.profiles.active=test
 
+      - name: Verify JAR exists
+        run: |
+          ls -la clinic-api/target/*.jar || echo "No JAR file found!"
+
+
       - name: Upload Artifact
         uses: actions/upload-artifact@v4
         with:
