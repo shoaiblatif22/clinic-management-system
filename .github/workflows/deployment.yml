@@ -1,14 +1,10 @@
 name: Deploy to Render
-
 on:
-  workflow_run:
-    workflows: ["Build and Test"]
-    branches: [modular-monolith-change]
-    types: [completed]
+  workflow_call:  
+  workflow_dispatch:  
 
 jobs:
   deploy:
-    if: ${{ github.event.workflow_run.conclusion == 'success' }}  # Only if build passed
     runs-on: ubuntu-latest
     steps:
       - name: Download Artifact
