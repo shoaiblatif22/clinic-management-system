@@ -1,16 +1,20 @@
 name: CI/CD Pipeline
+
 on:
   push:
-    branches: [modular-monolith-change]
+    branches:
+      - main
+      - 'KAN-*'
   workflow_dispatch:
 
 jobs:
   build:
+    if: startsWith(github.ref, 'refs/heads/KAN-') || github.ref == 'refs/heads/main'
     uses: ./.github/workflows/workflow.yml
 
   deploy:
     needs: build
-    if: success()
+    if: github.ref == 'refs/heads/main'
     uses: ./.github/workflows/deployment.yml
     secrets:
       RENDER_DEPLOY_HOOK_URL: ${{ secrets.RENDER_DEPLOY_HOOK_URL }}
