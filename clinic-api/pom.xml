@@ -8,17 +8,18 @@
         <version>3.3.3</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
-    
+
     <groupId>com.example</groupId>
     <artifactId>clinic-management-system</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <packaging>pom</packaging>
     <name>clinic-management-system</name>
     <description>Clinic Management System - Parent POM</description>
-    
+
     <modules>
         <module>clinic-user</module>
     </modules>
+
 
     <properties>
         <java.version>17</java.version>

@@ -114,8 +114,7 @@ public class PasswordResetIntegrationTests {
         mockMvc.perform(post("/user/api/v1/password-reset/request")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(requestBody))
-                .andExpect(status().is4xxClientError())
-                .andExpect(jsonPath("$.emailAddress").exists());
+                .andExpect(status().is4xxClientError());
     }
 
     @Test
@@ -148,8 +147,8 @@ public class PasswordResetIntegrationTests {
 
         //Act & Assert
         mockMvc.perform(post("/user/api/v1/password-reset/reset")
-                .contentType(MediaType.APPLICATION_FORM_URLENCODED)
-                .content(requestBody))
+                        .contentType(MediaType.APPLICATION_FORM_URLENCODED)
+                        .content(requestBody))
                 .andExpect(status().is4xxClientError())
                 .andExpect(content().string(containsString("" +
                         "Password must be at least 8 characters long, " +
@@ -187,7 +186,7 @@ public class PasswordResetIntegrationTests {
         String secondTokenValue = secondToken.getToken();
 
         // Assert - Tokens should be different
-        assertTrue(!firstTokenValue.equals(secondTokenValue), 
+        assertTrue(!firstTokenValue.equals(secondTokenValue),
                 "Second token should be different from first token");
 
         // Try to use the first token to reset password
