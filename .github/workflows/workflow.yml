@@ -35,14 +35,7 @@ jobs:
           mvn -B clean install -DskipTests
           find . -name "*.jar" -exec echo "Generated JAR: {}" \;
 
-      - name: Run Unit Tests
-        run: |
-          cd clinic-api
-          mvn test \
-            -Dtest="**/unittests/**/*.java" \
-            -Dsurefire.failIfNoSpecifiedTests=false
-
-      - name: Run Integration Tests
+      - name: Run Unit and Integration Tests
         run: |
           cd clinic-api
           mvn verify \
@@ -53,7 +46,6 @@ jobs:
       - name: Verify JAR exists
         run: |
           ls -la clinic-api/clinic-user/target/*.jar || echo "No JAR file found!"
-
 
       - name: Upload Artifact
         uses: actions/upload-artifact@v4
