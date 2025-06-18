@@ -1,4 +1,4 @@
-package com.example.clinicuser;
+package com.example.clinicmanagementsystem;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
