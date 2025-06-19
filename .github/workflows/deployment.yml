@@ -17,5 +17,5 @@ jobs:
 
       - name: Trigger Render Deployment
         run: |
-          curl -v -X POST "${{ secrets.RENDER_DEPLOY_HOOK_URL }}"
+          curl -sSf -X POST "${{ secrets.RENDER_DEPLOY_HOOK_URL }}
           echo "Render deployment triggered successfully"
