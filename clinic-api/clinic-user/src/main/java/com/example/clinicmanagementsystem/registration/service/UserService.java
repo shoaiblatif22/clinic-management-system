@@ -1,112 +1,57 @@
 package com.example.clinicmanagementsystem.registration.service;
 
+import com.example.clinicmanagementsystem.registration.dto.UserRegistrationRequest;
+import com.example.clinicmanagementsystem.registration.dto.UserRegistrationResponse;
 import com.example.clinicmanagementsystem.registration.entity.UserEntity;
-import com.example.clinicmanagementsystem.registration.model.UserRole;
-import com.example.clinicmanagementsystem.registration.repository.UserRepository;
-import com.example.clinicmanagementsystem.registration.repository.UserVerificationTokenRepository;
-import com.example.clinicmanagementsystem.user.registration.utils.StringUtils;
-import jakarta.transaction.Transactional;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.context.ApplicationEventPublisher;
-import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.stereotype.Service;
 
 /**
- * Service class for managing user accounts.
- * Handles user registration and related operations.
+ * Service contract for managing user accounts.
+ * Handles user registration, validation and email verification.
  */
-@Slf4j
-@Service
-@RequiredArgsConstructor
-public class UserService {
-
-    // Error messages
-    private static final String EMAIL_ALREADY_EXISTS = "Email is already registered";
-    private static final String INVALID_EMAIL = "Email is required and cannot be empty";
-    private static final String INVALID_PASSWORD = "Password is required and cannot be empty";
-
-    private final UserRepository userRepository;
-    private final PasswordEncoder passwordEncoder;
-    private final ApplicationEventPublisher eventPublisher;
-    private final UserVerificationTokenRepository tokenRepository;
+public interface UserService {
 
     /**
-     * Registers a new user with the provided user details.
-     * The user account will be created in a locked and disabled state until email verification.
+     * Registers a new user, persists it in a locked/disabled state and
+     * publishes the event that triggers the verification email.
      *
-     * @param userEntity the user to register
-     * @return the registered user with encoded password
+     * @param request the user registration data
+     * @param appUrl  the application URL used to build the verification link
+     * @return the registered user as a response DTO
      * @throws IllegalArgumentException if the email is already in use or required fields are missing
      */
-    @Transactional
-    public UserEntity registerUser(UserEntity userEntity) {
-        log.info("Registering new user with email: {}", userEntity.getEmailAddress());
-
-        // Validate input
-        validateUserRegistration(userEntity);
-
-        // Check if email already exists
-        if (userRepository.findByEmailAddressIgnoreCase(userEntity.getEmailAddress()).isPresent()) {
-            log.warn("Registration failed - email already exists: {}", userEntity.getEmailAddress());
-            throw new IllegalArgumentException(EMAIL_ALREADY_EXISTS);
-        }
-
-        // Create and save new user
-        UserEntity newUser = buildNewUser(userEntity);
-        UserEntity savedUser = userRepository.save(newUser);
-
-        log.info("Successfully registered user with ID: {}", savedUser.getId());
-        return savedUser;
-    }
+    UserRegistrationResponse registerUser(UserRegistrationRequest request, String appUrl);
 
     /**
-     * Validates user registration data.
+     * Registers a new user from an entity (used by tests and internal callers).
+     *
+     * @param userEntity the user to register
+     * @return the persisted user entity
+     * @throws IllegalArgumentException if the email is already in use or required fields are missing
+     */
+    UserEntity registerUser(UserEntity userEntity);
+
+    /**
+     * Validates the mandatory fields of a user entity.
      *
      * @param userEntity the user to validate
-     * @return userEntity
+     * @return the same entity if valid
      * @throws IllegalArgumentException if validation fails
      */
-    public UserEntity validateUserRegistration(UserEntity userEntity) {
-        if (userEntity == null) {
-            throw new IllegalArgumentException("User cannot be null");
-        }
-
-        if (StringUtils.isBlank(userEntity.getEmailAddress())) {
-            throw new IllegalArgumentException(INVALID_EMAIL);
-        }
-
-        if (StringUtils.isBlank(userEntity.getPassword())) {
-            throw new IllegalArgumentException(INVALID_PASSWORD);
-        }
-        return userEntity;
-    }
+    UserEntity validateUserRegistration(UserEntity userEntity);
 
     /**
-     * Builds a new UserEntity with the provided details.
-     * Applies security settings like password encoding and account status.
+     * Validates the mandatory fields of a registration request.
      *
-     * @param userEntity the source user data
-     * @return a new UserEntity ready for persistence
+     * @param request the registration request to validate
+     * @throws IllegalArgumentException if validation fails
      */
-    private UserEntity buildNewUser(UserEntity userEntity) {
-        return UserEntity.builder()
-                .emailAddress(userEntity.getEmailAddress().toLowerCase().trim())
-                .password(passwordEncoder.encode(userEntity.getPassword()))
-                .firstName(userEntity.getFirstName())
-                .lastName(userEntity.getLastName())
-                .dateOfBirth(userEntity.getDateOfBirth())
-                .gender(userEntity.getGender())
-                .phoneNumber(userEntity.getPhoneNumber())
-                .addressLineOne(userEntity.getAddressLineOne())
-                .addressLineTwo(userEntity.getAddressLineTwo())
-                .townOrCity(userEntity.getTownOrCity())
-                .postcode(userEntity.getPostcode())
-                .county(userEntity.getCounty())
-                .country(userEntity.getCountry())
-                .userRole(userEntity.getUserRole() != null ? userEntity.getUserRole() : UserRole.USER)
-                .locked(true)     // Lock account until email verification
-                .enabled(false)    // Disable until email verification
-                .build();
-    }
+    void validateUserRegistrationRequest(UserRegistrationRequest request);
+
+    /**
+     * Verifies a user's email address using the provided verification token.
+     *
+     * @param token the verification token sent to the user's email
+     * @throws IllegalArgumentException if the token is invalid or expired
+     */
+    void verifyEmail(String token);
 }
