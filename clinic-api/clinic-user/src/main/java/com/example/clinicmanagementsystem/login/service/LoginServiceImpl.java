@@ -2,12 +2,10 @@ package com.example.clinicmanagementsystem.login.service;
 
 import com.example.clinicmanagementsystem.login.dto.LoginRequest;
 import com.example.clinicmanagementsystem.login.dto.LoginResponse;
-import com.example.clinicmanagementsystem.login.events.LoginEvent;
 import com.example.clinicmanagementsystem.registration.entity.UserEntity;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -24,7 +22,6 @@ public class LoginServiceImpl implements LoginService {
 
     private final AuthenticationManager authenticationManager;
     private final JwtService jwtService;
-    private final ApplicationEventPublisher eventPublisher;
 
     @Override
     public LoginResponse login(LoginRequest loginRequest) {
@@ -40,9 +37,8 @@ public class LoginServiceImpl implements LoginService {
         UserEntity userEntity = (UserEntity) authentication.getPrincipal();
         String token = jwtService.generateToken(userEntity);
 
-        eventPublisher.publishEvent(new LoginEvent(userEntity));
-
-        log.info("User logged in: {}", userEntity.getEmailAddress());
+        log.info("User authenticated - email: {}, role: {}, verified: {}",
+                userEntity.getEmailAddress(), userEntity.getUserRole(), userEntity.isEnabled());
 
         return LoginResponse.builder()
                 .token(token)

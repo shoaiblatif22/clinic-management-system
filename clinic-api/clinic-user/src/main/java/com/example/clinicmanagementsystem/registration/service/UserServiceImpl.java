@@ -13,6 +13,8 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -37,6 +39,7 @@ public class UserServiceImpl implements UserService {
     private final PasswordEncoder passwordEncoder;
     private final ApplicationEventPublisher eventPublisher;
     private final UserVerificationTokenRepository tokenRepository;
+    private final JavaMailSender mailSender;
 
     @Override
     @Transactional
@@ -133,7 +136,18 @@ public class UserServiceImpl implements UserService {
         userRepository.save(updatedUser);
         tokenRepository.delete(userVerificationToken);
 
-        log.info("Successfully verified email for user: {}", user.getEmailAddress());
+        log.info("Email verified for user - email: {}, role: {}, account enabled: true",
+                user.getEmailAddress(), user.getUserRole());
+
+        SimpleMailMessage message = new SimpleMailMessage();
+        message.setTo(user.getEmailAddress());
+        message.setSubject("Welcome to the Clinic Management System");
+        message.setText("Hi " + user.getFirstName() + ",\n\n"
+                + "Your email has been verified and your account is now active.\n"
+                + "You can now log in and start using the Clinic Management System.\n\n"
+                + "Welcome aboard!");
+        mailSender.send(message);
+        log.info("Welcome email sent to: {}", user.getEmailAddress());
     }
 
     private UserEntity buildNewUser(UserEntity userEntity) {
