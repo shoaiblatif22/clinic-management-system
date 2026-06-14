@@ -1,0 +1,49 @@
+services:
+
+  postgres:
+    image: postgres:16-alpine
+    container_name: clinic_postgres
+    environment:
+      POSTGRES_DB: clinical_management_db
+      POSTGRES_USER: clinic_user
+      POSTGRES_PASSWORD: clinic_password
+    ports:
+      - "5433:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U clinic_user -d clinical_management_db"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  mailhog:
+    image: mailhog/mailhog:latest
+    container_name: clinic_mailhog
+    ports:
+      - "1025:1025"   # SMTP
+      - "8025:8025"   # Web UI
+
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: clinic_app
+    ports:
+      - "8081:8081"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/clinical_management_db
+      SPRING_DATASOURCE_USERNAME: clinic_user
+      SPRING_DATASOURCE_PASSWORD: clinic_password
+      SPRING_MAIL_HOST: mailhog
+      SPRING_MAIL_PORT: 1025
+      JWT_SECRET: your-256-bit-secret-key-change-this-in-production
+      JWT_EXPIRATION: 3600000
+    depends_on:
+      postgres:
+        condition: service_healthy
+      mailhog:
+        condition: service_started
+
+volumes:
+  postgres_data:

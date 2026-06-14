@@ -35,4 +35,8 @@ public class StringUtils {
         log.debug("Checking if string is blank: '{}' - Result: {}", str, result);
         return result;
     }
+
+    public static boolean isEmpty(String str) {
+        return isBlank(str);
+    }
 }

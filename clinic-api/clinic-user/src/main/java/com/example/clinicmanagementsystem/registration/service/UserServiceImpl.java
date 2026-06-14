@@ -63,9 +63,9 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
     public UserRegistrationResponse registerUser(UserRegistrationRequest request, String appUrl) {
-        log.info("Registering new user with email: {}", request.getEmailAddress());
-
         validateUserRegistrationRequest(request);
+
+        log.info("Registering new user with email: {}", request.getEmailAddress());
 
         if (userRepository.findByEmailAddressIgnoreCase(request.getEmailAddress()).isPresent()) {
             log.warn("Registration failed - email already exists: {}", request.getEmailAddress());

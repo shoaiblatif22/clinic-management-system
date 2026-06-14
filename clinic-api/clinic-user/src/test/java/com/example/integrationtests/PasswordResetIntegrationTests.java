@@ -95,15 +95,14 @@ public class PasswordResetIntegrationTests {
     }
 
     @Test
-    @DisplayName("Request password reset with non-existent email which should return bad request")
-    public void requestPasswordReset_WithNonExistentEmail_ShouldReturnBadRequest() throws Exception {
+    @DisplayName("Request password reset with non-existent email should return 2xx (no enumeration)")
+    public void requestPasswordReset_WithNonExistentEmail_ShouldReturnSuccessToAvoidEnumeration() throws Exception {
         String requestBody = "{\"emailAddress\":\"nonexistent@example.com\"}";
 
         mockMvc.perform(post("/user/api/v1/password-reset/request")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(requestBody))
-                .andExpect(status().is4xxClientError())
-                .andExpect(content().string(containsString("User not found")));
+                .andExpect(status().is2xxSuccessful());
     }
 
     @Test
@@ -212,38 +211,25 @@ public class PasswordResetIntegrationTests {
     }
 
     @Test
-    @DisplayName("Password reset for disabled account should return bad request")
-    public void passwordReset_ForDisabledAccount_ShouldReturnBadRequest() throws Exception {
-        // Arrange - Create a disabled user
-        UserEntity disabledUser = new UserEntity(
-                "Jane",
-                "Doe",
-                LocalDate.of(1990, 1, 1),
-                "FEMALE",
-                "9876543210",
-                "disabled@example.com",
-                "456 Test St",
-                "Apt 7C",
-                "Test City",
-                "54321",
-                "Test County",
-                "Test Country",
-                "password123",
-                USER,
-                false,
-                false  // disabled account
-        );
-        disabledUser = userRepository.save(disabledUser);
+    @DisplayName("Password reset for disabled account should return 2xx (no enumeration)")
+    public void passwordReset_ForDisabledAccount_ShouldReturnSuccessToAvoidEnumeration() throws Exception {
+        UserEntity disabledUser = UserEntity.builder()
+                .firstName("Jane").lastName("Doe")
+                .dateOfBirth(LocalDate.of(1990, 1, 1))
+                .gender("FEMALE").phoneNumber("9876543210")
+                .emailAddress("disabled@example.com")
+                .addressLineOne("456 Test St").addressLineTwo("Apt 7C")
+                .townOrCity("Test City").postcode("54321")
+                .county("Test County").country("Test Country")
+                .password("password123").userRole(USER)
+                .locked(false).enabled(false)
+                .build();
+        userRepository.save(disabledUser);
 
-        // Arrange request body
-        String requestBody = "{\"emailAddress\":\"disabled@example.com\"}";
-
-        // Act & Assert - Attempt to request password reset for disabled account
         mockMvc.perform(post("/user/api/v1/password-reset/request")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(requestBody))
-                .andExpect(status().is4xxClientError())
-                .andExpect(content().string(containsString("Account is disabled")));
+                        .content("{\"emailAddress\":\"disabled@example.com\"}"))
+                .andExpect(status().is2xxSuccessful());
     }
 
     @Test
