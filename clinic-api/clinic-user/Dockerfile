@@ -3,14 +3,14 @@ FROM maven:3.8.7-eclipse-temurin-17 AS build
 WORKDIR /app
 
 # Copy root POM and module POM
-COPY ../pom.xml .
-COPY pom.xml clinic-user/
+COPY pom.xml .
+COPY clinic-user/pom.xml clinic-user/
 
 # Download dependencies
 RUN mvn -f clinic-user/pom.xml dependency:go-offline -B
 
 # Copy source code
-COPY src clinic-user/src/
+COPY clinic-user/src clinic-user/src/
 
 # Build the specific module
 RUN mvn -f clinic-user/pom.xml package -DskipTests

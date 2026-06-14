@@ -18,6 +18,7 @@
 
     <modules>
         <module>clinic-user</module>
+        <module>clinic-appointments</module>
     </modules>
 
 

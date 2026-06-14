@@ -1,433 +1,294 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Layout } from "../../components/layout/Layout";
 import {
   Calendar as CalendarIcon,
   Clock,
-  Plus,
   X,
-  Edit2,
+  XCircle,
   Trash2,
-  User,
-  MapPin,
-  Phone,
-  VideoIcon,
   ChevronLeft,
   ChevronRight,
-  CheckCircle,
 } from "lucide-react";
 
-/**
- * Represents a medical appointment in the system
- * @typedef {Object} Appointment
- * @property {string} id - Unique identifier for the appointment
- * @property {string} title - Title/purpose of the appointment
- * @property {"check-up" | "consultation" | "lab-test" | "follow-up"} type - Type of appointment
- * @property {string} date - Date of the appointment in YYYY-MM-DD format
- * @property {string} time - Time of the appointment in HH:MM format
- * @property {string} doctor - Name of the doctor
- * @property {string} location - Location of the appointment
- * @property {"in-person" | "video"} mode - Whether the appointment is in-person or virtual
- * @property {"confirmed" | "pending" | "cancelled"} status - Current status of the appointment
- */
 type Appointment = {
-  id: string;
-  title: string;
-  type: "check-up" | "consultation" | "lab-test" | "follow-up";
-  date: string;
-  time: string;
-  doctor: string;
-  location: string;
-  mode: "in-person" | "video";
-  status: "confirmed" | "pending" | "cancelled";
+  id: number;
+  appointmentDate: string;
+  appointmentTime: string;
+  reason: string;
+  status: "PENDING" | "CANCELLED";
 };
 
-/**
- * Predefined appointment types for quick scheduling
- * Each type includes an id, display label, icon component, and styling color
- */
-const QUICK_APPOINTMENT_TYPES = [
-  {
-    id: "check-up",
-    label: "Check-up",
-    icon: User,
-    color: "bg-blue-100 text-blue-800 border-blue-200",
-  },
-  {
-    id: "video-consultation",
-    label: "Video Consultation",
-    icon: VideoIcon,
-    color: "bg-purple-100 text-purple-800 border-purple-200",
-  },
-  {
-    id: "lab-test",
-    label: "Lab Test",
-    icon: CheckCircle,
-    color: "bg-yellow-100 text-yellow-800 border-yellow-200",
-  },
-];
-/**
- * Patient Appointments page component.
- * 
- * This component allows patients to:
- * - View their upcoming and past appointments
- * - Schedule new appointments
- * - Reschedule or cancel existing appointments
- * - Filter appointments by date, type, or status
- * 
- * The page includes a calendar view, quick appointment scheduling buttons,
- * and a detailed list of appointments with status indicators.
- * 
- * @returns {JSX.Element} The complete appointments page
- */
+type FormData = {
+  appointmentDate: string;
+  appointmentTime: string;
+  reason: string;
+};
+
+const API = "http://localhost:8082/appointments/api/v1";
+
+function authHeaders() {
+  return {
+    "Content-Type": "application/json",
+    Authorization: `Bearer ${localStorage.getItem("authToken") ?? ""}`,
+  };
+}
+
+function statusColor(status: string) {
+  if (status === "PENDING") return "bg-yellow-100 text-yellow-800 border-yellow-200";
+  if (status === "CANCELLED") return "bg-red-100 text-red-800 border-red-200";
+  return "bg-gray-100 text-gray-800 border-gray-200";
+}
+
 export function AppointmentsPage() {
-  // State for controlling the appointment creation/edit modal
   const [showModal, setShowModal] = useState(false);
+  const [appointments, setAppointments] = useState<Appointment[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [formData, setFormData] = useState<FormData>({ appointmentDate: "", appointmentTime: "", reason: "" });
+  const [submitting, setSubmitting] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [loadFailed, setLoadFailed] = useState(false);
 
-  // State for tracking the selected date in the calendar
-  const [selectedDate, setSelectedDate] = useState<Date | null>(null);
+  useEffect(() => {
+    fetch(API, { headers: authHeaders() })
+      .then(res => res.ok ? res.json() : Promise.reject())
+      .then((data: Appointment[]) => setAppointments(data))
+      .catch(() => setLoadFailed(true))
+      .finally(() => setLoading(false));
+  }, []);
 
-  // State for the currently selected appointment (for editing or viewing details)
-  const [selectedAppointment, setSelectedAppointment] =
-    useState<Appointment | null>(null);
-
-  // Mock appointment data - would be fetched from an API in a real application
-  const [appointments] = useState<Appointment[]>([
-    {
-      id: "1",
-      title: "Diabetes Check-up",
-      type: "check-up",
-      date: "2024-03-15",
-      time: "10:00",
-      doctor: "Dr. Sarah Johnson",
-      location: "Diabetes Care Center",
-      mode: "in-person",
-      status: "confirmed",
-    },
-    {
-      id: "2",
-      title: "Virtual Consultation",
-      type: "consultation",
-      date: "2024-03-20",
-      time: "14:30",
-      doctor: "Dr. Michael Chen",
-      location: "Video Call",
-      mode: "video",
-      status: "pending",
-    },
-  ]);
-
-  /**
-   * Handles the quick appointment scheduling from the button panel
-   * 
-   * @param {string} type - The type of appointment to schedule
-   */
-  const handleQuickAppointment = (type: string) => {
-    setSelectedAppointment(null); // Clear any selected appointment
-    setShowModal(true); // Show the appointment creation modal
-    // In a real implementation, we would pre-fill the appointment type
+  const handleCreate = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setSubmitting(true);
+    setError(null);
+    try {
+      const res = await fetch(`${API}/create`, {
+        method: "POST",
+        headers: authHeaders(),
+        body: JSON.stringify(formData),
+      });
+      if (!res.ok) {
+        const data = await res.json().catch(() => ({}));
+        // Spring returns validation errors as { field: message } map; IllegalArgumentException as plain string body
+        const asMap = data as Record<string, string>;
+        const firstFieldError = Object.values(asMap).find(v => typeof v === "string");
+        throw new Error(firstFieldError || "Failed to create appointment");
+      }
+      const created: Appointment = await res.json();
+      setAppointments(prev => [...prev, created]);
+      setShowModal(false);
+      setFormData({ appointmentDate: "", appointmentTime: "", reason: "" });
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Failed to create appointment");
+    } finally {
+      setSubmitting(false);
+    }
   };
 
-  /**
-   * Returns the appropriate CSS classes for styling appointment status badges
-   * 
-   * @param {string} status - The appointment status (confirmed, pending, cancelled)
-   * @returns {string} CSS classes for styling the status badge
-   */
-  const getStatusColor = (status: string) => {
-    const colors = {
-      confirmed: "bg-green-100 text-green-800 border-green-200",
-      pending: "bg-yellow-100 text-yellow-800 border-yellow-200",
-      cancelled: "bg-red-100 text-red-800 border-red-200",
-    };
-    return colors[status] || "bg-gray-100 text-gray-800 border-gray-200";
+  const handleCancel = async (id: number) => {
+    try {
+      const res = await fetch(`${API}/${id}/cancel`, {
+        method: "PATCH",
+        headers: authHeaders(),
+      });
+      if (!res.ok) throw new Error();
+      const updated: Appointment = await res.json();
+      setAppointments(prev => prev.map(a => a.id === id ? updated : a));
+    } catch {
+      setError("Failed to cancel appointment");
+    }
   };
+
+  const handleDelete = async (id: number) => {
+    try {
+      const res = await fetch(`${API}/${id}`, {
+        method: "DELETE",
+        headers: authHeaders(),
+      });
+      if (!res.ok) throw new Error();
+      setAppointments(prev => prev.filter(a => a.id !== id));
+    } catch {
+      setError("Failed to delete appointment");
+    }
+  };
+
   return (
     <Layout>
       <div className="space-y-6">
-        {/* Page header with title and description */}
         <div>
           <h1 className="text-2xl font-bold text-gray-900">Appointments</h1>
-          <p className="mt-1 text-gray-600">
-            Schedule and manage your medical appointments
-          </p>
-
-          {/* Quick appointment scheduling buttons */}
-          <div className="mt-6 flex flex-wrap gap-4">
-            {QUICK_APPOINTMENT_TYPES.map((type) => (
-              <button
-                key={type.id}
-                onClick={() => handleQuickAppointment(type.id)}
-                className={`flex items-center space-x-2 px-4 py-2 rounded-lg border ${type.color} hover:opacity-90 transition-all`}
-              >
-                <type.icon className="w-4 h-4" />
-                <span>Schedule {type.label}</span>
-              </button>
-            ))}
+          <p className="mt-1 text-gray-600">Schedule and manage your medical appointments</p>
+          <div className="mt-6">
+            <button
+              onClick={() => setShowModal(true)}
+              className="px-4 py-2 rounded-lg border bg-teal-100 text-teal-800 border-teal-200 hover:opacity-90 transition-all"
+            >
+              + Schedule Appointment
+            </button>
           </div>
         </div>
 
-        {/* Main content grid - calendar and appointment list */}
+        {error && (
+          <div className="text-sm text-red-600 bg-red-50 border border-red-100 rounded-lg p-3">{error}</div>
+        )}
+
+
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          {/* Calendar section - takes 2/3 of the width on large screens */}
-          <div className="lg:col-span-2 bg-white rounded-xl border border-gray-200">
-            <div className="p-6">
-              {/* Calendar header with month navigation and legend */}
-              <div className="flex items-center justify-between mb-6">
-                {/* Month display and navigation buttons */}
-                <div className="flex items-center space-x-4">
-                  <h2 className="text-lg font-semibold text-gray-900">
-                    March 2024
-                  </h2>
-                  <div className="flex items-center space-x-2">
-                    <button className="p-1 hover:bg-gray-100 rounded-lg">
-                      <ChevronLeft className="w-5 h-5 text-gray-500" />
-                    </button>
-                    <button className="p-1 hover:bg-gray-100 rounded-lg">
-                      <ChevronRight className="w-5 h-5 text-gray-500" />
-                    </button>
-                  </div>
-                </div>
-
-                {/* Calendar legend for appointment types */}
-                <div className="flex items-center space-x-4 text-sm">
-                  <div className="flex items-center space-x-1">
-                    <div className="w-3 h-3 rounded-full bg-blue-500"></div>
-                    <span className="text-gray-600">In-person</span>
-                  </div>
-                  <div className="flex items-center space-x-1">
-                    <div className="w-3 h-3 rounded-full bg-purple-500"></div>
-                    <span className="text-gray-600">Virtual</span>
-                  </div>
-                </div>
-              </div>
-
-              {/* Calendar grid */}
-              <div className="grid grid-cols-7 gap-px bg-gray-200 rounded-lg overflow-hidden">
-                {/* Day of week headers */}
-                {["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"].map(
-                  (day) => (
-                    <div key={day} className="bg-gray-50 py-2 text-center">
-                      <span className="text-sm font-medium text-gray-500">
-                        {day}
-                      </span>
-                    </div>
-                  ),
-                )}
-
-                {/* Calendar day cells */}
-                {Array.from({
-                  length: 35,
-                }).map((_, i) => {
-                  const hasAppointment = i === 14 || i === 19;
-                  const isToday = i === 14;
-                  return (
-                    <button
-                      key={i}
-                      className={`bg-white p-3 hover:bg-gray-50 relative ${isToday ? "bg-teal-50" : ""}`}
-                    >
-                      <span
-                        className={`text-sm ${isToday ? "text-teal-600 font-medium" : "text-gray-900"}`}
-                      >
-                        {i + 1}
-                      </span>
-                      {hasAppointment && (
-                        <div className="absolute bottom-1 left-1/2 transform -translate-x-1/2 flex space-x-1">
-                          <div className="w-1.5 h-1.5 rounded-full bg-blue-500"></div>
-                        </div>
-                      )}
-                    </button>
-                  );
-                })}
-              </div>
-            </div>
-          </div>
-          {/* Upcoming appointments list - takes 1/3 of the width on large screens */}
-          <div className="bg-white rounded-xl border border-gray-200 p-6">
-            {/* Section header with title and view all button */}
+          {/* Calendar (static UI) */}
+          <div className="lg:col-span-2 bg-white rounded-xl border border-gray-200 p-6">
             <div className="flex items-center justify-between mb-6">
-              <h2 className="text-lg font-semibold text-gray-900">Upcoming</h2>
-              <button
-                onClick={() => setShowModal(true)}
-                className="text-sm text-teal-600 hover:text-teal-700 font-medium"
-              >
-                View all
-              </button>
-            </div>
-
-            {/* List of upcoming appointments */}
-            <div className="space-y-4">
-              {appointments.map((appointment) => (
-                <div
-                  key={appointment.id}
-                  className="p-4 rounded-lg border border-gray-200 hover:border-gray-300 transition-all"
-                >
-                  {/* Appointment header with title, status, and action buttons */}
-                  <div className="flex justify-between items-start mb-3">
-                    <div>
-                      <h3 className="font-medium text-gray-900">
-                        {appointment.title}
-                      </h3>
-                      {/* Status badge with dynamic color based on status */}
-                      <span
-                        className={`inline-block px-2 py-1 text-xs font-medium rounded-full mt-1 border ${getStatusColor(appointment.status)}`}
-                      >
-                        {appointment.status.charAt(0).toUpperCase() +
-                          appointment.status.slice(1)}
-                      </span>
-                    </div>
-
-                    {/* Edit and delete buttons */}
-                    <div className="flex items-center space-x-2">
-                      <button className="p-1 text-gray-400 hover:text-gray-600">
-                        <Edit2 className="w-4 h-4" />
-                      </button>
-                      <button className="p-1 text-gray-400 hover:text-red-600">
-                        <Trash2 className="w-4 h-4" />
-                      </button>
-                    </div>
-                  </div>
-
-                  {/* Appointment details with icons */}
-                  <div className="space-y-2 text-sm text-gray-600">
-                    {/* Date and time */}
-                    <div className="flex items-center space-x-2">
-                      <CalendarIcon className="w-4 h-4" />
-                      <span>{appointment.date}</span>
-                      <Clock className="w-4 h-4 ml-2" />
-                      <span>{appointment.time}</span>
-                    </div>
-
-                    {/* Doctor information */}
-                    <div className="flex items-center space-x-2">
-                      <User className="w-4 h-4" />
-                      <span>{appointment.doctor}</span>
-                    </div>
-
-                    {/* Location with conditional icon based on appointment mode */}
-                    <div className="flex items-center space-x-2">
-                      {appointment.mode === "video" ? (
-                        <VideoIcon className="w-4 h-4" />
-                      ) : (
-                        <MapPin className="w-4 h-4" />
-                      )}
-                      <span>{appointment.location}</span>
-                    </div>
-                  </div>
+              <div className="flex items-center space-x-4">
+                <h2 className="text-lg font-semibold text-gray-900">March 2024</h2>
+                <div className="flex items-center space-x-2">
+                  <button className="p-1 hover:bg-gray-100 rounded-lg">
+                    <ChevronLeft className="w-5 h-5 text-gray-500" />
+                  </button>
+                  <button className="p-1 hover:bg-gray-100 rounded-lg">
+                    <ChevronRight className="w-5 h-5 text-gray-500" />
+                  </button>
                 </div>
+              </div>
+              <div className="flex items-center space-x-4 text-sm">
+                <div className="flex items-center space-x-1">
+                  <div className="w-3 h-3 rounded-full bg-yellow-500" />
+                  <span className="text-gray-600">Pending</span>
+                </div>
+                <div className="flex items-center space-x-1">
+                  <div className="w-3 h-3 rounded-full bg-red-500" />
+                  <span className="text-gray-600">Cancelled</span>
+                </div>
+              </div>
+            </div>
+            <div className="grid grid-cols-7 gap-px bg-gray-200 rounded-lg overflow-hidden">
+              {["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"].map(day => (
+                <div key={day} className="bg-gray-50 py-2 text-center">
+                  <span className="text-sm font-medium text-gray-500">{day}</span>
+                </div>
+              ))}
+              {Array.from({ length: 35 }).map((_, i) => (
+                <button key={i} className={`bg-white p-3 hover:bg-gray-50 ${i === 14 ? "bg-teal-50" : ""}`}>
+                  <span className={`text-sm ${i === 14 ? "text-teal-600 font-medium" : "text-gray-900"}`}>
+                    {i + 1}
+                  </span>
+                </button>
               ))}
             </div>
           </div>
+
+          {/* Appointment list */}
+          <div className="bg-white rounded-xl border border-gray-200 p-6">
+            <h2 className="text-lg font-semibold text-gray-900 mb-6">Upcoming</h2>
+            {loading ? (
+              <p className="text-sm text-gray-500">Loading appointments...</p>
+            ) : loadFailed ? (
+              <div className="text-center py-6">
+                <p className="text-sm text-red-500 mb-2">Couldn't load appointments.</p>
+                <p className="text-xs text-gray-400">Check that the appointments service is running on port 8082.</p>
+              </div>
+            ) : appointments.length === 0 ? (
+              <div className="text-center py-6">
+                <CalendarIcon className="w-10 h-10 text-gray-300 mx-auto mb-3" />
+                <p className="text-sm font-medium text-gray-500">No appointments yet</p>
+                <p className="text-xs text-gray-400 mt-1">Click "+ Schedule Appointment" to book one.</p>
+              </div>
+            ) : (
+              <div className="space-y-4">
+                {appointments.map(appt => (
+                  <div key={appt.id} className="p-4 rounded-lg border border-gray-200 hover:border-gray-300 transition-all">
+                    <div className="flex justify-between items-start mb-3">
+                      <div>
+                        <h3 className="font-medium text-gray-900">{appt.reason || "Appointment"}</h3>
+                        <span className={`inline-block px-2 py-1 text-xs font-medium rounded-full mt-1 border ${statusColor(appt.status)}`}>
+                          {appt.status.charAt(0) + appt.status.slice(1).toLowerCase()}
+                        </span>
+                      </div>
+                      <div className="flex items-center space-x-1">
+                        {appt.status === "PENDING" && (
+                          <button
+                            onClick={() => handleCancel(appt.id)}
+                            className="p-1 text-gray-400 hover:text-yellow-600"
+                            title="Cancel appointment"
+                          >
+                            <XCircle className="w-4 h-4" />
+                          </button>
+                        )}
+                        <button
+                          onClick={() => handleDelete(appt.id)}
+                          className="p-1 text-gray-400 hover:text-red-600"
+                          title="Delete appointment"
+                        >
+                          <Trash2 className="w-4 h-4" />
+                        </button>
+                      </div>
+                    </div>
+                    <div className="flex items-center space-x-2 text-sm text-gray-600">
+                      <CalendarIcon className="w-4 h-4" />
+                      <span>{appt.appointmentDate}</span>
+                      <Clock className="w-4 h-4 ml-2" />
+                      <span>{appt.appointmentTime}</span>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
         </div>
 
-        {/* Appointment creation/edit modal - conditionally rendered */}
+        {/* Create modal */}
         {showModal && (
           <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
             <div className="bg-white rounded-xl p-6 w-full max-w-md">
-              {/* Modal header with title and close button */}
               <div className="flex justify-between items-center mb-6">
-                <h2 className="text-xl font-semibold text-gray-900">
-                  Schedule Appointment
-                </h2>
-                <button
-                  onClick={() => setShowModal(false)}
-                  className="text-gray-400 hover:text-gray-600"
-                >
+                <h2 className="text-xl font-semibold text-gray-900">Schedule Appointment</h2>
+                <button onClick={() => setShowModal(false)} className="text-gray-400 hover:text-gray-600">
                   <X className="w-5 h-5" />
                 </button>
               </div>
-              {/* Appointment form */}
-              <form className="space-y-4">
-                {/* Date and time selection - 2-column grid */}
+
+              <form className="space-y-4" onSubmit={handleCreate}>
                 <div className="grid grid-cols-2 gap-4">
-                  {/* Date field */}
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">
-                      Date
-                    </label>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">Date</label>
                     <input
                       type="date"
+                      required
+                      value={formData.appointmentDate}
+                      onChange={e => setFormData(f => ({ ...f, appointmentDate: e.target.value }))}
                       className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500"
                     />
                   </div>
-
-                  {/* Time field */}
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">
-                      Time
-                    </label>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">Time</label>
                     <input
                       type="time"
+                      required
+                      value={formData.appointmentTime}
+                      onChange={e => setFormData(f => ({ ...f, appointmentTime: e.target.value }))}
                       className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500"
                     />
                   </div>
                 </div>
 
-                {/* Appointment type dropdown */}
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Type
-                  </label>
-                  <select className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500">
-                    <option value="check-up">Check-up</option>
-                    <option value="consultation">Consultation</option>
-                    <option value="lab-test">Lab Test</option>
-                    <option value="follow-up">Follow-up</option>
-                  </select>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Reason</label>
+                  <input
+                    type="text"
+                    placeholder="e.g. Diabetes check-up"
+                    value={formData.reason}
+                    onChange={e => setFormData(f => ({ ...f, reason: e.target.value }))}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500"
+                  />
                 </div>
 
-                {/* Doctor selection dropdown */}
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Doctor
-                  </label>
-                  <select className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500">
-                    <option value="dr-johnson">Dr. Sarah Johnson</option>
-                    <option value="dr-chen">Dr. Michael Chen</option>
-                    <option value="dr-patel">Dr. Priya Patel</option>
-                  </select>
-                </div>
+                {error && <div className="text-sm text-red-600">{error}</div>}
 
-                {/* Appointment mode selection (in-person or video) */}
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Mode
-                  </label>
-                  <div className="flex space-x-4">
-                    {/* In-person option */}
-                    <label className="flex items-center space-x-2">
-                      <input
-                        type="radio"
-                        name="mode"
-                        value="in-person"
-                        className="text-teal-500 focus:ring-teal-500"
-                      />
-                      <span>In-person</span>
-                    </label>
-
-                    {/* Video call option */}
-                    <label className="flex items-center space-x-2">
-                      <input
-                        type="radio"
-                        name="mode"
-                        value="video"
-                        className="text-teal-500 focus:ring-teal-500"
-                      />
-                      <span>Video Call</span>
-                    </label>
-                  </div>
-                </div>
-
-                {/* Form action buttons */}
                 <div className="pt-4 flex space-x-3">
-                  {/* Submit button */}
                   <button
                     type="submit"
-                    className="flex-1 bg-teal-500 text-white px-4 py-2 rounded-lg hover:bg-teal-600 transition-colors"
+                    disabled={submitting}
+                    className="flex-1 bg-teal-500 text-white px-4 py-2 rounded-lg hover:bg-teal-600 transition-colors disabled:opacity-50"
                   >
-                    Schedule Appointment
+                    {submitting ? "Scheduling..." : "Schedule Appointment"}
                   </button>
-
-                  {/* Cancel button */}
                   <button
                     type="button"
                     onClick={() => setShowModal(false)}

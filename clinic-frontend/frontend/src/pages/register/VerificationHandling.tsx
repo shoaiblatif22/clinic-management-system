@@ -8,15 +8,12 @@ export default function VerifyHandlerPage() {
   useEffect(() => {
     const token = searchParams.get("token");
     if (!token) {
-        throw new Error("No token provided");
+      navigate("/verify-pending");
+      return;
     }
     fetch(`http://localhost:8081/user/api/v1/verify-email?token=${token}`)
       .then(res => {
-        if (res.ok) {
-          navigate("/verification-success");
-        } else {
-          navigate("/verification-pending");
-        }
+        navigate(res.ok ? "/verification-success" : "/verify-pending");
       });
   }, [searchParams, navigate]);
 

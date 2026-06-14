@@ -14,11 +14,11 @@
     "cy:open": "cypress open"
   },
   "dependencies": {
-    "lucide-react": "latest",
+    "lucide-react": "0.475.0",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-router-dom": "^7.1.5",
-    "recharts": "latest"
+    "recharts": "2.15.1"
   },
   "devDependencies": {
     "@testing-library/jest-dom": "^6.6.3",

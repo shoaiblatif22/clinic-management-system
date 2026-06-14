@@ -24,11 +24,11 @@ services:
       - "1025:1025"   # SMTP
       - "8025:8025"   # Web UI
 
-  app:
+  clinic-user:
     build:
       context: .
-      dockerfile: Dockerfile
-    container_name: clinic_app
+      dockerfile: clinic-user/Dockerfile
+    container_name: clinic_user_app
     ports:
       - "8081:8081"
     environment:
@@ -44,6 +44,23 @@ services:
         condition: service_healthy
       mailhog:
         condition: service_started
+
+  clinic-appointments:
+    build:
+      context: .
+      dockerfile: clinic-appointments/Dockerfile
+    container_name: clinic_appointments_app
+    ports:
+      - "8082:8082"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/clinical_management_db
+      SPRING_DATASOURCE_USERNAME: clinic_user
+      SPRING_DATASOURCE_PASSWORD: clinic_password
+      JWT_SECRET: your-256-bit-secret-key-change-this-in-production
+      JWT_EXPIRATION: 3600000
+    depends_on:
+      postgres:
+        condition: service_healthy
 
 volumes:
   postgres_data:

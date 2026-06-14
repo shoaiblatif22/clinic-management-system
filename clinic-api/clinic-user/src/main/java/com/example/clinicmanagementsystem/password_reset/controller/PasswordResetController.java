@@ -2,6 +2,7 @@ package com.example.clinicmanagementsystem.password_reset.controller;
 
 
 import com.example.clinicmanagementsystem.password_reset.dto.PasswordResetRequest;
+import com.example.clinicmanagementsystem.password_reset.dto.ResetPasswordRequest;
 import com.example.clinicmanagementsystem.password_reset.service.PasswordResetService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
@@ -37,9 +38,9 @@ public class PasswordResetController {
     @PostMapping("/reset")
     public ResponseEntity<String> resetPassword(
             @RequestParam String token,
-            @RequestParam String newPassword) {
+            @Valid @RequestBody ResetPasswordRequest request) {
         try {
-            passwordResetService.resetPassword(token, newPassword);
+            passwordResetService.resetPassword(token, request.getNewPassword());
             return ResponseEntity.ok("Password has been reset successfully");
         } catch (IllegalArgumentException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
