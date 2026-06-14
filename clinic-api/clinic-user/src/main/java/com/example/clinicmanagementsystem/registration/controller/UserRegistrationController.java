@@ -2,7 +2,6 @@ package com.example.clinicmanagementsystem.registration.controller;
 
 import com.example.clinicmanagementsystem.registration.dto.UserRegistrationRequest;
 import com.example.clinicmanagementsystem.registration.dto.UserRegistrationResponse;
-import com.example.clinicmanagementsystem.registration.dto.UserResponse;
 import com.example.clinicmanagementsystem.registration.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
