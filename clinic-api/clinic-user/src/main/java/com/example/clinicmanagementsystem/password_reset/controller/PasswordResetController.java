@@ -3,16 +3,13 @@ package com.example.clinicmanagementsystem.password_reset.controller;
 
 import com.example.clinicmanagementsystem.password_reset.dto.PasswordResetRequest;
 import com.example.clinicmanagementsystem.password_reset.service.PasswordResetService;
-import com.example.clinicmanagementsystem.registration.repository.UserRepository;
 import jakarta.servlet.http.HttpServletRequest;
-
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.validation.annotation.Validated;
 
 @Slf4j
@@ -22,8 +19,6 @@ import org.springframework.validation.annotation.Validated;
 @RequiredArgsConstructor
 public class PasswordResetController {
     private final PasswordResetService passwordResetService;
-    private final ApplicationEventPublisher eventPublisher;
-    private final UserRepository userRepository;
 
     @PostMapping("/request")
     public ResponseEntity<?> requestPasswordReset(

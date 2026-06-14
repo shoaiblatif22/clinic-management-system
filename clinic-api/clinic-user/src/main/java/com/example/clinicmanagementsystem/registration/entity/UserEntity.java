@@ -1,6 +1,5 @@
 package com.example.clinicmanagementsystem.registration.entity;
 
-import com.example.clinicmanagementsystem.registration.model.UserModel;
 import com.example.clinicmanagementsystem.registration.model.UserRole;
 import jakarta.persistence.*;
 import lombok.*;
@@ -51,9 +50,6 @@ public class UserEntity implements UserDetails {
     private Boolean locked = false;
     @Column(name = "enabled")
     private Boolean enabled = false;
-
-    public UserEntity(UserModel userModel) {
-    }
 
     public UserEntity(String firstName, String lastName, LocalDate dateOfBirth, String gender, String phoneNumber, String emailAddress, String addressLineOne, String addressLineTwo, String townOrCity, String postcode, String county, String country, String password, UserRole userRole, Boolean locked, Boolean enabled) {
         super();

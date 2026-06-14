@@ -2,7 +2,7 @@ package com.example.clinicmanagementsystem.login.controller;
 
 import com.example.clinicmanagementsystem.login.dto.LoginRequest;
 import com.example.clinicmanagementsystem.login.dto.LoginResponse;
-import com.example.clinicmanagementsystem.login.service.LoginService;
+import com.example.clinicmanagementsystem.login.service.LoginServiceImpl;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 public class LoginController {
 
-    private final LoginService loginService;
+    private final LoginServiceImpl loginService;
 
     @PostMapping("/login")
     public ResponseEntity<LoginResponse> login(@Valid @RequestBody LoginRequest loginRequest) {

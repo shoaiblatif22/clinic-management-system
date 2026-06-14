@@ -67,32 +67,21 @@ public class PasswordResetServiceImpl implements PasswordResetService {
                 "contain at least one digit, one lowercase letter, one uppercase letter, " +
                 "one special character (@#$%^&+=), and no whitespace");
         }
-
-        user.setPassword(passwordEncoder.encode(newPassword));
-        userRepository.save(user);
+        userRepository.save(user.toBuilder().password(passwordEncoder.encode(newPassword)).build());
         log.info("Password changed successfully for user: {}", user.getEmailAddress());
     }
 
     @Override
     @Transactional
     public void requestPasswordReset(String emailAddress) {
-        UserEntity user = userRepository.findByEmailAddressIgnoreCase(emailAddress)
-            .orElseThrow(() -> new IllegalArgumentException("User not found with email: " + emailAddress));
-
-        // Check if account is disabled
-        if (!user.isEnabled()) {
-            throw new IllegalArgumentException("Account is disabled");
-        }
-
-        String token = UUID.randomUUID().toString();
-        createPasswordResetToken(user, token);
-        log.info("Created password reset token for user: {}", emailAddress);
-
-        // Publish event to send email
-        // Note: The appUrl is set to null here. It will be handled by the listener with a default value
-        // In a production environment, you might want to pass the actual application URL here
-        eventPublisher.publishEvent(new PasswordResetEvent(user, token, null));
-        log.info("Published password reset event for user: {}", emailAddress);
+        userRepository.findByEmailAddressIgnoreCase(emailAddress)
+                .filter(UserEntity::isEnabled)
+                .ifPresent(user -> {
+                    String token = UUID.randomUUID().toString();
+                    createPasswordResetToken(user, token);
+                    eventPublisher.publishEvent(new PasswordResetEvent(user, token, null));
+                    log.info("Password reset email sent to: {}", emailAddress);
+                });
     }
 
 
@@ -115,8 +104,7 @@ public class PasswordResetServiceImpl implements PasswordResetService {
         }
 
         UserEntity user = resetToken.getUser();
-        user.setPassword(passwordEncoder.encode(newPassword));
-        userRepository.save(user);
+        userRepository.save(user.toBuilder().password(passwordEncoder.encode(newPassword)).build());
         tokenRepository.delete(resetToken);
         log.info("Password successfully reset for user: {}", user.getEmailAddress());
     }
